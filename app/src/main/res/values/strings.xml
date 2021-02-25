@@ -1,0 +1,106 @@
+<resources>
+    <string name="app_name">Lombart</string>
+
+    //Диалог
+    <string name="dialog_retry">Ещё раз</string>
+    <string name="dialog_exit">Выйти</string>
+    <string name="dialog_ok">Oк</string>
+    <string name="no_account">Нет аккаунта? -</string>
+    <string name="sign_up">Регистрация</string>
+    <string name="authorization">Авторизация</string>
+    <string name="inn_text">ИИН</string>
+    <string name="password">Пароль</string>
+    <string name="remember_password">Не помню пароль?</string>
+    <string name="to_come_in">Войти</string>
+    <string name="home">Главная</string>
+    <string name="about_pawnshop">О ломбарде</string>
+    <string name="profile">Профиль</string>
+    <string name="notification">Уведомления</string>
+    <string name="appeal">Обращение</string>
+
+
+    //Обработка ошибок
+    <string name="error_unknown_title">Что-то пошло не так…</string>
+    <string name="error_unknown_body">Пожалуйста проверьте ваше интернет соединение или попробуйте позднее</string>
+    <string name="error_failed_connection_to_server">Не удалось установить соединение с сервером: \n</string>
+    <string name="error_no_internet_title">Отсутствует интернет соединение</string>
+    <string name="error_no_internet_msg">Пожалуйста проверьте ваше интернет соединение и попробуйте ещё раз</string>
+    <string name="error_auth_wrong_data_title">Авторизация не пройдена</string>
+    <string name="error_auth_wrong_data_msg">Вы ввели неверный логин или пароль. Пожалуйста, проверьте ваши данные и попробуйте ещё раз</string>
+
+
+    //Rus - Kaz
+    <string name="rus">РУС</string>
+    <string name="kz">КАЗ</string>
+
+    //Loans
+    <string name="welcome">С возвращением!</string>
+    <string name="my_loans">Мои займы</string>
+    <string name="pay">Оплатить</string>
+    <string name="gold_content">Проба золота</string>
+    <string name="product_weight">Вес изделия (гр)</string>
+    <string name="term">Срок (5 – 60 дней)</string>
+    <string name="hand_amount">Сумма на руки</string>
+    <string name="refundable_amount">Сумма к возврату</string>
+    <string name="detail_text">*Для более точного определения пробы и веса изделия, а также стоимости займа, пожалуйста, посетите наш ближайший филиал.</string>
+    <string name="technical_support">Техподдержка</string>
+    <string name="weather">Погода</string>
+    <string name="currency_rates">Курсы валют</string>
+    <string name="phone_number">Номер телефона</string>
+    <string name="test">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vitae vestibulum, id quis erat mauris, et lectus. Nunc leo ridiculus at euismod hendrerit arcu mi et faucibus. Dolor aliquam pretium pulvinar ac.</string>
+    <string name="test2">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Purus adipiscing proin fermentum, vitae tristique iaculis leo. Blandit facilisi consectetur vestibulum, cras vestibulum convallis. Porttitor vitae eget eu eu diam eget libero habitant. Imperdiet donec luctus nunc tortor.</string>
+    <string name="firstname_lastname">Имя Фамилия</string>
+    <string name="your_appeal">Ваше обращение</string>
+    <string name="send">Отправить</string>
+    <string name="currency">Валюта</string>
+    <string name="purchase">Покупка</string>
+    <string name="sale">Продажа</string>
+    <string name="no_active_deposit">У вас нет активных залоговых билетов</string>
+    <string name="calculate_the_loan_amount">Рассчитать сумму займа</string>
+    <string name="gold_rate">Курс золота за 1 грамм</string>
+    <string name="iin">ИИН</string>
+    <string name="my_cards">Моя карта</string>
+    <string name="add_cards">Добавить карту</string>
+    <string name="you_have_no_card">У вас нет карты</string>
+    <string name="register">Регистрация</string>
+    <string name="enter_iin">Введите ИНН</string>
+    <string name="terms_of_use">Регистрируясь в приложении Вы соглашаетесь с политикой обработки персональных данных и принимаете пользовательское соглашение</string>
+    <string name="create_account">Создать аккаунт</string>
+    <string name="enter_confirmation_code">Введите код подтверждения</string>
+    <string name="repeat_the_code_again">Повторить код повторно</string>
+    <string name="enter_a_code">Введите код</string>
+    <string name="enter_cade">Подтвердить код</string>
+    <string name="create_a_password">Придумать пароль</string>
+    <string name="password_again">Повторить пароль</string>
+    <string name="proceed">Продолжить</string>
+    <string name="next">Далее</string>
+    <string name="successfully_account">Вы успешно зарегистрировались!</string>
+    <string name="edit_number">Ввести номер телефона</string>
+    <string name="a_temporary_password">Временный пароль</string>
+    <string name="come_up_with_a_new_password">Придумать новый пароль</string>
+    <string name="reestablish">Восстанавить</string>
+    <string name="create_pin_code">Создать PIN код</string>
+    <string name="text_pin_code">Вы будете использовать это код для входа</string>
+    <string name="create_pin">Создать PIN</string>
+    <string name="payment_amount">Сумма оплаты:</string>
+    <string name="period_time">Время периода:</string>
+    <string name="loan_information">Информация по займу</string>
+    <string name="loan_amount">Сумма займа</string>
+    <string name="renewal_amount">Сумма продления</string>
+    <string name="alert_text1">*После оплаты продление займа срок займа</string>
+    <string name="alert_text2">увеличивается до</string>
+    <string name="select_card">Выбрать карту</string>
+    <string name="mask_card_number">0000 0000 0000 0000</string>
+    <string name="mask_cvv">000</string>
+    <string name="pay_successfully">Оплата прошла успешно!</string>
+    <string name="close">Закрыть</string>
+    <string name="error_occurred">При обработке платежа произшла ошибка.</string>
+    <string name="error_occurred_text">Пожалуйста повторите платеж или измените способ оплаты.</string>
+    <string name="loading">Загрузка...</string>
+    <string name="city">Шымкент, KZ</string>
+    <string name="name_user">Имя пользователя</string>
+    <string name="edit_iin">Ввести ИИН</string>
+    <string name="sms_edit">Введите смс код</string>
+    <string name="select_number">Выберите номер телефона</string>
+
+</resources>

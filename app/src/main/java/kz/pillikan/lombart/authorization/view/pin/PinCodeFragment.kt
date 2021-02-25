@@ -1,0 +1,92 @@
+package kz.pillikan.lombart.authorization.view.pin
+
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
+import kotlinx.android.synthetic.main.fragment_pin_code.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kz.pillikan.lombart.R
+import kz.pillikan.lombart.authorization.model.request.PinCodeRequest
+import kz.pillikan.lombart.authorization.viewmodel.pin.PinCodeViewModel
+import kz.pillikan.lombart.common.helpers.Validators
+import kz.pillikan.lombart.common.views.BaseFragment
+import kz.pillikan.lombart.content.view.FoundationActivity
+import org.jetbrains.anko.sdk27.coroutines.onClick
+import org.jetbrains.anko.support.v4.intentFor
+
+class PinCodeFragment : BaseFragment() {
+
+    companion object {
+        const val TAG = "PinCodeFragment"
+    }
+
+    private lateinit var viewModel: PinCodeViewModel
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.fragment_pin_code, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        init()
+    }
+
+    private fun init() {
+        initViewModel()
+        initListeners()
+        initObservers()
+    }
+
+    private fun initViewModel() {
+        viewModel = ViewModelProvider(this).get(PinCodeViewModel::class.java)
+    }
+
+    private fun initListeners() {
+        btn_create_pin.onClick { preparePinCode() }
+    }
+
+    private fun preparePinCode() {
+        val pinCode = et_access_pin.text.toString()
+        val pinCode2 = et_access_pin_repeat.text.toString()
+
+        val pinCodeRequest = PinCodeRequest(pin1 = pinCode, pin2 = pinCode2)
+
+        when (Validators.validatePinCode(pinCode) && Validators.validatePinCode(pinCode2) && pinCode == pinCode2) {
+            true -> {
+                savePinCode(pinCodeRequest)
+            }
+            false -> {
+                Toast.makeText(context, "Введите пин код!", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun savePinCode(pinCodeRequest: PinCodeRequest) {
+        CoroutineScope(Dispatchers.IO).launch {
+            viewModel.savePinCode(pinCodeRequest)
+        }
+    }
+
+    private fun initObservers() {
+        viewModel.isSuccess.observe(viewLifecycleOwner, {
+            when (it) {
+                true -> {
+                    startActivity(intentFor<FoundationActivity>())
+                }
+                false -> {
+                    Toast.makeText(context, "Ошибка при сохранении!", Toast.LENGTH_LONG).show()
+                }
+            }
+        })
+    }
+
+}

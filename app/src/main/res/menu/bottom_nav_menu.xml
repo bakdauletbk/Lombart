@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/homeFragment"
+        android:icon="@drawable/icon_home_on"
+        android:title="@string/home" />
+    <item
+        android:id="@+id/aboutFragment"
+        android:icon="@drawable/icon_about_pawnshop_on"
+        android:title="@string/about_pawnshop" />
+    <item
+        android:id="@+id/profileFragment"
+        android:icon="@drawable/icon_profile_on"
+        android:title="@string/profile" />
+    <item
+        android:id="@+id/notificationsFragment"
+        android:icon="@drawable/icon_notifications_on"
+        android:title="@string/notification" />
+    <item
+        android:id="@+id/appealFragment"
+        android:icon="@drawable/icon_appeal_on"
+        android:title="@string/appeal" />
+</menu>

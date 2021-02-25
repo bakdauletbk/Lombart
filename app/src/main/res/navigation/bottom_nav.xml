@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/bottom_nav"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="kz.pillikan.lombart.content.view.home.HomeFragment"
+        android:label="HomeFragment" />
+    <fragment
+        android:id="@+id/notificationsFragment"
+        android:name="kz.pillikan.lombart.content.view.notifications.NotificationsFragment"
+        android:label="NotificationsFragment" />
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="kz.pillikan.lombart.content.view.profile.ProfileFragment"
+        android:label="ProfileFragment">
+        <action
+            android:id="@+id/action_profileFragment_to_addCardFragment"
+            app:destination="@id/addCardFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/appealFragment"
+        android:name="kz.pillikan.lombart.content.view.appeal.AppealFragment"
+        android:label="AppealFragment" />
+    <fragment
+        android:id="@+id/aboutFragment"
+        android:name="kz.pillikan.lombart.content.view.about.AboutFragment"
+        android:label="AboutFragment" />
+    <fragment
+        android:id="@+id/addCardFragment"
+        android:name="kz.pillikan.lombart.content.view.profile.AddCardFragment"
+        android:label="AddCardFragment" />
+
+</navigation>

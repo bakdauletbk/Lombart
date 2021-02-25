@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/login_nav"
+    app:startDestination="@id/signInFragment">
+
+    <fragment
+        android:id="@+id/createPasswordFragment"
+        android:name="kz.pillikan.lombart.authorization.view.register.CreatePasswordFragment"
+        android:label="CreatePasswordFragment">
+        <action
+            android:id="@+id/action_createPasswordFragment_to_successfullyFragment"
+            app:destination="@id/successfullyFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/successfullyFragment"
+        android:name="kz.pillikan.lombart.authorization.view.register.SuccessfullyFragment"
+        android:label="SuccessfullyFragment">
+        <action
+            android:id="@+id/action_successfullyFragment_to_pinCodeFragment"
+            app:destination="@id/pinCodeFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/signInFragment"
+        android:name="kz.pillikan.lombart.authorization.view.register.SignInFragment"
+        android:label="SignInFragment">
+        <action
+            android:id="@+id/action_signInFragment_to_registrationFragment"
+            app:destination="@id/registrationFragment" />
+        <action
+            android:id="@+id/action_signInFragment_to_passwordRecoveryFragment"
+            app:destination="@id/passwordRecoveryFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/smsFragment"
+        android:name="kz.pillikan.lombart.authorization.view.register.SmsFragment"
+        android:label="SmsFragment">
+        <action
+            android:id="@+id/action_smsFragment_to_createPasswordFragment"
+            app:destination="@id/createPasswordFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/pinCodeFragment"
+        android:name="kz.pillikan.lombart.authorization.view.pin.PinCodeFragment"
+        android:label="PinCodeFragment" />
+    <fragment
+        android:id="@+id/registrationFragment"
+        android:name="kz.pillikan.lombart.authorization.view.register.RegistrationFragment"
+        android:label="RegistrationFragment">
+        <action
+            android:id="@+id/action_registrationFragment_to_smsFragment"
+            app:destination="@id/smsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/passwordRecoveryFragment"
+        android:name="kz.pillikan.lombart.authorization.view.recovery.PasswordRecoveryFragment"
+        android:label="PasswordRecoveryFragment" >
+        <action
+            android:id="@+id/action_passwordRecoveryFragment_to_signInFragment"
+            app:destination="@id/signInFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+</navigation>

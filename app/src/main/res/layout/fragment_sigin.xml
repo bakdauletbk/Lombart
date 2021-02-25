@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/green"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="3"
+        tools:ignore="UselessParent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="62.5dp"
+                android:src="@drawable/ic_logo_lombart"
+                tools:ignore="ContentDescription" />
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:background="@drawable/shape_white_backgroud">
+
+            <TextView
+                android:id="@+id/tv_authorize"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="32dp"
+                android:text="@string/authorization"
+                android:textColor="@color/black"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/ll_sign_up"
+                android:layout_below="@+id/tv_authorize"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="48dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="21dp"
+                        android:layout_marginEnd="21dp"
+                        android:background="@drawable/shape_edit_text_green"
+                        android:orientation="horizontal">
+
+                        <com.santalu.maskedittext.MaskEditText
+                            android:id="@+id/et_iin"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
+                            android:background="@android:color/transparent"
+                            android:fontFamily="@font/whitney_book"
+                            android:hint="@string/inn_text"
+                            android:inputType="number"
+                            android:padding="10dp"
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/black"
+                            android:textColorLink="@color/black"
+                            android:textSize="16sp"
+                            app:met_mask="############"
+                            tools:ignore="Autofill,TextFields" />
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="21dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginEnd="21dp"
+                        android:background="@drawable/shape_edit_text_gray"
+                        android:orientation="horizontal">
+
+                        <EditText
+                            android:id="@+id/et_password"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:background="@android:color/transparent"
+                            android:fontFamily="@font/whitney_book"
+                            android:hint="@string/password"
+                            android:inputType="textPassword"
+                            android:lines="1"
+                            android:maxLines="1"
+                            android:minLines="1"
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/black"
+                            android:textColorLink="@color/black"
+                            android:textSize="16sp"
+                            tools:ignore="Autofill" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tv_remember_password"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_marginTop="21dp"
+                        android:layout_marginEnd="23dp"
+                        android:text="@string/remember_password"
+                        android:textColor="@color/text_color_80" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_to_come_in"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginTop="60dp"
+                        android:layout_marginEnd="25dp"
+                        android:backgroundTint="@color/green"
+                        android:paddingVertical="15dp"
+                        android:text="@string/to_come_in"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        app:cornerRadius="10dp"
+                        tools:ignore="UnusedAttribute" />
+
+                </LinearLayout>
+            </ScrollView>
+
+            <LinearLayout
+                android:id="@+id/ll_sign_up"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:background="@drawable/shape_gray_background"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginBottom="30dp"
+                    android:text="@string/no_account"
+                    android:textColor="@color/text_color" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginBottom="30dp"
+                    android:text="@string/sign_up"
+                    android:textColor="@color/text_color"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/loadingView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#54000000"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            tools:ignore="UselessParent">
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/round_white_foreground" />
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>
