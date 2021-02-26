@@ -1,18 +1,21 @@
 package kz.pillikan.lombart.content.view.notifications
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_notifications.*
+import kotlinx.android.synthetic.main.fragment_notifications.loadingView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kz.pillikan.lombart.R
 import kz.pillikan.lombart.common.views.BaseFragment
-import kz.pillikan.lombart.content.model.response.notifications.NotificationsModel
+import kz.pillikan.lombart.common.views.PaginationScrollListener
+import kz.pillikan.lombart.content.model.response.notifications.DataList
 import kz.pillikan.lombart.content.viewmodel.notifications.NotificationsViewModel
 import org.jetbrains.anko.alert
 
@@ -21,7 +24,6 @@ class NotificationsFragment : BaseFragment() {
     private val adapter: NotificationsAdapter = NotificationsAdapter(this)
 
     private lateinit var viewModel: NotificationsViewModel
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,46 +39,69 @@ class NotificationsFragment : BaseFragment() {
     }
 
     private fun init() {
-        initViewModel()
         initRecyclerView()
-        initNotificationsList()
+        initViewModel()
+        initNatificaionList()
         initObservers()
     }
 
-    private fun initNotificationsList() {
+    private fun initNatificaionList() {
+        setLoading(true)
         CoroutineScope(Dispatchers.IO).launch {
-            viewModel.getNotifications()
+            viewModel.getInitialPage()
         }
     }
 
     private fun initObservers() {
-        viewModel.isError.observe(viewLifecycleOwner,  {
+        viewModel.isError.observe(viewLifecycleOwner, {
             errorDialog(getString(R.string.error_unknown_body))
         })
-        viewModel.notificationList.observe(viewLifecycleOwner,  {
+        viewModel.notificationList.observe(viewLifecycleOwner, {
             if (it != null) {
                 addNotifications(it)
+                setLoading(false)
             } else {
+                setEmptyNotification()
                 errorDialog(getString(R.string.error_unknown_body))
             }
         })
     }
 
-    private fun addNotifications(notificationsList: List<NotificationsModel>) {
+    private fun setEmptyNotification() {
+        rv_notifications.visibility = View.GONE
+        tv_empty.visibility = View.VISIBLE
+    }
+
+    private fun addNotifications(notificationsList: List<DataList>) {
         adapter.addNotifications(notificationsList)
     }
 
     private fun initRecyclerView() {
         rv_notifications.adapter = adapter
-        rv_notifications.apply {
-            layoutManager = LinearLayoutManager(context)
-        }
+        val paginationScrollListener =
+            object :
+                PaginationScrollListener(rv_notifications.layoutManager as LinearLayoutManager) {
+
+                override fun isLastPage(): Boolean {
+                    return viewModel.isLastPage()
+                }
+
+                override fun isLoading(): Boolean {
+                    return viewModel.isLoading()
+                }
+
+                override fun loadMoreItems() {
+                    CoroutineScope(Dispatchers.IO).launch {
+                        viewModel.getNextPage()
+                    }
+                }
+            }
+        rv_notifications.addOnScrollListener(paginationScrollListener)
     }
 
     private fun initViewModel() {
         viewModel = ViewModelProvider(this).get(NotificationsViewModel::class.java)
     }
-
 
     private fun errorDialog(errorMsg: String) {
         activity?.alert {
@@ -92,4 +117,13 @@ class NotificationsFragment : BaseFragment() {
             }
         }?.show()
     }
+
+    private fun setLoading(loading: Boolean) {
+        when (loading) {
+            true -> loadingView.visibility = View.VISIBLE
+            false -> loadingView.visibility = View.GONE
+        }
+    }
+
+
 }

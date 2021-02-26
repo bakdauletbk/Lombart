@@ -16,7 +16,7 @@ class AppealViewModel(application: Application) : AndroidViewModel(application) 
     val isSuccess: MutableLiveData<Boolean> = MutableLiveData()
     val isError: MutableLiveData<String> = MutableLiveData()
 
-    fun sendFeedback(feedbackRequest: FeedbackRequest) {
+    suspend fun sendFeedback(feedbackRequest: FeedbackRequest) {
         viewModelScope.launch {
             try {
                 when (repository.sendFeedback(feedbackRequest)) {

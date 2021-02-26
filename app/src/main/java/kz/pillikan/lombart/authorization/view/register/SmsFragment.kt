@@ -25,7 +25,6 @@ import kz.pillikan.lombart.common.views.BaseFragment
 import org.jetbrains.anko.sdk27.coroutines.onClick
 import org.jetbrains.anko.support.v4.alert
 
-
 class SmsFragment : BaseFragment() {
 
     private lateinit var viewModel: SmsViewModel

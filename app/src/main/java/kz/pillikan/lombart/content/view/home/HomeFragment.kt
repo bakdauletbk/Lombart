@@ -2,35 +2,41 @@ package kz.pillikan.lombart.content.view.home
 
 import android.annotation.SuppressLint
 import android.app.Dialog
+import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.viewpager.widget.ViewPager
+import androidx.viewpager2.widget.ViewPager2
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_home.loadingView
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import kz.pillikan.lombart.R
 import kz.pillikan.lombart.common.views.BaseFragment
 import kz.pillikan.lombart.content.model.response.home.*
 import kz.pillikan.lombart.content.viewmodel.home.HomeViewModel
 import org.jetbrains.anko.alert
 import org.jetbrains.anko.sdk27.coroutines.onClick
+import java.lang.Runnable
 
 class HomeFragment : BaseFragment() {
 
     private val adapters: LoansAdapter = LoansAdapter(this)
     private lateinit var viewModel: HomeViewModel
     private var alertDialog: Dialog? = null
+    private val bannerAdapter by lazy { PagerAdapter(context) }
+    val handler = Handler()
 
     companion object {
         const val CLEAR_SKY = "01d"
@@ -42,9 +48,9 @@ class HomeFragment : BaseFragment() {
         const val THUNDERSTORM = "11d"
         const val SNOW = "13d"
         const val MIST = "50d"
-        const val FIRST = 0
-        const val SECOND = 1
-        const val THIRD = 2
+        const val FIRST_CURRENCY = 0
+        const val SECOND_CURRENCY = 1
+        const val THIRD_CURRENCY = 2
     }
 
     override fun onCreateView(
@@ -62,10 +68,21 @@ class HomeFragment : BaseFragment() {
 
     private fun init() {
         initViewModel()
+        initViewPager()
         initRecyclerView()
         initListeners()
         initUpdateFeed()
         initObservers()
+        initAutoScroll()
+    }
+
+    private fun initViewPager() {
+        vp_banners.adapter = bannerAdapter
+        vp_banners.apply {
+            setPadding(convertDpToPixel(20f), 0, convertDpToPixel(20f), 0)
+            pageMargin = convertDpToPixel(12f)
+            clipToPadding = false
+        }
     }
 
     private fun initRecyclerView() {
@@ -93,6 +110,9 @@ class HomeFragment : BaseFragment() {
         CoroutineScope(Dispatchers.IO).launch {
             viewModel.getProfile()
         }
+        CoroutineScope(Dispatchers.IO).launch {
+            viewModel.getSliderList()
+        }
     }
 
     private fun initListeners() {
@@ -105,18 +125,17 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun initObservers() {
-        viewModel.isError.observe(viewLifecycleOwner, {
-            errorDialog(getString(R.string.error_unknown_body))
-        })
         viewModel.loanList.observe(viewLifecycleOwner, {
             if (it != null) {
                 addLoans(it)
                 setLoading(false)
             } else {
+                rv_loans.visibility = View.GONE
+                tv_blank_loans.visibility = View.VISIBLE
                 errorDialog(getString(R.string.error_unknown_body))
             }
         })
-        viewModel.serviceCurrency.observe(viewLifecycleOwner, {
+        viewModel.currencyList.observe(viewLifecycleOwner, {
             if (it != null) {
                 setCurrency(it)
                 setLoading(false)
@@ -140,6 +159,21 @@ class HomeFragment : BaseFragment() {
                 errorDialog(getString(R.string.error_unknown_body))
             }
         })
+        viewModel.slidersList.observe(viewLifecycleOwner, {
+            if (it != null) {
+                addSliderList(it)
+            } else {
+                errorDialog(getString(R.string.error_unknown_body))
+            }
+        })
+    }
+
+    private fun addSliderList(sliderList: java.util.ArrayList<SlidersList>) {
+        bannerAdapter.addImageSlider(sliderList)
+    }
+
+    private fun initAutoScroll() {
+
     }
 
     private fun setProfile(profile: ProfileInfo) {
@@ -162,20 +196,20 @@ class HomeFragment : BaseFragment() {
         }
     }
 
-    private fun setCurrency(currency: ArrayList<Currency>) {
-        for (i in 0 until currency.size) {
+    private fun setCurrency(currencyList: ArrayList<CurrencyList>) {
+        for (i in 0 until currencyList.size) {
             when (i) {
-                FIRST -> {
-                    tv_sale_usa.text = currency[FIRST].sale.toString()
-                    tv_purchase_usa.text = currency[FIRST].purchase.toString()
+                FIRST_CURRENCY -> {
+                    tv_sale_usa.text = currencyList[FIRST_CURRENCY].sale.toString()
+                    tv_purchase_usa.text = currencyList[FIRST_CURRENCY].purchase.toString()
                 }
-                SECOND -> {
-                    tv_sale_europa.text = currency[SECOND].sale.toString()
-                    tv_purchase_europa.text = currency[SECOND].purchase.toString()
+                SECOND_CURRENCY -> {
+                    tv_sale_europa.text = currencyList[SECOND_CURRENCY].sale.toString()
+                    tv_purchase_europa.text = currencyList[SECOND_CURRENCY].purchase.toString()
                 }
-                THIRD -> {
-                    tv_sale_russia.text = currency[THIRD].sale.toString()
-                    tv_purchase_russia.text = currency[THIRD].purchase.toString()
+                THIRD_CURRENCY -> {
+                    tv_sale_russia.text = currencyList[THIRD_CURRENCY].sale.toString()
+                    tv_purchase_russia.text = currencyList[THIRD_CURRENCY].purchase.toString()
                 }
             }
         }
@@ -218,6 +252,11 @@ class HomeFragment : BaseFragment() {
                 drawable
             )
         )
+    }
+
+    private fun convertDpToPixel(dp: Float): Int {
+        val scale = Resources.getSystem().displayMetrics.density
+        return (dp * scale + 0.5f).toInt()
     }
 
     private fun errorDialog(errorMsg: String) {

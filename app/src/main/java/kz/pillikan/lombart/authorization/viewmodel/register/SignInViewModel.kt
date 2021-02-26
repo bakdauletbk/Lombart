@@ -21,7 +21,7 @@ class SignInViewModel(application: Application) : AndroidViewModel(application) 
     val isSuccess: MutableLiveData<Boolean> = MutableLiveData()
     val isError: MutableLiveData<String> = MutableLiveData()
 
-    fun signIn(signInRequest: SignInRequest) {
+    suspend fun signIn(signInRequest: SignInRequest) {
         viewModelScope.launch {
             try {
                 when (repository.signIn(signInRequest)) {

@@ -2,7 +2,7 @@ package kz.pillikan.lombart.content.model.response.home
 
 import com.google.gson.annotations.SerializedName
 
-data class Currency(
+data class CurrencyList(
     @SerializedName("title")
     val title: String? = null,
     @SerializedName("sale")

@@ -14,4 +14,6 @@ object EndPoints {
     const val POST_FEEDBACK = "/v1/feedback/send"
     const val POST_PROFILE_INFO = "/v1/profile/info"
     const val POST_RESET_PASSWORD = "/v1/auth/reset"
+    const val POST_SLIDERS = "/v1/slider/list"
+    const val POST_NOTIFICATION = "/v1/notification/list"
 }

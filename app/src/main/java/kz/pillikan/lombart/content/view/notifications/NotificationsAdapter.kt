@@ -6,12 +6,13 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import kz.pillikan.lombart.R
+import kz.pillikan.lombart.content.model.response.notifications.DataList
 import kz.pillikan.lombart.content.model.response.notifications.NotificationsModel
 
 
 class NotificationsAdapter : RecyclerView.Adapter<NotificationsAdapter.NotificationsViewHolder> {
 
-    private val notificationList: ArrayList<NotificationsModel> = ArrayList()
+    private val notificationList: ArrayList<DataList> = ArrayList()
 
     private var callback: NotificationsFragment
 
@@ -19,7 +20,7 @@ class NotificationsAdapter : RecyclerView.Adapter<NotificationsAdapter.Notificat
         this.callback = callback
     }
 
-    fun addNotifications(notificationsList: List<NotificationsModel>) {
+    fun addNotifications(notificationsList: List<DataList>) {
         this.notificationList.addAll(notificationsList)
         notifyDataSetChanged()
     }
@@ -50,10 +51,10 @@ class NotificationsAdapter : RecyclerView.Adapter<NotificationsAdapter.Notificat
         private val tvDescription = root.findViewById(R.id.tv_description) as TextView
         private val tvDate = root.findViewById(R.id.tv_date) as TextView
 
-        fun bind(notificationsList: NotificationsModel, callback: NotificationsFragment) {
-            tvDate.text = notificationsList.date
+        fun bind(notificationsList: DataList, callback: NotificationsFragment) {
+            tvDate.text = notificationsList.created_at
             tvDescription.text = notificationsList.description
-            tvHeading.text = notificationsList.heading
+            tvHeading.text = notificationsList.title
         }
     }
 }

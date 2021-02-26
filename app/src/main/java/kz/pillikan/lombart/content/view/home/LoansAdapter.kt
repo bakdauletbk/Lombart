@@ -1,7 +1,6 @@
 package kz.pillikan.lombart.content.view.home
 
 import android.annotation.SuppressLint
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import kz.pillikan.lombart.R
 import kz.pillikan.lombart.content.model.response.home.Tickets
-import kz.pillikan.lombart.content.model.response.home.TicketsResponse
 
 class LoansAdapter : RecyclerView.Adapter<LoansAdapter.LoansHolder> {
 

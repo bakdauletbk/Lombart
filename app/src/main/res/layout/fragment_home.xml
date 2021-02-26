@@ -133,6 +133,7 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/tv_blank_loans"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dimens_25dp"
@@ -567,7 +568,8 @@
 
             </LinearLayout>
 
-            <androidx.viewpager2.widget.ViewPager2
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/vp_banners"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimens_150dp"
                 android:layout_marginTop="@dimen/dimens_22dp" />

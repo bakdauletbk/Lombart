@@ -22,7 +22,7 @@ class SmsViewModel(application: Application) : AndroidViewModel(application) {
     val isVerificationNumber: MutableLiveData<Boolean> = MutableLiveData()
     val isSendSms: MutableLiveData<Boolean> = MutableLiveData()
 
-    fun verificationSms(checkNumberRequest: CheckNumberRequest) {
+    suspend fun verificationSms(checkNumberRequest: CheckNumberRequest) {
         viewModelScope.launch {
             try {
                 when (repository.verificationSms(checkNumberRequest)) {
@@ -35,7 +35,7 @@ class SmsViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun sendSms(sendSmsRequest: SendSmsRequest) {
+    suspend fun sendSms(sendSmsRequest: SendSmsRequest) {
         viewModelScope.launch {
             try {
                 when (repository.sendSms(sendSmsRequest)) {

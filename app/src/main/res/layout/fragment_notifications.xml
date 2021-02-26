@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -33,16 +33,52 @@
             android:background="@color/background_color_yellow"
             android:orientation="vertical">
 
+            <TextView
+                android:id="@+id/tv_empty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/you_have_no_notification"
+                android:layout_marginStart="@dimen/dimens_15dp"
+                android:textColor="@color/gray"
+                android:visibility="gone"
+                android:textSize="16sp"
+                android:layout_marginTop="@dimen/dimens_15dp"/>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_notifications"
                 android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="visible"
                 android:paddingTop="15dp"
                 android:paddingBottom="25dp"
-                tools:listitem="@layout/item_notifications"
-                android:layout_height="match_parent" />
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_notifications" />
 
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
+
+    <RelativeLayout
+        android:id="@+id/loadingView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#54000000"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            tools:ignore="UselessParent">
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/round_white_foreground" />
+        </LinearLayout>
+
+    </RelativeLayout>
+
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

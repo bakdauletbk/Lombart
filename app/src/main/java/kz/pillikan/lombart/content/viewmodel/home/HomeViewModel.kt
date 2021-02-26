@@ -12,66 +12,62 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
 
     var loanList: MutableLiveData<ArrayList<Tickets>> = MutableLiveData()
     val isError: MutableLiveData<String> = MutableLiveData()
-    val serviceCurrency: MutableLiveData<ArrayList<Currency>> = MutableLiveData()
+    val currencyList: MutableLiveData<ArrayList<CurrencyList>> = MutableLiveData()
     val weatherData: MutableLiveData<WeatherData> = MutableLiveData()
     val profileInfo: MutableLiveData<ProfileInfo> = MutableLiveData()
+    val slidersList: MutableLiveData<ArrayList<SlidersList>> = MutableLiveData()
 
     private val repository: HomeRepository = HomeRepository(application)
 
-    fun getLoans() {
+    suspend fun getLoans() {
         viewModelScope.launch {
             try {
                 val response = repository.getLoans()
-                if (response != null) {
-                    loanList.postValue(response)
-                } else {
-                    loanList.postValue(null)
-                }
+                loanList.postValue(response)
             } catch (e: Exception) {
                 isError.postValue(null)
             }
         }
     }
 
-    fun getCurrency() {
+    suspend fun getCurrency() {
         viewModelScope.launch {
             try {
                 val response = repository.getCurrency()
-                if (response != null) {
-                    serviceCurrency.postValue(response)
-                } else {
-                    serviceCurrency.postValue(null)
-                }
+                currencyList.postValue(response)
             } catch (e: Exception) {
                 isError.postValue(null)
             }
         }
     }
 
-    fun getWeather() {
+    suspend fun getWeather() {
         viewModelScope.launch {
             try {
                 val response = repository.getWeather()
-                if (response != null) {
-                    weatherData.postValue(response)
-                } else {
-                    weatherData.postValue(null)
-                }
+                weatherData.postValue(response)
             } catch (e: Exception) {
                 isError.postValue(null)
             }
         }
     }
 
-    fun getProfile() {
+    suspend fun getProfile() {
         viewModelScope.launch {
             try {
                 val response = repository.getProfile()
-                if (response != null) {
-                    profileInfo.postValue(response)
-                } else {
-                    profileInfo.postValue(null)
-                }
+                profileInfo.postValue(response)
+            } catch (e: Exception) {
+                isError.postValue(null)
+            }
+        }
+    }
+
+    suspend fun getSliderList() {
+        viewModelScope.launch {
+            try {
+                val response = repository.getSlidersList()
+                slidersList.postValue(response)
             } catch (e: Exception) {
                 isError.postValue(null)
             }

@@ -2,7 +2,7 @@ package kz.pillikan.lombart.content.model.response.home
 
 import com.google.gson.annotations.SerializedName
 
-data class TicketsItems (
+data class TicketsList (
     @SerializedName("Specification")
     val Specification : String? = null,
     @SerializedName("TotalWeight")

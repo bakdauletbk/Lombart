@@ -147,26 +147,11 @@ class SignInFragment : BaseFragment() {
     }
 
     private fun setLoading(loading: Boolean) {
-
         loadingView.visibility = if (loading) View.VISIBLE else View.GONE
         btn_to_come_in.isCheckable = !loading
         et_iin.isEnabled = !loading
         et_password.isEnabled = !loading
 
-//        when (loading) {
-//            true -> {
-//                loadingView.visibility = View.VISIBLE
-//                btn_to_come_in.isCheckable = false
-//                et_iin.isEnabled = false
-//                et_password.isEnabled = false
-//            }
-//            false -> {
-//                loadingView.visibility = View.GONE
-//                btn_to_come_in.isCheckable = true
-//                et_iin.isEnabled = true
-//                et_password.isEnabled = true
-//            }
-//        }
     }
 
 }

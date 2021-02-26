@@ -17,7 +17,7 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
 
     private val repository: ProfileRepository = ProfileRepository(application)
 
-    fun getCard() {
+    suspend fun getCard() {
         viewModelScope.launch {
             try {
                 val response = repository.getCard()
@@ -28,7 +28,7 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
         }
     }
 
-    fun getProfile() {
+    suspend fun getProfile() {
         viewModelScope.launch {
             try {
                 val response = repository.getProfile()

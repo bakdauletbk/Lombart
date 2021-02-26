@@ -4,10 +4,9 @@ import kz.pillikan.lombart.authorization.model.request.*
 import kz.pillikan.lombart.authorization.model.response.CheckResponse
 import kz.pillikan.lombart.authorization.model.response.SignInResponse
 import kz.pillikan.lombart.content.model.request.appeal.FeedbackRequest
-import kz.pillikan.lombart.content.model.response.home.ProfileResponse
-import kz.pillikan.lombart.content.model.response.home.ServiceCurrencyResponse
-import kz.pillikan.lombart.content.model.response.home.TicketsResponse
-import kz.pillikan.lombart.content.model.response.home.WeatherResponse
+import kz.pillikan.lombart.content.model.request.notifications.PageRequest
+import kz.pillikan.lombart.content.model.response.home.*
+import kz.pillikan.lombart.content.model.response.notifications.NotificationsResponse
 import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.Body
@@ -63,7 +62,7 @@ interface NetworkService {
     suspend fun serviceCurrency(
         @Header("Authorization") Authorization: String,
         @Header("appVer") appVer: String
-    ): Response<ServiceCurrencyResponse>
+    ): Response<CurrencyResponse>
 
     @POST(EndPoints.POST_GET_WEATHER)
     suspend fun getWeather(
@@ -90,5 +89,18 @@ interface NetworkService {
         @Header("appVer") appVer: String,
         @Body resetPasswordRequest: ResetPasswordRequest
     ): Response<ResponseBody>
+
+    @POST(EndPoints.POST_SLIDERS)
+    suspend fun slidersList(
+        @Header("Authorization") Authorization: String,
+        @Header("appVer") appVer: String
+    ): Response<SlidersResponse>
+
+    @POST(EndPoints.POST_NOTIFICATION)
+    suspend fun notificationList(
+        @Header("Authorization") Authorization: String,
+        @Header("appVer") appVer: String,
+        @Body pageRequest: PageRequest
+    ): Response<NotificationsResponse>
 
 }

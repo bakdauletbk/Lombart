@@ -1,32 +1,53 @@
 package kz.pillikan.lombart.content.model.repository.notifications
 
 import android.app.Application
-import kz.pillikan.lombart.content.model.response.notifications.NotificationsModel
+import android.content.Context
+import android.util.Base64
+import kz.pillikan.lombart.BuildConfig
+import kz.pillikan.lombart.common.models.Page
+import kz.pillikan.lombart.common.preference.SessionManager
+import kz.pillikan.lombart.common.remote.ApiConstants
+import kz.pillikan.lombart.common.remote.Networking
+import kz.pillikan.lombart.content.model.request.notifications.PageRequest
+import kz.pillikan.lombart.content.model.response.notifications.DataList
+import kz.pillikan.lombart.content.model.response.notifications.NotificationsResponse
 
 class NotificationsRepository(application: Application) {
 
-    suspend fun getNotifications(): List<NotificationsModel?> {
-        return try {
-            val notifications: ArrayList<NotificationsModel> = ArrayList()
-            notifications.add(NotificationsModel("Sert Lombard", "Sert Lombard Zaim", "01.02.2021"))
-            notifications.add(NotificationsModel("Sert Lombard", "Sert Lombard Zaim  asdasdasdas dasd asd sadd ", "01.02.2021"))
-            notifications.add(NotificationsModel("Sert Lombard", "Sert Lombard Zaim asdas dsa das dasda asd51 ad", "01.02.2021"))
-            notifications.add(NotificationsModel("Sert Lombard", "Sert Lombard Zaim dasdassadasdasd  asda  uguy gu ygu yg ug yug uyyg uy ", "01.02.2021"))
-            notifications.add(NotificationsModel("Sert Lombard", "Sert Lombard Zaim", "01.02.2021"))
-            notifications.add(NotificationsModel("Sert Lombard", "Sert Lombard Zaim", "01.02.2021"))
-            notifications.add(NotificationsModel("Sert Lombard", "Sert Lombard Zaim", "01.02.2021"))
-            notifications.add(NotificationsModel("Sert Lombard", "Sert Lombard Zaim", "01.02.2021"))
-            notifications.add(NotificationsModel("Sert Lombard", "Sert Lombard Zaim", "01.02.2021"))
-            notifications.add(NotificationsModel("Sert Lombard", "Sert Lombard Zaim", "01.02.2021"))
-            notifications.add(NotificationsModel("Sert Lombard", "Sert Lombard Zaim", "01.02.2021"))
-            notifications.add(NotificationsModel("Sert Lombard", "Sert Lombard Zaim", "01.02.2021"))
-            notifications.add(NotificationsModel("Sert Lombard", "Sert Lombard Zaim", "01.02.2021"))
-            notifications.add(NotificationsModel("Sert Lombard", "Sert Lombard Zaim", "01.02.2021"))
-            return notifications
-        } catch (e: Exception){
-            val notifications: ArrayList<NotificationsModel> = ArrayList()
-            notifications.clear()
-            return notifications
+    companion object {
+        const val PAGE_LIMIT = "10"
+    }
+
+    private val networkService =
+        Networking.create(ApiConstants.BASE_URL)
+    private var sharedPreferences =
+        application.getSharedPreferences("sessionManager", Context.MODE_PRIVATE)
+    private var sessionManager: SessionManager =
+        SessionManager(sharedPreferences)
+
+    suspend fun getNotifications(page: Int): Page<DataList>? {
+        val limitBase64 = Base64.encodeToString(PAGE_LIMIT.toByteArray(), Base64.NO_WRAP)
+        val pageBase64 = Base64.encodeToString(page.toString().toByteArray(), Base64.NO_WRAP)
+        val pageRequest = PageRequest(limit = limitBase64, page = pageBase64)
+        val response =
+            networkService.notificationList(
+                Authorization = ApiConstants.AUTH_TOKEN_PREFIX + sessionManager.getToken(),
+                appVer = BuildConfig.VERSION_NAME,
+                pageRequest
+            )
+        return if (response.code() == ApiConstants.RESPONSE_SUCCESS_CODE) {
+            val pageNumber = response.body()?.pages!!.toInt()
+            val hasNextPage = !response.body()?.hasNext!!
+            val notifications: ArrayList<DataList> = ArrayList()
+            for (i in response.body()?.data?.indices!!) {
+                notifications.add(response.body()!!.data[i])
+            }
+            val notificationPage: Page<DataList>? =
+                Page(notifications, pageNumber, hasNextPage)
+
+            notificationPage
+        } else {
+            null
         }
     }
 

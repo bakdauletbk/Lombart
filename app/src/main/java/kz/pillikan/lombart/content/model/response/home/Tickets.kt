@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class Tickets (
     @SerializedName("items")
-    val items : ArrayList<TicketsItems> = ArrayList(),
+    val items : ArrayList<TicketsList> = ArrayList(),
     @SerializedName("ticketInfo")
     val ticketInfo : TicketInfo
 )

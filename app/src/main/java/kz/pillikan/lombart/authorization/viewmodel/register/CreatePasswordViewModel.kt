@@ -19,7 +19,7 @@ class CreatePasswordViewModel(application: Application) : AndroidViewModel(appli
     val isSuccess: MutableLiveData<Boolean> = MutableLiveData()
     val isError: MutableLiveData<String> = MutableLiveData()
 
-    fun createUser(signUpRequest: SignUpRequest) {
+    suspend fun createUser(signUpRequest: SignUpRequest) {
         viewModelScope.launch {
             try {
                 when (repository.createUser(signUpRequest)) {

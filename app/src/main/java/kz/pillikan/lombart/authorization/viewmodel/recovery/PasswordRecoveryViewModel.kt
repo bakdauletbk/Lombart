@@ -22,7 +22,7 @@ class PasswordRecoveryViewModel(application: Application) : AndroidViewModel(app
     val isVerificationNumber: MutableLiveData<Boolean> = MutableLiveData()
     val isResetPassword: MutableLiveData<Boolean> = MutableLiveData()
 
-    fun checkUser(checkUserRequest: CheckUserRequest) {
+    suspend fun checkUser(checkUserRequest: CheckUserRequest) {
         viewModelScope.launch {
             try {
                 val response = repository.checkUser(checkUserRequest = checkUserRequest)
@@ -37,7 +37,7 @@ class PasswordRecoveryViewModel(application: Application) : AndroidViewModel(app
         }
     }
 
-    fun sendSms(sendSmsRequest: SendSmsRequest) {
+    suspend fun sendSms(sendSmsRequest: SendSmsRequest) {
         viewModelScope.launch {
             try {
                 when (val isSend = repository.sendSms(sendSmsRequest)) {
@@ -50,7 +50,7 @@ class PasswordRecoveryViewModel(application: Application) : AndroidViewModel(app
         }
     }
 
-    fun verificationNumber(checkNumberRequest: CheckNumberRequest) {
+    suspend fun verificationNumber(checkNumberRequest: CheckNumberRequest) {
         viewModelScope.launch {
             try {
                 when (val isSend = repository.verificationNumber(checkNumberRequest)) {
@@ -63,7 +63,7 @@ class PasswordRecoveryViewModel(application: Application) : AndroidViewModel(app
         }
     }
 
-    fun resetPassword(resetPasswordRequest: ResetPasswordRequest) {
+    suspend fun resetPassword(resetPasswordRequest: ResetPasswordRequest) {
         viewModelScope.launch {
             try {
                 when (val isReset = repository.resetPassword(resetPasswordRequest)) {

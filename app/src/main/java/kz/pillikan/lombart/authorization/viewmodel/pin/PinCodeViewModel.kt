@@ -20,7 +20,7 @@ class PinCodeViewModel(application: Application) : AndroidViewModel(application)
     val isSuccess: MutableLiveData<Boolean> = MutableLiveData()
     val isError: MutableLiveData<String> = MutableLiveData()
 
-    fun savePinCode(pinCodeRequest: PinCodeRequest) {
+    suspend fun savePinCode(pinCodeRequest: PinCodeRequest) {
         viewModelScope.launch {
             try {
                 when (repository.savePinCode(pinCodeRequest)) {

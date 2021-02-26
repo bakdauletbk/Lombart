@@ -17,19 +17,19 @@ class HomeRepository(application: Application) {
     private var sessionManager: SessionManager =
         SessionManager(sharedPreferences)
 
-    suspend fun getLoans(): ArrayList<Tickets>?{
+    suspend fun getLoans(): ArrayList<Tickets>? {
         val response = networkService.ticketsList(
             ApiConstants.AUTH_TOKEN_PREFIX + sessionManager.getToken(),
             BuildConfig.VERSION_NAME
         )
-        return if (response.code() == ApiConstants.RESPONSE_SUCCESS_CODE){
+        return if (response.code() == ApiConstants.RESPONSE_SUCCESS_CODE) {
             response.body()?.tickets
-        }else{
+        } else {
             null
         }
     }
 
-    suspend fun getCurrency(): ArrayList<Currency>? {
+    suspend fun getCurrency(): ArrayList<CurrencyList>? {
         val response =
             networkService.serviceCurrency(
                 ApiConstants.AUTH_TOKEN_PREFIX + sessionManager.getToken(),
@@ -61,6 +61,18 @@ class HomeRepository(application: Application) {
         )
         return if (response.code() == ApiConstants.RESPONSE_SUCCESS_CODE) {
             response.body()?.profile
+        } else {
+            null
+        }
+    }
+
+    suspend fun getSlidersList(): ArrayList<SlidersList>? {
+        val response = networkService.slidersList(
+            ApiConstants.AUTH_TOKEN_PREFIX + sessionManager.getToken(),
+            BuildConfig.VERSION_NAME
+        )
+        return if (response.code() == ApiConstants.RESPONSE_SUCCESS_CODE) {
+            response.body()!!.sliders
         } else {
             null
         }
