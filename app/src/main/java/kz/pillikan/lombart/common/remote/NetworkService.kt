@@ -4,6 +4,7 @@ import kz.pillikan.lombart.authorization.model.request.*
 import kz.pillikan.lombart.authorization.model.response.CheckResponse
 import kz.pillikan.lombart.authorization.model.response.SignInResponse
 import kz.pillikan.lombart.content.model.request.appeal.FeedbackRequest
+import kz.pillikan.lombart.content.model.request.home.ValidatePinRequest
 import kz.pillikan.lombart.content.model.request.notifications.PageRequest
 import kz.pillikan.lombart.content.model.response.home.*
 import kz.pillikan.lombart.content.model.response.notifications.NotificationsResponse
@@ -91,7 +92,7 @@ interface NetworkService {
     ): Response<ResponseBody>
 
     @POST(EndPoints.POST_SLIDERS)
-    suspend fun slidersList(
+    suspend fun sliderList(
         @Header("Authorization") Authorization: String,
         @Header("appVer") appVer: String
     ): Response<SlidersResponse>
@@ -102,5 +103,19 @@ interface NetworkService {
         @Header("appVer") appVer: String,
         @Body pageRequest: PageRequest
     ): Response<NotificationsResponse>
+
+    @POST(EndPoints.POST_FINENESS_PRICE)
+    suspend fun finenessPrice(
+        @Header("Authorization") Authorization: String,
+        @Header("appVer") appVer: String
+    ): Response<FinenessPriceResponse>
+
+    @POST(EndPoints.POST_VALIDATE_PIN)
+    suspend fun validatePin(
+        @Header("Authorization") Authorization: String,
+        @Header("appVer") appVer: String,
+        @Body validatePinRequest: ValidatePinRequest
+    ): Response<FinenessPriceResponse>
+
 
 }

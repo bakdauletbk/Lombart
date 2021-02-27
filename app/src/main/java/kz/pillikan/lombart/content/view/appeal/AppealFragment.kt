@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.fragment_appeal.*
 import kotlinx.android.synthetic.main.fragment_appeal.loadingView
+import kotlinx.android.synthetic.main.fragment_create_password.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -42,28 +43,8 @@ class AppealFragment : BaseFragment() {
         initObservers()
     }
 
-    private fun initObservers() {
-        viewModel.isError.observe(viewLifecycleOwner, {
-            errorDialog(getString(R.string.error_unknown_body))
-        })
-        viewModel.isSuccess.observe(viewLifecycleOwner, {
-            when (it) {
-                true -> {
-                    setLoading(false)
-                    Toast.makeText(
-                        context,
-                        "Спасибо! Ваше обращение отправлено!", Toast.LENGTH_LONG
-                    ).show()
-                }
-                false -> {
-                    setLoading(false)
-                    Toast.makeText(
-                        context,
-                        "К Сожалению! Ваше обращение не отправлено", Toast.LENGTH_LONG
-                    ).show()
-                }
-            }
-        })
+    private fun initViewModel() {
+        viewModel = ViewModelProvider(this).get(AppealViewModel::class.java)
     }
 
     private fun initListeners() {
@@ -95,8 +76,28 @@ class AppealFragment : BaseFragment() {
         }
     }
 
-    private fun initViewModel() {
-        viewModel = ViewModelProvider(this).get(AppealViewModel::class.java)
+    private fun initObservers() {
+        viewModel.isError.observe(viewLifecycleOwner, {
+            errorDialog(getString(R.string.error_unknown_body))
+        })
+        viewModel.isSuccess.observe(viewLifecycleOwner, {
+            when (it) {
+                true -> {
+                    setLoading(false)
+                    Toast.makeText(
+                        context,
+                        "Спасибо! Ваше обращение отправлено!", Toast.LENGTH_LONG
+                    ).show()
+                }
+                false -> {
+                    setLoading(false)
+                    Toast.makeText(
+                        context,
+                        "К Сожалению! Ваше обращение не отправлено", Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
+        })
     }
 
     private fun errorDialog(errorMsg: String) {
@@ -115,24 +116,12 @@ class AppealFragment : BaseFragment() {
     }
 
     private fun setLoading(loading: Boolean) {
-        when (loading) {
-            true -> {
-                loadingView.visibility = View.VISIBLE
-                et_name.isEnabled = false
-                et_description.isEnabled = false
-                btn_send.isCheckable = false
-                ll_phone.isClickable = false
-                ll_mail.isClickable = false
-            }
-            false -> {
-                loadingView.visibility = View.GONE
-                et_name.isEnabled = true
-                et_description.isEnabled = true
-                btn_send.isCheckable = true
-                ll_phone.isClickable = true
-                ll_mail.isClickable = true
-            }
-        }
+        loadingView.visibility = if (loading) View.VISIBLE else View.GONE
+        btn_send.isCheckable = !loading
+        et_name.isEnabled = !loading
+        et_description.isEnabled = !loading
+        ll_phone.isClickable = !loading
+        ll_mail.isClickable = !loading
     }
 
 }

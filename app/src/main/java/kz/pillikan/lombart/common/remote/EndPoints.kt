@@ -16,4 +16,6 @@ object EndPoints {
     const val POST_RESET_PASSWORD = "/v1/auth/reset"
     const val POST_SLIDERS = "/v1/slider/list"
     const val POST_NOTIFICATION = "/v1/notification/list"
+    const val POST_FINENESS_PRICE = "/v1/cert/get-prices"
+    const val POST_VALIDATE_PIN = "/v1/profile/validate-pin"
 }

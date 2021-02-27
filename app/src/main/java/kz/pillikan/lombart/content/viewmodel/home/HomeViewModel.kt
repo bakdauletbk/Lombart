@@ -16,6 +16,7 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
     val weatherData: MutableLiveData<WeatherData> = MutableLiveData()
     val profileInfo: MutableLiveData<ProfileInfo> = MutableLiveData()
     val slidersList: MutableLiveData<ArrayList<SlidersList>> = MutableLiveData()
+    val finenessPrice: MutableLiveData<FinenessPriceResponse> = MutableLiveData()
 
     private val repository: HomeRepository = HomeRepository(application)
 
@@ -66,8 +67,19 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
     suspend fun getSliderList() {
         viewModelScope.launch {
             try {
-                val response = repository.getSlidersList()
+                val response = repository.getSliderList()
                 slidersList.postValue(response)
+            } catch (e: Exception) {
+                isError.postValue(null)
+            }
+        }
+    }
+
+    suspend fun getFinenessPrice() {
+        viewModelScope.launch {
+            try {
+                val response = repository.getFinenessPrice()
+                finenessPrice.postValue(response)
             } catch (e: Exception) {
                 isError.postValue(null)
             }

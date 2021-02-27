@@ -1,11 +1,13 @@
 package kz.pillikan.lombart.content.view.notifications
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import kz.pillikan.lombart.R
+import kz.pillikan.lombart.common.helpers.formatDateTime
 import kz.pillikan.lombart.content.model.response.notifications.DataList
 import kz.pillikan.lombart.content.model.response.notifications.NotificationsModel
 
@@ -51,8 +53,9 @@ class NotificationsAdapter : RecyclerView.Adapter<NotificationsAdapter.Notificat
         private val tvDescription = root.findViewById(R.id.tv_description) as TextView
         private val tvDate = root.findViewById(R.id.tv_date) as TextView
 
+        @SuppressLint("SetTextI18n")
         fun bind(notificationsList: DataList, callback: NotificationsFragment) {
-            tvDate.text = notificationsList.created_at
+            tvDate.text = formatDateTime(notificationsList.created_at!!) + " г."
             tvDescription.text = notificationsList.description
             tvHeading.text = notificationsList.title
         }

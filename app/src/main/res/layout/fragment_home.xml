@@ -140,7 +140,17 @@
                 android:layout_marginTop="@dimen/dimens_10dp"
                 android:text="@string/no_active_deposit"
                 android:textColor="@color/text_color_edit"
+                android:textSize="14sp"
                 android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/tv_loading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/loading"
+                android:layout_marginStart="@dimen/dimens_25dp"
+                android:layout_marginTop="@dimen/dimens_10dp"
+                android:textSize="14sp" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_loans"
@@ -148,7 +158,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimens_10dp"
                 android:isScrollContainer="false"
-                android:visibility="visible" />
+                android:visibility="gone" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -198,6 +208,7 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/tv_fineness_name1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/dimens_7dp"
@@ -209,6 +220,7 @@
                             tools:ignore="SmallSp" />
 
                         <TextView
+                            android:id="@+id/tv_fineness_price1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/dimens_7dp"
@@ -239,6 +251,7 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/tv_fineness_name2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/dimens_7dp"
@@ -250,6 +263,7 @@
                             tools:ignore="SmallSp" />
 
                         <TextView
+                            android:id="@+id/tv_fineness_price2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/dimens_7dp"
@@ -280,6 +294,7 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/tv_fineness_name3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/dimens_7dp"
@@ -291,6 +306,7 @@
                             tools:ignore="SmallSp" />
 
                         <TextView
+                            android:id="@+id/tv_fineness_price3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/dimens_7dp"

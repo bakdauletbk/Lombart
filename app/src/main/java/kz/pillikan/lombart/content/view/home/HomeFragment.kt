@@ -2,33 +2,29 @@ package kz.pillikan.lombart.content.view.home
 
 import android.annotation.SuppressLint
 import android.app.Dialog
-import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.TextView
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.viewpager.widget.ViewPager
-import androidx.viewpager2.widget.ViewPager2
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_home.loadingView
 import kotlinx.coroutines.*
 import kz.pillikan.lombart.R
+import kz.pillikan.lombart.common.helpers.convertDpToPixel
+import kz.pillikan.lombart.common.helpers.formatDate
 import kz.pillikan.lombart.common.views.BaseFragment
 import kz.pillikan.lombart.content.model.response.home.*
 import kz.pillikan.lombart.content.viewmodel.home.HomeViewModel
 import org.jetbrains.anko.alert
 import org.jetbrains.anko.sdk27.coroutines.onClick
-import java.lang.Runnable
 
 class HomeFragment : BaseFragment() {
 
@@ -36,7 +32,6 @@ class HomeFragment : BaseFragment() {
     private lateinit var viewModel: HomeViewModel
     private var alertDialog: Dialog? = null
     private val bannerAdapter by lazy { PagerAdapter(context) }
-    val handler = Handler()
 
     companion object {
         const val CLEAR_SKY = "01d"
@@ -48,9 +43,16 @@ class HomeFragment : BaseFragment() {
         const val THUNDERSTORM = "11d"
         const val SNOW = "13d"
         const val MIST = "50d"
-        const val FIRST_CURRENCY = 0
-        const val SECOND_CURRENCY = 1
-        const val THIRD_CURRENCY = 2
+        const val USA_CURRENCY = 0
+        const val EUROPA_CURRENCY = 1
+        const val RUSSIA_CURRENCY = 2
+        const val PADDING = 20f
+        const val PADDING_TOP = 0
+        const val PADDING_BOTTOM = 0
+        const val PAGE_MARGIN = 12f
+        const val FINENESS_FIRST = 0
+        const val FINENESS_SECOND = 1
+        const val FINENESS_THIRD = 2
     }
 
     override fun onCreateView(
@@ -79,8 +81,13 @@ class HomeFragment : BaseFragment() {
     private fun initViewPager() {
         vp_banners.adapter = bannerAdapter
         vp_banners.apply {
-            setPadding(convertDpToPixel(20f), 0, convertDpToPixel(20f), 0)
-            pageMargin = convertDpToPixel(12f)
+            setPadding(
+                convertDpToPixel(PADDING),
+                PADDING_TOP,
+                convertDpToPixel(PADDING),
+                PADDING_BOTTOM
+            )
+            pageMargin = convertDpToPixel(PAGE_MARGIN)
             clipToPadding = false
         }
     }
@@ -113,6 +120,9 @@ class HomeFragment : BaseFragment() {
         CoroutineScope(Dispatchers.IO).launch {
             viewModel.getSliderList()
         }
+        CoroutineScope(Dispatchers.IO).launch {
+            viewModel.getFinenessPrice()
+        }
     }
 
     private fun initListeners() {
@@ -125,13 +135,16 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun initObservers() {
+        viewModel.isError.observe(viewLifecycleOwner, {
+            errorDialog(getString(R.string.error_unknown_body))
+        })
         viewModel.loanList.observe(viewLifecycleOwner, {
             if (it != null) {
+                setIsNotEmpty()
                 addLoans(it)
                 setLoading(false)
             } else {
-                rv_loans.visibility = View.GONE
-                tv_blank_loans.visibility = View.VISIBLE
+                setEmptyLoans()
                 errorDialog(getString(R.string.error_unknown_body))
             }
         })
@@ -166,6 +179,46 @@ class HomeFragment : BaseFragment() {
                 errorDialog(getString(R.string.error_unknown_body))
             }
         })
+        viewModel.finenessPrice.observe(viewLifecycleOwner, {
+            if (it != null) {
+                setFinenessPrice(it)
+            } else {
+                errorDialog(getString(R.string.error_unknown_body))
+            }
+        })
+    }
+
+    private fun setIsNotEmpty() {
+        tv_loading.visibility = View.GONE
+        rv_loans.visibility = View.VISIBLE
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun setFinenessPrice(finenessPrice: FinenessPriceResponse) {
+        for (i in 0 until finenessPrice.prices.size) {
+            when (i) {
+                FINENESS_FIRST -> {
+                    tv_fineness_name1.text =
+                        "Проба AU ${finenessPrice.prices[FINENESS_FIRST].title}"
+                    tv_fineness_price1.text = "${finenessPrice.prices[FINENESS_FIRST].value} тг"
+                }
+                FINENESS_SECOND -> {
+                    tv_fineness_name2.text =
+                        "Проба AU ${finenessPrice.prices[FINENESS_SECOND].title}"
+                    tv_fineness_price2.text = "${finenessPrice.prices[FINENESS_SECOND].value} тг"
+                }
+                FINENESS_THIRD -> {
+                    tv_fineness_name3.text =
+                        "Проба AU ${finenessPrice.prices[FINENESS_THIRD].title}"
+                    tv_fineness_price3.text = "${finenessPrice.prices[FINENESS_THIRD].value} тг"
+                }
+            }
+        }
+    }
+
+    private fun setEmptyLoans() {
+        rv_loans.visibility = View.GONE
+        tv_blank_loans.visibility = View.VISIBLE
     }
 
     private fun addSliderList(sliderList: java.util.ArrayList<SlidersList>) {
@@ -199,17 +252,17 @@ class HomeFragment : BaseFragment() {
     private fun setCurrency(currencyList: ArrayList<CurrencyList>) {
         for (i in 0 until currencyList.size) {
             when (i) {
-                FIRST_CURRENCY -> {
-                    tv_sale_usa.text = currencyList[FIRST_CURRENCY].sale.toString()
-                    tv_purchase_usa.text = currencyList[FIRST_CURRENCY].purchase.toString()
+                USA_CURRENCY -> {
+                    tv_sale_usa.text = currencyList[USA_CURRENCY].sale.toString()
+                    tv_purchase_usa.text = currencyList[USA_CURRENCY].purchase.toString()
                 }
-                SECOND_CURRENCY -> {
-                    tv_sale_europa.text = currencyList[SECOND_CURRENCY].sale.toString()
-                    tv_purchase_europa.text = currencyList[SECOND_CURRENCY].purchase.toString()
+                EUROPA_CURRENCY -> {
+                    tv_sale_europa.text = currencyList[EUROPA_CURRENCY].sale.toString()
+                    tv_purchase_europa.text = currencyList[EUROPA_CURRENCY].purchase.toString()
                 }
-                THIRD_CURRENCY -> {
-                    tv_sale_russia.text = currencyList[THIRD_CURRENCY].sale.toString()
-                    tv_purchase_russia.text = currencyList[THIRD_CURRENCY].purchase.toString()
+                RUSSIA_CURRENCY -> {
+                    tv_sale_russia.text = currencyList[RUSSIA_CURRENCY].sale.toString()
+                    tv_purchase_russia.text = currencyList[RUSSIA_CURRENCY].purchase.toString()
                 }
             }
         }
@@ -239,7 +292,7 @@ class HomeFragment : BaseFragment() {
         tvLoans.text = information
         tvId.text = "№ ${loansList.ticketInfo.Number}"
         tvAmount.text = "${loansList.ticketInfo.TotalPayment}тг"
-        tvDate.text = "${loansList.ticketInfo.WaitDate}г"
+        tvDate.text = formatDate(loansList.ticketInfo.WaitDate!!) + "г"
         tvTotalPrice.text = "${loansList.ticketInfo.totalDebt}тг"
         alertDialog!!.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         alertDialog!!.show()
@@ -252,11 +305,6 @@ class HomeFragment : BaseFragment() {
                 drawable
             )
         )
-    }
-
-    private fun convertDpToPixel(dp: Float): Int {
-        val scale = Resources.getSystem().displayMetrics.density
-        return (dp * scale + 0.5f).toInt()
     }
 
     private fun errorDialog(errorMsg: String) {
@@ -272,15 +320,6 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun setLoading(loading: Boolean) {
-        when (loading) {
-            true -> {
-                loadingView.visibility = View.VISIBLE
-                nsvDelivery.isScrollContainer = false
-            }
-            false -> {
-                loadingView.visibility = View.GONE
-                nsvDelivery.isScrollContainer = true
-            }
-        }
+        loadingView.visibility = if (loading) View.VISIBLE else View.GONE
     }
 }

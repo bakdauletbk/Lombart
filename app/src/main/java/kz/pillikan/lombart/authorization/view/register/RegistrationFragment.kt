@@ -1,8 +1,6 @@
 package kz.pillikan.lombart.authorization.view.register
 
 import android.os.Bundle
-import android.util.Base64
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +9,6 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
-import kotlinx.android.synthetic.main.fragment_password_recovery.*
 import kotlinx.android.synthetic.main.fragment_registration.*
 import kotlinx.android.synthetic.main.fragment_registration.loadingView
 import kotlinx.android.synthetic.main.fragment_registration.spinner_phone
@@ -25,6 +22,7 @@ import kz.pillikan.lombart.authorization.model.request.SignUpRequest
 import kz.pillikan.lombart.authorization.model.response.CheckResponse
 import kz.pillikan.lombart.authorization.viewmodel.register.RegistrationViewModel
 import kz.pillikan.lombart.common.helpers.Validators
+import kz.pillikan.lombart.common.helpers.base64encode
 import kz.pillikan.lombart.common.views.BaseFragment
 import org.jetbrains.anko.sdk27.coroutines.onClick
 import org.jetbrains.anko.support.v4.alert
@@ -36,11 +34,12 @@ class RegistrationFragment : BaseFragment() {
     companion object {
         const val TAG = "RegistrationFragment"
         const val CREATE_USER = "createUser"
-        const val SEND_SMS = "SEND_SMS"
     }
 
     private var signUpRequest: SignUpRequest? = null
     private var sendSmsRequest: SendSmsRequest? = null
+    private var checkUserRequest: CheckUserRequest? = null
+    private val bundle = Bundle()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -74,14 +73,14 @@ class RegistrationFragment : BaseFragment() {
         val iin = et_enter_iin.text.toString()
 
         //Base64encode
-        val iinBase64 = Base64.encodeToString(iin.toByteArray(), Base64.NO_WRAP)
+        val iinBase64 = base64encode(iin)
 
         //check users iin
-        val checkUserRequest = CheckUserRequest(iin = iinBase64)
+        checkUserRequest = CheckUserRequest(iin = iinBase64)
 
         //send sms phone
         when (Validators.validateInn(iin)) {
-            true -> checkUser(checkUserRequest)
+            true -> checkUser(checkUserRequest!!)
             false -> Toast.makeText(
                 this.context,
                 "Введенные Вами данные некорректны!",
@@ -103,7 +102,6 @@ class RegistrationFragment : BaseFragment() {
         viewModel.isError.observe(viewLifecycleOwner, {
             errorDialog(getString(R.string.error_unknown_body))
         })
-
         viewModel.isCheckUser.observe(viewLifecycleOwner, {
             if (it != null) {
                 setLoading(false)
@@ -117,20 +115,25 @@ class RegistrationFragment : BaseFragment() {
         viewModel.isSendSms.observe(viewLifecycleOwner, {
             if (it) {
                 setLoading(false)
-                val iin = et_enter_iin.text.toString()
-                val phone = sendSmsRequest!!.phone
-                signUpRequest = SignUpRequest(iin = iin,phone = phone)
-                Log.d("EramahanRegister","iin: ${iin}  - phone: ${phone}")
-                val bundle = Bundle()
-                bundle.putSerializable(CREATE_USER, signUpRequest)
-                view?.let { it1 ->
-                    Navigation.findNavController(it1)
-                        .navigate(R.id.action_registrationFragment_to_smsFragment, bundle)
-                }
+                initNavigation()
             } else {
                 errorDialog(getString(R.string.error_unknown_body))
             }
         })
+    }
+
+    private fun initNavigation() {
+        val iin = et_enter_iin.text.toString()
+        val phone = sendSmsRequest!!.phone
+
+        signUpRequest = SignUpRequest(iin = iin, phone = phone)
+
+        bundle.putSerializable(CREATE_USER, signUpRequest)
+
+        view?.let { it1 ->
+            Navigation.findNavController(it1)
+                .navigate(R.id.action_registrationFragment_to_smsFragment, bundle)
+        }
     }
 
     private fun initSpinner(checkResponse: CheckResponse) {
@@ -159,7 +162,7 @@ class RegistrationFragment : BaseFragment() {
     }
 
     private fun prepareNumber(phone: String) {
-        val phoneBase64 = Base64.encodeToString(phone.toByteArray(), Base64.NO_WRAP)
+        val phoneBase64 = base64encode(phone)
         sendSmsRequest = SendSmsRequest(phone = phoneBase64)
         btn_create.onClick {
             sendSms(sendSmsRequest!!)
@@ -189,18 +192,9 @@ class RegistrationFragment : BaseFragment() {
     }
 
     private fun setLoading(loading: Boolean) {
-        when (loading) {
-            true -> {
-                loadingView.visibility = View.VISIBLE
-                btn_create.isCheckable = false
-                et_enter_iin.isEnabled = false
-            }
-            false -> {
-                loadingView.visibility = View.GONE
-                btn_create.isCheckable = true
-                et_enter_iin.isEnabled = true
-            }
-        }
+        loadingView.visibility = if (loading) View.VISIBLE else View.GONE
+        btn_create.isCheckable = !loading
+        et_enter_iin.isEnabled = !loading
     }
 
     private fun setLogin() {

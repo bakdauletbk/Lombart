@@ -14,10 +14,6 @@ import org.jetbrains.anko.sdk27.coroutines.onClick
 
 class SuccessfullyFragment : BaseFragment() {
 
-    companion object {
-
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -35,10 +31,8 @@ class SuccessfullyFragment : BaseFragment() {
         navigationListener()
     }
 
-
     private fun navigationListener() {
         btn_proceed.onClick { view?.let { it1 -> Navigation.findNavController(it1).navigate(R.id.action_successfullyFragment_to_pinCodeFragment) }}
     }
-
 
 }

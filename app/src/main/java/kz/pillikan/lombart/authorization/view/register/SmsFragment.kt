@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import kotlinx.android.synthetic.main.fragment_registration.*
+import kotlinx.android.synthetic.main.fragment_sigin.*
 import kotlinx.android.synthetic.main.fragment_sms.*
 import kotlinx.android.synthetic.main.fragment_sms.iv_back
 import kotlinx.android.synthetic.main.fragment_sms.loadingView
@@ -21,6 +22,7 @@ import kz.pillikan.lombart.authorization.model.request.CheckNumberRequest
 import kz.pillikan.lombart.authorization.model.request.SendSmsRequest
 import kz.pillikan.lombart.authorization.model.request.SignUpRequest
 import kz.pillikan.lombart.authorization.viewmodel.register.SmsViewModel
+import kz.pillikan.lombart.common.helpers.base64encode
 import kz.pillikan.lombart.common.views.BaseFragment
 import org.jetbrains.anko.sdk27.coroutines.onClick
 import org.jetbrains.anko.support.v4.alert
@@ -28,6 +30,8 @@ import org.jetbrains.anko.support.v4.alert
 class SmsFragment : BaseFragment() {
 
     private lateinit var viewModel: SmsViewModel
+    private var checkNumberRequest: CheckNumberRequest? = null
+    private var bundle = Bundle()
 
     companion object {
         const val CREATE_USER = "createUser"
@@ -67,15 +71,11 @@ class SmsFragment : BaseFragment() {
             CREATE_USER
         ) as SignUpRequest
         val phone = createUser.phone
-
-        val phoneBase64 =  Base64.encodeToString(phone?.toByteArray(), Base64.NO_WRAP)
-
-        val sendSmsRequest = SendSmsRequest(phone = phoneBase64)
+        val sendSmsRequest = SendSmsRequest(phone = phone)
         sendSms(sendSmsRequest)
     }
 
     private fun prepareLogin() {
-
         val signUpRequest = arguments?.getSerializable(
             CREATE_USER
         ) as SignUpRequest
@@ -84,11 +84,11 @@ class SmsFragment : BaseFragment() {
         val sms = et_sms.text.toString()
 
         //Base64encode
-        val smsBase64 = Base64.encodeToString(sms.toByteArray(), Base64.NO_WRAP)
+        val smsBase64 = base64encode(sms)
 
-        val checkNumberRequest = CheckNumberRequest(phone = phone, activationcode = smsBase64)
+        checkNumberRequest = CheckNumberRequest(phone = phone, activationcode = smsBase64)
         when (sms.isNotBlank()) {
-            true -> verificationSms(checkNumberRequest)
+            true -> verificationSms(checkNumberRequest!!)
             false -> {
                 Toast.makeText(
                     this.context,
@@ -117,37 +117,39 @@ class SmsFragment : BaseFragment() {
         viewModel.isError.observe(viewLifecycleOwner, {
             errorDialog(getString(R.string.error_unknown_body))
         })
-
         viewModel.isVerificationNumber.observe(viewLifecycleOwner, {
             when (it) {
-                true -> {
-                    val createUser = arguments?.getSerializable(
-                        CREATE_USER
-                    ) as SignUpRequest
-
-                    val bundle = Bundle()
-                    bundle.putSerializable(CREATE_USER, createUser)
-                    view?.let { it1 ->
-                        Navigation.findNavController(it1)
-                            .navigate(R.id.action_smsFragment_to_createPasswordFragment, bundle)
-                    }
-                }
-                false -> {
-                    errorDialog("Введенные вами смс некорректно")
-                }
+                true -> initNavigation()
+                false -> errorDialog("Введенные вами смс некорректно")
             }
         })
-
         viewModel.isSendSms.observe(viewLifecycleOwner, {
             when (it) {
                 true -> {
                     setLoading(false)
+                    Toast.makeText(
+                        this.context,
+                        "Смс отправлено",
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
                 false -> {
                     errorDialog("Введенные вами смс некорректно")
                 }
             }
         })
+    }
+
+    private fun initNavigation() {
+        val createUser = arguments?.getSerializable(
+            CREATE_USER
+        ) as SignUpRequest
+        bundle = Bundle()
+        bundle.putSerializable(CREATE_USER, createUser)
+        view?.let { it1 ->
+            Navigation.findNavController(it1)
+                .navigate(R.id.action_smsFragment_to_createPasswordFragment, bundle)
+        }
     }
 
     private fun initViewModel() {
@@ -170,21 +172,10 @@ class SmsFragment : BaseFragment() {
     }
 
     private fun setLoading(loading: Boolean) {
-        when (loading) {
-            true -> {
-                loadingView.visibility = View.VISIBLE
-                btn_next.isCheckable = false
-                et_sms.isEnabled = false
-                tv_retry_send_sms.isEnabled = false
-            }
-            false -> {
-                loadingView.visibility = View.GONE
-                btn_next.isCheckable = true
-                et_sms.isEnabled = true
-                tv_retry_send_sms.isEnabled = true
-            }
-        }
+        loadingView.visibility = if (loading) View.VISIBLE else View.GONE
+        btn_next.isCheckable = !loading
+        et_sms.isEnabled = !loading
+        tv_retry_send_sms.isEnabled = !loading
     }
-
 
 }

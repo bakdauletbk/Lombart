@@ -66,13 +66,25 @@ class HomeRepository(application: Application) {
         }
     }
 
-    suspend fun getSlidersList(): ArrayList<SlidersList>? {
-        val response = networkService.slidersList(
+    suspend fun getSliderList(): ArrayList<SlidersList>? {
+        val response = networkService.sliderList(
             ApiConstants.AUTH_TOKEN_PREFIX + sessionManager.getToken(),
             BuildConfig.VERSION_NAME
         )
         return if (response.code() == ApiConstants.RESPONSE_SUCCESS_CODE) {
             response.body()!!.sliders
+        } else {
+            null
+        }
+    }
+
+    suspend fun getFinenessPrice(): FinenessPriceResponse? {
+        val response = networkService.finenessPrice(
+            ApiConstants.AUTH_TOKEN_PREFIX + sessionManager.getToken(),
+            BuildConfig.VERSION_NAME
+        )
+        return if (response.code() == ApiConstants.RESPONSE_SUCCESS_CODE) {
+            response.body()
         } else {
             null
         }

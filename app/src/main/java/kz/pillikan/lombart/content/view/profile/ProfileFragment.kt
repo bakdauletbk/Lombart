@@ -8,6 +8,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.android.synthetic.main.fragment_appeal.*
 import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.fragment_profile.loadingView
 import kotlinx.coroutines.CoroutineScope
@@ -47,6 +48,12 @@ class ProfileFragment : BaseFragment() {
         initUpdateFeed()
         initObservers()
     }
+
+
+    private fun initViewModel() {
+        viewModel = ViewModelProvider(this).get(ProfileViewModel::class.java)
+    }
+
 
     private fun initNavigations() {
         tv_add_card.onClick {
@@ -105,10 +112,6 @@ class ProfileFragment : BaseFragment() {
         }
     }
 
-    private fun initViewModel() {
-        viewModel = ViewModelProvider(this).get(ProfileViewModel::class.java)
-    }
-
     private fun errorDialog(errorMsg: String) {
         activity?.alert {
             title = getString(R.string.error_unknown_title)
@@ -126,16 +129,8 @@ class ProfileFragment : BaseFragment() {
     }
 
     private fun setLoading(loading: Boolean) {
-        when (loading) {
-            true -> {
-                loadingView.visibility = View.VISIBLE
-                tv_add_card.isClickable = false
-            }
-            false -> {
-                loadingView.visibility = View.GONE
-                tv_add_card.isClickable = true
-            }
-        }
+        loadingView.visibility = if (loading) View.VISIBLE else View.GONE
+        tv_add_card.isClickable = !loading
     }
 
 }

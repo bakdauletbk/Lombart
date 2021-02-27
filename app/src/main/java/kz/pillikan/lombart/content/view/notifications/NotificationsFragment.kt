@@ -1,12 +1,12 @@
 package kz.pillikan.lombart.content.view.notifications
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_notifications.*
 import kotlinx.android.synthetic.main.fragment_notifications.loadingView
 import kotlinx.coroutines.CoroutineScope
@@ -119,10 +119,7 @@ class NotificationsFragment : BaseFragment() {
     }
 
     private fun setLoading(loading: Boolean) {
-        when (loading) {
-            true -> loadingView.visibility = View.VISIBLE
-            false -> loadingView.visibility = View.GONE
-        }
+        loadingView.visibility = if (loading) View.VISIBLE else View.GONE
     }
 
 

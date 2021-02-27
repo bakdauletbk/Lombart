@@ -11,10 +11,6 @@ import kz.pillikan.lombart.common.views.BaseActivity
 
 class FoundationActivity : BaseActivity() {
 
-    companion object {
-        const val TAG = "FoundationActivity"
-    }
-
     private var exit = false
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -16,6 +16,7 @@ import kz.pillikan.lombart.R
 import kz.pillikan.lombart.authorization.model.request.SignInRequest
 import kz.pillikan.lombart.authorization.viewmodel.register.SignInViewModel
 import kz.pillikan.lombart.common.helpers.Validators
+import kz.pillikan.lombart.common.helpers.base64encode
 import kz.pillikan.lombart.common.views.BaseFragment
 import kz.pillikan.lombart.content.view.FoundationActivity
 import org.jetbrains.anko.sdk27.coroutines.onClick
@@ -25,10 +26,7 @@ import org.jetbrains.anko.support.v4.intentFor
 class SignInFragment : BaseFragment() {
 
     private lateinit var viewModel: SignInViewModel
-
-    companion object {
-        const val TAG = "SignInFragment"
-    }
+    private var signInRequest: SignInRequest? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -57,7 +55,6 @@ class SignInFragment : BaseFragment() {
         viewModel.isError.observe(viewLifecycleOwner, {
             errorDialog(getString(R.string.error_unknown_body))
         })
-
         viewModel.isSuccess.observe(viewLifecycleOwner, {
             if (it) {
                 startActivity(intentFor<FoundationActivity>())
@@ -73,22 +70,26 @@ class SignInFragment : BaseFragment() {
         val fToken = "sakfoas"
 
         //Base64 encode
-        val iinBase64 =  Base64.encodeToString(iin.toByteArray(), Base64.NO_WRAP)
-        val passwordBase64 =  Base64.encodeToString(password.toByteArray(), Base64.NO_WRAP)
-        val fTokenBase64 = Base64.encodeToString(fToken.toByteArray(), Base64.NO_WRAP)
+        val iinBase64 = base64encode(iin)
+        val passwordBase64 = base64encode(password)
+        val fTokenBase64 = base64encode(fToken)
 
-        val signInRequest = SignInRequest(
+        signInRequest = SignInRequest(
             iin = iinBase64,
             ftoken = fTokenBase64,
             password = passwordBase64
         )
 
-        if (Validators.validateInn(iin) && Validators.validatePassword(password)) {
-            signIn(signInRequest)
-        } else {
-            Toast.makeText(this.context, "Введенные вами данные некорректны!", Toast.LENGTH_LONG)
+        when (Validators.validateInn(iin) && Validators.validatePassword(password)) {
+            true -> signIn(signInRequest!!)
+            false -> Toast.makeText(
+                this.context,
+                "Введенные вами данные некорректны!",
+                Toast.LENGTH_LONG
+            )
                 .show()
         }
+
     }
 
     private fun signIn(signInRequest: SignInRequest) {
@@ -100,14 +101,12 @@ class SignInFragment : BaseFragment() {
 
     private fun initListeners() {
         btn_to_come_in.onClick { prepareLogin() }
-
         tv_remember_password.onClick {
             view?.let { it1 ->
                 Navigation.findNavController(it1)
                     .navigate(R.id.action_signInFragment_to_passwordRecoveryFragment)
             }
         }
-
         ll_sign_up.onClick {
             view?.let { it1 ->
                 Navigation.findNavController(it1)
@@ -151,7 +150,6 @@ class SignInFragment : BaseFragment() {
         btn_to_come_in.isCheckable = !loading
         et_iin.isEnabled = !loading
         et_password.isEnabled = !loading
-
     }
 
 }

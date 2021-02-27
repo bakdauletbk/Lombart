@@ -15,6 +15,7 @@ import androidx.navigation.Navigation
 import kotlinx.android.synthetic.main.fragment_password_recovery.*
 import kotlinx.android.synthetic.main.fragment_password_recovery.et_iin
 import kotlinx.android.synthetic.main.fragment_password_recovery.loadingView
+import kotlinx.android.synthetic.main.fragment_sms.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -26,6 +27,7 @@ import kz.pillikan.lombart.authorization.model.request.SendSmsRequest
 import kz.pillikan.lombart.authorization.model.response.CheckResponse
 import kz.pillikan.lombart.authorization.viewmodel.recovery.PasswordRecoveryViewModel
 import kz.pillikan.lombart.common.helpers.Validators
+import kz.pillikan.lombart.common.helpers.base64encode
 import kz.pillikan.lombart.common.views.BaseFragment
 import org.jetbrains.anko.sdk27.coroutines.onClick
 import org.jetbrains.anko.support.v4.alert
@@ -141,8 +143,8 @@ class PasswordRecoveryFragment : BaseFragment() {
         val password2 = et_password2.text.toString()
 
         //Base64 encode
-        val passwordBase64 = Base64.encodeToString(password.toByteArray(), Base64.NO_WRAP)
-        val password2Base64 = Base64.encodeToString(password2.toByteArray(), Base64.NO_WRAP)
+        val passwordBase64 = base64encode(password)
+        val password2Base64 = base64encode(password2)
 
         val resetPasswordRequest = ResetPasswordRequest(
             iin = checkUserRequest!!.iin,
@@ -173,7 +175,7 @@ class PasswordRecoveryFragment : BaseFragment() {
         val temporary = et_temporary_password.text.toString()
         val phone = sendSmsRequest!!.phone
         //Base64 encode
-        val temporaryBase64 = Base64.encodeToString(temporary.toByteArray(), Base64.NO_WRAP)
+        val temporaryBase64 = base64encode(temporary)
 
         val checkNumberRequest =
             CheckNumberRequest(phone = phone, activationcode = temporaryBase64)
@@ -221,7 +223,7 @@ class PasswordRecoveryFragment : BaseFragment() {
     }
 
     private fun prepareNumber(phone: String) {
-        val phoneBase64 = Base64.encodeToString(phone.toByteArray(), Base64.NO_WRAP)
+        val phoneBase64 = base64encode(phone)
 
         sendSmsRequest = SendSmsRequest(phone = phoneBase64)
 
@@ -251,7 +253,7 @@ class PasswordRecoveryFragment : BaseFragment() {
         val iin = et_iin.text.toString()
 
         //Base64 encode
-        val iinBase64 = Base64.encodeToString(iin.toByteArray(), Base64.NO_WRAP)
+        val iinBase64 = base64encode(iin)
 
         checkUserRequest = CheckUserRequest(iin = iinBase64)
 
@@ -293,10 +295,7 @@ class PasswordRecoveryFragment : BaseFragment() {
     }
 
     private fun setLoading(loading: Boolean) {
-        when (loading) {
-            true -> loadingView.visibility = View.VISIBLE
-            false -> loadingView.visibility = View.GONE
-        }
+        loadingView.visibility = if (loading) View.VISIBLE else View.GONE
     }
 
     private fun errorDialog(errorMsg: String) {

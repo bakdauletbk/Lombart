@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.util.Base64
 import kz.pillikan.lombart.BuildConfig
+import kz.pillikan.lombart.common.helpers.base64encode
 import kz.pillikan.lombart.common.models.Page
 import kz.pillikan.lombart.common.preference.SessionManager
 import kz.pillikan.lombart.common.remote.ApiConstants
@@ -26,8 +27,8 @@ class NotificationsRepository(application: Application) {
         SessionManager(sharedPreferences)
 
     suspend fun getNotifications(page: Int): Page<DataList>? {
-        val limitBase64 = Base64.encodeToString(PAGE_LIMIT.toByteArray(), Base64.NO_WRAP)
-        val pageBase64 = Base64.encodeToString(page.toString().toByteArray(), Base64.NO_WRAP)
+        val limitBase64 = base64encode(PAGE_LIMIT)
+        val pageBase64 = base64encode(page.toString())
         val pageRequest = PageRequest(limit = limitBase64, page = pageBase64)
         val response =
             networkService.notificationList(

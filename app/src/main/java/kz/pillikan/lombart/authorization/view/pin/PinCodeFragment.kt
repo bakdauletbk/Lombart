@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.fragment_pin_code.*
+import kotlinx.android.synthetic.main.fragment_pin_code.loadingView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -14,16 +15,14 @@ import kz.pillikan.lombart.R
 import kz.pillikan.lombart.authorization.model.request.PinCodeRequest
 import kz.pillikan.lombart.authorization.viewmodel.pin.PinCodeViewModel
 import kz.pillikan.lombart.common.helpers.Validators
+import kz.pillikan.lombart.common.helpers.base64encode
 import kz.pillikan.lombart.common.views.BaseFragment
 import kz.pillikan.lombart.content.view.FoundationActivity
 import org.jetbrains.anko.sdk27.coroutines.onClick
+import org.jetbrains.anko.support.v4.alert
 import org.jetbrains.anko.support.v4.intentFor
 
 class PinCodeFragment : BaseFragment() {
-
-    companion object {
-        const val TAG = "PinCodeFragment"
-    }
 
     private lateinit var viewModel: PinCodeViewModel
 
@@ -58,15 +57,15 @@ class PinCodeFragment : BaseFragment() {
         val pinCode = et_access_pin.text.toString()
         val pinCode2 = et_access_pin_repeat.text.toString()
 
-        val pinCodeRequest = PinCodeRequest(pin1 = pinCode, pin2 = pinCode2)
+        //Base64 encode
+        val pinCodeBase64 = base64encode(pinCode)
+        val pinCode2Base64 = base64encode(pinCode2)
+
+        val pinCodeRequest = PinCodeRequest(pin1 = pinCodeBase64, pin2 = pinCode2Base64)
 
         when (Validators.validatePinCode(pinCode) && Validators.validatePinCode(pinCode2) && pinCode == pinCode2) {
-            true -> {
-                savePinCode(pinCodeRequest)
-            }
-            false -> {
-                Toast.makeText(context, "Введите пин код!", Toast.LENGTH_SHORT).show()
-            }
+            true -> savePinCode(pinCodeRequest)
+            false -> Toast.makeText(context, "Введите пин код!", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -77,16 +76,37 @@ class PinCodeFragment : BaseFragment() {
     }
 
     private fun initObservers() {
+        viewModel.isError.observe(viewLifecycleOwner, {
+            errorDialog(getString(R.string.error_unknown_body))
+        })
         viewModel.isSuccess.observe(viewLifecycleOwner, {
             when (it) {
-                true -> {
-                    startActivity(intentFor<FoundationActivity>())
-                }
-                false -> {
-                    Toast.makeText(context, "Ошибка при сохранении!", Toast.LENGTH_LONG).show()
-                }
+                true -> startActivity(intentFor<FoundationActivity>())
+                false -> Toast.makeText(context, "Ошибка при сохранении!", Toast.LENGTH_LONG).show()
             }
         })
+    }
+
+    private fun errorDialog(errorMsg: String) {
+        alert {
+            title = getString(R.string.error_unknown_title)
+            message = errorMsg
+            isCancelable = false
+            positiveButton(getString(R.string.dialog_retry)) { dialog ->
+                setLoading(false)
+                dialog.dismiss()
+            }
+            negativeButton(getString(R.string.dialog_exit)) {
+                activity?.finish()
+            }
+        }.show()
+    }
+
+    private fun setLoading(loading: Boolean) {
+        loadingView.visibility = if (loading) View.VISIBLE else View.GONE
+        btn_create_pin.isCheckable = !loading
+        et_access_pin.isEnabled = !loading
+        et_access_pin_repeat.isEnabled = !loading
     }
 
 }

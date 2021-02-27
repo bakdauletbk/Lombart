@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import kz.pillikan.lombart.R
+import kz.pillikan.lombart.common.helpers.formatDate
 import kz.pillikan.lombart.content.model.response.home.Tickets
 
 class LoansAdapter : RecyclerView.Adapter<LoansAdapter.LoansHolder> {
@@ -52,7 +53,8 @@ class LoansAdapter : RecyclerView.Adapter<LoansAdapter.LoansHolder> {
 
             tvId.text = "№ " + loansList.ticketInfo.Number.toString()
             tvPrice.text = loansList.ticketInfo.totalDebt.toString() + " тг"
-            tvDate.text = "${loansList.ticketInfo.StartDate} - ${loansList.ticketInfo.EndDate}"
+            tvDate.text =
+                formatDate(loansList.ticketInfo.StartDate!!) + " - " + formatDate(loansList.ticketInfo.EndDate!!)
 
             btnPay.setOnClickListener { v: View ->
                 callback.onAlertDialog(loansList)
