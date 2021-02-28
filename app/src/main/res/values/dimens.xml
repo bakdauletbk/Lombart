@@ -47,5 +47,6 @@
     <dimen name="dimens_17dp">17dp</dimen>
     <dimen name="dimens_100dp">100dp</dimen>
     <dimen name="dimens_114dp">114dp</dimen>
+    <dimen name="dimens_117dp">117dp</dimen>
     <dimen name="dimens_150dp">150dp</dimen>
 </resources>

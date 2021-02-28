@@ -201,6 +201,7 @@
                     tools:ignore="DisableBaselineAlignment">
 
                     <LinearLayout
+                        android:id="@+id/ll_fineness1"
                         android:layout_width="@dimen/dimens_0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -243,6 +244,7 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/ll_fineness2"
                         android:layout_width="@dimen/dimens_0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
@@ -286,6 +288,7 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/ll_fineness3"
                         android:layout_width="@dimen/dimens_0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/dimens_4dp"
@@ -357,10 +360,11 @@
                             tools:ignore="SmallSp" />
 
                         <Spinner
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_marginTop="@dimen/dimens_7dp" />
+                            android:id="@+id/spinner_fineness"
+                            android:layout_width="@dimen/dimens_60dp"
+                            android:layout_height="@dimen/dimens_35dp"
+                            android:background="@color/white"
+                            android:layout_gravity="center_horizontal" />
 
                         <View
                             android:layout_width="match_parent"
@@ -607,6 +611,7 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/tv_this_day"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"

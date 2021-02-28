@@ -58,6 +58,10 @@ class NotificationsAdapter : RecyclerView.Adapter<NotificationsAdapter.Notificat
             tvDate.text = formatDateTime(notificationsList.created_at!!) + " г."
             tvDescription.text = notificationsList.description
             tvHeading.text = notificationsList.title
+
+            root.setOnClickListener {
+                callback.onAlertDialog(notificationsList)
+            }
         }
     }
 }

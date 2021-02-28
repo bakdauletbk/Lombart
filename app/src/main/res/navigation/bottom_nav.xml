@@ -7,7 +7,16 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="kz.pillikan.lombart.content.view.home.HomeFragment"
-        android:label="HomeFragment" />
+        android:label="HomeFragment">
+        <action
+            android:id="@+id/action_homeFragment_to_validatePinFragment"
+            app:destination="@id/validatePinFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+
     <fragment
         android:id="@+id/notificationsFragment"
         android:name="kz.pillikan.lombart.content.view.notifications.NotificationsFragment"
@@ -32,5 +41,9 @@
         android:id="@+id/addCardFragment"
         android:name="kz.pillikan.lombart.content.view.profile.AddCardFragment"
         android:label="AddCardFragment" />
+    <fragment
+        android:id="@+id/validatePinFragment"
+        android:name="kz.pillikan.lombart.content.view.home.ValidatePinFragment"
+        android:label="ValidatePinFragment" />
 
 </navigation>

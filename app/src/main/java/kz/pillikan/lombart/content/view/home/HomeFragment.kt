@@ -9,14 +9,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.button.MaterialButton
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_home.loadingView
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kz.pillikan.lombart.R
 import kz.pillikan.lombart.common.helpers.convertDpToPixel
 import kz.pillikan.lombart.common.helpers.formatDate
@@ -25,6 +30,8 @@ import kz.pillikan.lombart.content.model.response.home.*
 import kz.pillikan.lombart.content.viewmodel.home.HomeViewModel
 import org.jetbrains.anko.alert
 import org.jetbrains.anko.sdk27.coroutines.onClick
+import java.text.SimpleDateFormat
+import java.util.*
 
 class HomeFragment : BaseFragment() {
 
@@ -76,6 +83,7 @@ class HomeFragment : BaseFragment() {
         initUpdateFeed()
         initObservers()
         initAutoScroll()
+        initTodayDate()
     }
 
     private fun initViewPager() {
@@ -182,6 +190,7 @@ class HomeFragment : BaseFragment() {
         viewModel.finenessPrice.observe(viewLifecycleOwner, {
             if (it != null) {
                 setFinenessPrice(it)
+                setSpinner(it)
             } else {
                 errorDialog(getString(R.string.error_unknown_body))
             }
@@ -216,12 +225,40 @@ class HomeFragment : BaseFragment() {
         }
     }
 
+    private fun setSpinner(finenessPrice: FinenessPriceResponse) {
+        val finenessList = mutableListOf<String>()
+
+        for (i in 0 until finenessPrice.prices.size) {
+            finenessList.add(finenessPrice.prices[i].title!!)
+        }
+        ArrayAdapter(
+            requireContext(),
+            R.layout.item_fineness_spinner,
+            finenessList
+        ).also { adapter ->
+            spinner_fineness.adapter = adapter
+        }
+
+        spinner_fineness.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+            }
+        }
+
+    }
+
     private fun setEmptyLoans() {
         rv_loans.visibility = View.GONE
         tv_blank_loans.visibility = View.VISIBLE
     }
 
-    private fun addSliderList(sliderList: java.util.ArrayList<SlidersList>) {
+    private fun addSliderList(sliderList: ArrayList<SlidersList>) {
         bannerAdapter.addImageSlider(sliderList)
     }
 
@@ -274,6 +311,8 @@ class HomeFragment : BaseFragment() {
 
     @SuppressLint("SetTextI18n")
     fun onAlertDialog(loansList: Tickets) {
+        var isPay = false
+
         alertDialog = Dialog(requireContext())
         alertDialog!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
         alertDialog!!.setContentView(R.layout.alert_dialog_pay)
@@ -283,6 +322,7 @@ class HomeFragment : BaseFragment() {
         val tvAmount: TextView = alertDialog!!.findViewById(R.id.tv_renewal_amount)
         val tvDate: TextView = alertDialog!!.findViewById(R.id.tv_date)
         val tvTotalPrice: TextView = alertDialog!!.findViewById(R.id.tv_loan_amount)
+        val btnPay: MaterialButton = alertDialog!!.findViewById(R.id.btn_pay_loan)
 
         var information = ""
         for (i in 0 until loansList.items.size) {
@@ -290,13 +330,46 @@ class HomeFragment : BaseFragment() {
         }
 
         tvLoans.text = information
-        tvId.text = "№ ${loansList.ticketInfo.Number}"
-        tvAmount.text = "${loansList.ticketInfo.TotalPayment}тг"
+        tvId.text = "№ " + loansList.ticketInfo.Number
+        tvAmount.text = loansList.ticketInfo.TotalPayment + "тг"
         tvDate.text = formatDate(loansList.ticketInfo.WaitDate!!) + "г"
-        tvTotalPrice.text = "${loansList.ticketInfo.totalDebt}тг"
+        tvTotalPrice.text = loansList.ticketInfo.totalDebt + "тг"
+
+        btnPay.onClick {
+            when (isPay) {
+                true -> {
+                    alertDialog!!.dismiss()
+                    initNavigation()
+                }
+                false -> {
+                    isPay = true
+                    btnPay.setBackgroundColor(
+                        ContextCompat.getColor(
+                            requireContext(),
+                            R.color.orange
+                        )
+                    )
+                }
+            }
+        }
+
         alertDialog!!.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         alertDialog!!.show()
     }
+
+    private fun initNavigation() {
+        view?.let { it1 ->
+            Navigation.findNavController(it1)
+                .navigate(R.id.action_homeFragment_to_validatePinFragment)
+        }
+    }
+
+    @SuppressLint("SetTextI18n", "SimpleDateFormat")
+    private fun initTodayDate() {
+        val format = SimpleDateFormat("dd.MM.yyyy")
+        tv_this_day.text = "за " + format.format(Date()) + "г."
+    }
+
 
     private fun setImage(drawable: Int) {
         iv_weather_icon.setImageDrawable(

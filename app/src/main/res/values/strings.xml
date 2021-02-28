@@ -103,5 +103,7 @@
     <string name="sms_edit">Введите смс код</string>
     <string name="select_number">Выберите номер телефона</string>
     <string name="you_have_no_notification">У вас нет уведомление</string>
+    <string name="to_share">Поделиться</string>
+    <string name="edit_pin">Введите PIN</string>
 
 </resources>

@@ -1,12 +1,18 @@
 package kz.pillikan.lombart.content.view.notifications
 
+import android.app.Dialog
+import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
+import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.fragment_home.*
+import com.google.android.material.button.MaterialButton
 import kotlinx.android.synthetic.main.fragment_notifications.*
 import kotlinx.android.synthetic.main.fragment_notifications.loadingView
 import kotlinx.coroutines.CoroutineScope
@@ -18,12 +24,19 @@ import kz.pillikan.lombart.common.views.PaginationScrollListener
 import kz.pillikan.lombart.content.model.response.notifications.DataList
 import kz.pillikan.lombart.content.viewmodel.notifications.NotificationsViewModel
 import org.jetbrains.anko.alert
+import org.jetbrains.anko.sdk27.coroutines.onClick
 
 class NotificationsFragment : BaseFragment() {
 
     private val adapter: NotificationsAdapter = NotificationsAdapter(this)
-
+    private var alertDialog: Dialog? = null
     private lateinit var viewModel: NotificationsViewModel
+    private val intent = Intent()
+
+    companion object {
+        const val SHARE = "Share"
+        const val TEXT_TYPE = "text/plain"
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,6 +56,10 @@ class NotificationsFragment : BaseFragment() {
         initViewModel()
         initNatificaionList()
         initObservers()
+    }
+
+    private fun initViewModel() {
+        viewModel = ViewModelProvider(this).get(NotificationsViewModel::class.java)
     }
 
     private fun initNatificaionList() {
@@ -76,6 +93,32 @@ class NotificationsFragment : BaseFragment() {
         adapter.addNotifications(notificationsList)
     }
 
+    fun onAlertDialog(dataList: DataList) {
+        alertDialog = Dialog(requireContext())
+        alertDialog!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        alertDialog!!.setContentView(R.layout.alert_dialog_notifications)
+
+        val tvTitle: TextView = alertDialog!!.findViewById(R.id.tv_title)
+        val tvDescription: TextView = alertDialog!!.findViewById(R.id.tv_notification)
+        val btnShare: MaterialButton = alertDialog!!.findViewById(R.id.btn_share)
+
+        tvTitle.text = dataList.title
+        tvDescription.text = dataList.description
+
+        btnShare.onClick {
+            intent.action = Intent.ACTION_SEND
+            intent.type = TEXT_TYPE
+            intent.putExtra(
+                Intent.EXTRA_TEXT,
+                dataList.description
+            )
+            startActivity(Intent.createChooser(intent, SHARE))
+        }
+
+        alertDialog!!.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        alertDialog!!.show()
+    }
+
     private fun initRecyclerView() {
         rv_notifications.adapter = adapter
         val paginationScrollListener =
@@ -97,10 +140,6 @@ class NotificationsFragment : BaseFragment() {
                 }
             }
         rv_notifications.addOnScrollListener(paginationScrollListener)
-    }
-
-    private fun initViewModel() {
-        viewModel = ViewModelProvider(this).get(NotificationsViewModel::class.java)
     }
 
     private fun errorDialog(errorMsg: String) {
