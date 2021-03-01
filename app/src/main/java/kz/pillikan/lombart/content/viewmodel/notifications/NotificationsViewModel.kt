@@ -1,6 +1,7 @@
 package kz.pillikan.lombart.content.viewmodel.notifications
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -8,7 +9,6 @@ import kotlinx.coroutines.launch
 import kz.pillikan.lombart.common.models.Page
 import kz.pillikan.lombart.content.model.repository.notifications.NotificationsRepository
 import kz.pillikan.lombart.content.model.response.notifications.DataList
-import kz.pillikan.lombart.content.model.response.notifications.NotificationsModel
 
 class NotificationsViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -17,19 +17,22 @@ class NotificationsViewModel(application: Application) : AndroidViewModel(applic
     private val repository: NotificationsRepository = NotificationsRepository(application)
 
     private var notificationsPage: Page<DataList>? = null
-    private var isLoading = false
+    private var isLoading = true
 
     fun getInitialPage() {
         loadPage(0)
     }
 
     fun getNextPage() {
-        val nextPage = if (notificationsPage != null) notificationsPage!!.getPageNumber() + 1 else 0
-        loadPage(nextPage)
+        viewModelScope.launch {
+            val nextPage = if (notificationsPage != null) notificationsPage!!.getPageNumber() + 1 else 0
+            loadPage(nextPage)
+
+        }
     }
 
-    fun isLastPage(): Boolean {
-        return notificationsPage != null && !notificationsPage!!.hasNextPage()
+    fun isHasNext(): Boolean {
+        return notificationsPage != null && notificationsPage!!.hasNextPage()
     }
 
     fun isLoading(): Boolean {
@@ -42,12 +45,16 @@ class NotificationsViewModel(application: Application) : AndroidViewModel(applic
                 isLoading = true
                 val response = repository.getNotifications(page)
                 if (response != null) {
+                    isLoading = false
+
                     notificationsPage = response
-                    if (notificationsPage!!.getContent().isNullOrEmpty()) {
+                    if (notificationsPage!!.getContent()!!.isNullOrEmpty()) {
                         notificationList.postValue(null)
                     } else {
                         notificationList.postValue(notificationsPage!!.getContent())
                     }
+                }else{
+                    isLoading = false
                 }
             } catch (e: Exception) {
                 isError.postValue(null)

@@ -20,43 +20,37 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/nsvDelivery"
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true"
+        android:background="@color/background_color_yellow"
+        android:orientation="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/tv_empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimens_15dp"
+            android:layout_marginTop="@dimen/dimens_15dp"
+            android:text="@string/you_have_no_notification"
+            android:textColor="@color/gray"
+            android:textSize="16sp"
+            android:visibility="gone" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_notifications"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/background_color_yellow"
-            android:orientation="vertical">
+            android:clipToPadding="false"
+            android:paddingTop="15dp"
+            android:paddingBottom="25dp"
+            android:visibility="visible"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-            <TextView
-                android:id="@+id/tv_empty"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/you_have_no_notification"
-                android:layout_marginStart="@dimen/dimens_15dp"
-                android:textColor="@color/gray"
-                android:visibility="gone"
-                android:textSize="16sp"
-                android:layout_marginTop="@dimen/dimens_15dp"/>
+    </LinearLayout>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_notifications"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="visible"
-                android:paddingTop="15dp"
-                android:paddingBottom="25dp"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/item_notifications" />
-
-        </LinearLayout>
-
-    </androidx.core.widget.NestedScrollView>
 
     <RelativeLayout
         android:id="@+id/loadingView"
@@ -76,6 +70,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/round_white_foreground" />
+
         </LinearLayout>
 
     </RelativeLayout>

@@ -38,6 +38,7 @@ class HomeFragment : BaseFragment() {
     private val adapters: LoansAdapter = LoansAdapter(this)
     private lateinit var viewModel: HomeViewModel
     private var alertDialog: Dialog? = null
+    private var isDialogVisibility = false
     private val bannerAdapter by lazy { PagerAdapter(context) }
 
     companion object {
@@ -148,12 +149,11 @@ class HomeFragment : BaseFragment() {
         })
         viewModel.loanList.observe(viewLifecycleOwner, {
             if (it != null) {
-                setIsNotEmpty()
+                showIsNotEmpty()
                 addLoans(it)
                 setLoading(false)
             } else {
-                setEmptyLoans()
-                errorDialog(getString(R.string.error_unknown_body))
+                showEmptyLoans()
             }
         })
         viewModel.currencyList.observe(viewLifecycleOwner, {
@@ -185,6 +185,7 @@ class HomeFragment : BaseFragment() {
                 addSliderList(it)
             } else {
                 errorDialog(getString(R.string.error_unknown_body))
+                showEmptySlider()
             }
         })
         viewModel.finenessPrice.observe(viewLifecycleOwner, {
@@ -197,9 +198,19 @@ class HomeFragment : BaseFragment() {
         })
     }
 
-    private fun setIsNotEmpty() {
+    private fun showEmptySlider() {
+        vp_banners.visibility = View.GONE
+    }
+
+    private fun showIsNotEmpty() {
         tv_loading.visibility = View.GONE
         rv_loans.visibility = View.VISIBLE
+    }
+
+    private fun showEmptyLoans() {
+        rv_loans.visibility = View.GONE
+        tv_blank_loans.visibility = View.VISIBLE
+        tv_loading.visibility = View.GONE
     }
 
     @SuppressLint("SetTextI18n")
@@ -253,15 +264,6 @@ class HomeFragment : BaseFragment() {
 
     }
 
-    private fun setEmptyLoans() {
-        rv_loans.visibility = View.GONE
-        tv_blank_loans.visibility = View.VISIBLE
-    }
-
-    private fun addSliderList(sliderList: ArrayList<SlidersList>) {
-        bannerAdapter.addImageSlider(sliderList)
-    }
-
     private fun initAutoScroll() {
 
     }
@@ -309,6 +311,10 @@ class HomeFragment : BaseFragment() {
         adapters.addLoans(loansList)
     }
 
+    private fun addSliderList(sliderList: ArrayList<SlidersList>) {
+        bannerAdapter.addImageSlider(sliderList)
+    }
+
     @SuppressLint("SetTextI18n")
     fun onAlertDialog(loansList: Tickets) {
         var isPay = false
@@ -339,7 +345,7 @@ class HomeFragment : BaseFragment() {
             when (isPay) {
                 true -> {
                     alertDialog!!.dismiss()
-                    initNavigation()
+                    setNavigateToPin()
                 }
                 false -> {
                     isPay = true
@@ -357,7 +363,7 @@ class HomeFragment : BaseFragment() {
         alertDialog!!.show()
     }
 
-    private fun initNavigation() {
+    private fun setNavigateToPin() {
         view?.let { it1 ->
             Navigation.findNavController(it1)
                 .navigate(R.id.action_homeFragment_to_validatePinFragment)
@@ -370,7 +376,6 @@ class HomeFragment : BaseFragment() {
         tv_this_day.text = "за " + format.format(Date()) + "г."
     }
 
-
     private fun setImage(drawable: Int) {
         iv_weather_icon.setImageDrawable(
             ContextCompat.getDrawable(
@@ -381,15 +386,19 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun errorDialog(errorMsg: String) {
-        activity?.alert {
-            title = getString(R.string.error_unknown_title)
-            message = errorMsg
-            isCancelable = false
-            negativeButton(getString(R.string.dialog_ok)) {
-                setLoading(false)
-                it.dismiss()
-            }
-        }?.show()
+        if (!isDialogVisibility) {
+            isDialogVisibility = true
+            activity?.alert {
+                title = getString(R.string.error_unknown_title)
+                message = errorMsg
+                isCancelable = false
+                negativeButton(getString(R.string.dialog_ok)) {
+                    setLoading(false)
+                    it.dismiss()
+                    isDialogVisibility = false
+                }
+            }?.show()
+        }
     }
 
     private fun setLoading(loading: Boolean) {

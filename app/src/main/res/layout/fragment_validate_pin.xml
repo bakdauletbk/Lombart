@@ -5,55 +5,63 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="65dp"
-        android:layout_marginTop="@dimen/dimens_60dp"
-        android:layout_marginEnd="65dp"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toTopOf="@+id/btn_create_pin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="@dimen/dimens_280dp"
             android:layout_height="wrap_content"
-            android:text="@string/edit_pin"
-            android:textColor="@color/text_color"
-            android:textSize="26sp"
-            android:fontFamily="@font/whitney_book"/>
-
-        <com.alimuzaffar.lib.pin.PinEntryEditText
-            android:id="@+id/et_pin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dimens_50dp"
-            android:cursorVisible="false"
-            android:digits="1234567890"
-            android:inputType="number"
-            android:layoutDirection="ltr"
-            android:maxLength="4"
-            android:textColor="#00FFFFFF"
-            android:textIsSelectable="false"
-            android:textSize="2sp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="@dimen/dimens_60dp"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:pinAnimationType="popIn"
-            app:pinBackgroundDrawable="@drawable/shape_pin_code"
-            app:pinBackgroundIsSquare="true"
-            app:pinCharacterMask="*"
-            app:pinCharacterSpacing="@dimen/dimens_17dp"
-            app:pinLineColors="#00980A"
-            app:pinLineStroke="@dimen/dimens_2dp"
-            app:pinLineStrokeSelected="@dimen/dimens_4dp"
-            app:pinTextBottomPadding="@dimen/dimens_2dp"
-            tools:ignore="SmallSp" />
+            app:layout_constraintTop_toTopOf="parent">
 
-    </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/whitney_book"
+                android:text="@string/edit_pin"
+                android:textColor="@color/text_color"
+                android:textSize="26sp" />
+
+            <com.alimuzaffar.lib.pin.PinEntryEditText
+                android:id="@+id/et_pin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimens_50dp"
+                android:cursorVisible="false"
+                android:digits="1234567890"
+                android:inputType="number"
+                android:layoutDirection="ltr"
+                android:maxLength="4"
+                android:textColor="#00FFFFFF"
+                android:textIsSelectable="false"
+                android:textSize="2sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:pinAnimationType="popIn"
+                app:pinBackgroundDrawable="@drawable/shape_pin_code"
+                app:pinBackgroundIsSquare="true"
+                app:pinCharacterMask="*"
+                app:pinCharacterSpacing="@dimen/dimens_17dp"
+                app:pinLineColors="#00980A"
+                app:pinLineStroke="@dimen/dimens_2dp"
+                app:pinLineStrokeSelected="@dimen/dimens_4dp"
+                app:pinTextBottomPadding="@dimen/dimens_2dp"
+                tools:ignore="SmallSp" />
+
+        </LinearLayout>
+    </ScrollView>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_create_pin"

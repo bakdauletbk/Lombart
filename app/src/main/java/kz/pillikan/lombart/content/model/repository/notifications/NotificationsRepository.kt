@@ -2,7 +2,7 @@ package kz.pillikan.lombart.content.model.repository.notifications
 
 import android.app.Application
 import android.content.Context
-import android.util.Base64
+import android.util.Log
 import kz.pillikan.lombart.BuildConfig
 import kz.pillikan.lombart.common.helpers.base64encode
 import kz.pillikan.lombart.common.models.Page
@@ -11,7 +11,6 @@ import kz.pillikan.lombart.common.remote.ApiConstants
 import kz.pillikan.lombart.common.remote.Networking
 import kz.pillikan.lombart.content.model.request.notifications.PageRequest
 import kz.pillikan.lombart.content.model.response.notifications.DataList
-import kz.pillikan.lombart.content.model.response.notifications.NotificationsResponse
 
 class NotificationsRepository(application: Application) {
 
@@ -43,6 +42,7 @@ class NotificationsRepository(application: Application) {
             for (i in response.body()?.data?.indices!!) {
                 notifications.add(response.body()!!.data[i])
             }
+
             val notificationPage: Page<DataList>? =
                 Page(notifications, pageNumber, hasNextPage)
 

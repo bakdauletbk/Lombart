@@ -49,4 +49,5 @@
     <dimen name="dimens_114dp">114dp</dimen>
     <dimen name="dimens_117dp">117dp</dimen>
     <dimen name="dimens_150dp">150dp</dimen>
+    <dimen name="dimens_280dp">280dp</dimen>
 </resources>

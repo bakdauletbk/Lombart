@@ -105,12 +105,9 @@ class AppealFragment : BaseFragment() {
             title = getString(R.string.error_unknown_title)
             message = errorMsg
             isCancelable = false
-            positiveButton(getString(R.string.dialog_retry)) { dialog ->
+            positiveButton(getString(R.string.dialog_ok)) { dialog ->
                 setLoading(false)
                 dialog.dismiss()
-            }
-            negativeButton(getString(R.string.dialog_exit)) {
-                activity?.finish()
             }
         }?.show()
     }
