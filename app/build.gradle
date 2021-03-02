@@ -77,18 +77,21 @@ dependencies {
     implementation "com.github.bumptech.glide:glide:$glide_version"
     kapt "com.github.bumptech.glide:compiler:$glide_version"
 
-    //Constraintlayout
+    //Constraint-layout
     implementation "androidx.constraintlayout:constraintlayout:2.0.4"
 
     //PinCode
-    implementation ('com.alimuzaffar.lib:pinentryedittext:2.0.6') {
+    implementation('com.alimuzaffar.lib:pinentryedittext:2.0.6') {
         exclude group: 'androidx.appcompat', module: 'appcompat'
     }
 
-    //Muiltidex
+    //Multi-dex
     implementation "androidx.multidex:multidex:$multidex_version"
 
     //InputMask
     implementation 'com.github.santalu:mask-edittext:1.1.1'
+
+    //Switch https://github.com/Kaopiz/android-segmented-control
+    implementation 'info.hoang8f:android-segmented:1.0.6'
 
 }

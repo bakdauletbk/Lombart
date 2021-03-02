@@ -1,7 +1,6 @@
 package kz.pillikan.lombart.content.viewmodel.notifications
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -27,7 +26,6 @@ class NotificationsViewModel(application: Application) : AndroidViewModel(applic
         viewModelScope.launch {
             val nextPage = if (notificationsPage != null) notificationsPage!!.getPageNumber() + 1 else 0
             loadPage(nextPage)
-
         }
     }
 
@@ -46,7 +44,6 @@ class NotificationsViewModel(application: Application) : AndroidViewModel(applic
                 val response = repository.getNotifications(page)
                 if (response != null) {
                     isLoading = false
-
                     notificationsPage = response
                     if (notificationsPage!!.getContent()!!.isNullOrEmpty()) {
                         notificationList.postValue(null)

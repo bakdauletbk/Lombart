@@ -16,23 +16,11 @@ class Page<T> {
         return content
     }
 
-    fun setContent(content: List<T>?) {
-        this.content = content
-    }
-
     fun getPageNumber(): Int {
         return pageNumber
     }
 
-    fun setPageNumber(pageNumber: Int) {
-        this.pageNumber = pageNumber
-    }
-
     fun hasNextPage(): Boolean {
         return hasNextPage
-    }
-
-    fun setHasNextPage(hasNextPage: Boolean) {
-        this.hasNextPage = hasNextPage
     }
 }

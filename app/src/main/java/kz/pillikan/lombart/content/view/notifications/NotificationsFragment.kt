@@ -5,7 +5,6 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,7 +20,6 @@ import kotlinx.coroutines.launch
 import kz.pillikan.lombart.R
 import kz.pillikan.lombart.common.views.BaseFragment
 import kz.pillikan.lombart.common.views.PaginationScrollListener
-import kz.pillikan.lombart.common.views.SoftPaginationScrollListener
 import kz.pillikan.lombart.content.model.response.notifications.DataList
 import kz.pillikan.lombart.content.viewmodel.notifications.NotificationsViewModel
 import org.jetbrains.anko.alert
@@ -124,7 +122,7 @@ class NotificationsFragment : BaseFragment() {
     private fun initRecyclerView() {
         rv_notifications.adapter = adapter
         rv_notifications.addOnScrollListener(object :
-            SoftPaginationScrollListener(rv_notifications.layoutManager as LinearLayoutManager) {
+            PaginationScrollListener(rv_notifications.layoutManager as LinearLayoutManager) {
 
             override fun isLastPage(): Boolean {
                 return viewModel.isHasNext()
@@ -140,7 +138,6 @@ class NotificationsFragment : BaseFragment() {
                  }
             }
         })
-
     }
 
     private fun errorDialog(errorMsg: String) {

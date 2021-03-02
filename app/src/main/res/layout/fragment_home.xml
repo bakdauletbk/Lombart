@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:segmentedgroup="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -15,7 +16,39 @@
             android:layout_height="wrap_content"
             android:background="@color/white"
             android:gravity="center_vertical"
-            android:paddingTop="10dp">
+            android:paddingTop="@dimen/dimens_10dp">
+
+            <info.hoang8f.android.segmented.SegmentedGroup
+                android:layout_width="@dimen/dimens_75dp"
+                android:layout_height="@dimen/dimens_23dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="@dimen/dimens_10dp"
+                android:layout_marginBottom="@dimen/dimens_10dp"
+                android:layout_marginEnd="@dimen/dimens_20dp"
+                android:orientation="horizontal"
+                app:sc_border_width="@dimen/dimens_1dp"
+                app:sc_tint_color="@color/green"
+                segmentedgroup:sc_checked_text_color="@color/white"
+                segmentedgroup:sc_corner_radius="@dimen/dimens_2dp">
+
+                <RadioButton
+                    android:id="@+id/rb_rus"
+                    style="@style/RadioButton_custom"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:checked="true"
+                    android:text="@string/rus" />
+
+                <RadioButton
+                    android:id="@+id/rb_kz"
+                    style="@style/RadioButton_custom"
+                    android:layout_width="@dimen/dimens_0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/kz" />
+            </info.hoang8f.android.segmented.SegmentedGroup>
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -24,23 +57,6 @@
                 android:layout_centerVertical="true"
                 android:src="@drawable/ic_sert_logo"
                 tools:ignore="ContentDescription" />
-
-            <com.google.android.material.switchmaterial.SwitchMaterial
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="20dp"
-                android:background="@android:color/transparent"
-                android:padding="5dp"
-                android:textOff="@string/rus"
-                android:textOn="@string/kz"
-                android:thumb="@drawable/switch_trumb"
-                app:showText="true"
-                app:thumbTint="@color/green"
-                app:trackTint="@color/white"
-                app:trackTintMode="src_atop"
-                app:useMaterialThemeColors="true" />
 
         </RelativeLayout>
 
@@ -147,9 +163,9 @@
                 android:id="@+id/tv_loading"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/loading"
                 android:layout_marginStart="@dimen/dimens_25dp"
                 android:layout_marginTop="@dimen/dimens_10dp"
+                android:text="@string/loading"
                 android:textSize="14sp" />
 
             <androidx.recyclerview.widget.RecyclerView
@@ -205,7 +221,7 @@
                         android:layout_width="@dimen/dimens_0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:background="@color/green"
+                        android:background="@drawable/shape_fineness"
                         android:orientation="vertical">
 
                         <TextView
@@ -215,7 +231,7 @@
                             android:layout_marginStart="@dimen/dimens_7dp"
                             android:layout_marginTop="@dimen/dimens_6dp"
                             android:text="@string/loading"
-                            android:textColor="@color/white"
+                            android:textColor="@color/black"
                             android:textSize="10sp"
                             android:textStyle="bold"
                             tools:ignore="SmallSp" />
@@ -227,7 +243,7 @@
                             android:layout_marginStart="@dimen/dimens_7dp"
                             android:layout_marginTop="@dimen/dimens_7dp"
                             android:text="..."
-                            android:textColor="@color/white"
+                            android:textColor="@color/black"
                             android:textSize="18sp"
                             android:textStyle="bold"
                             tools:ignore="HardcodedText" />
@@ -249,7 +265,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
                         android:layout_weight="1"
-                        android:background="@color/white"
+                        android:background="@drawable/shape_fineness"
                         android:orientation="vertical">
 
                         <TextView
@@ -293,7 +309,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/dimens_4dp"
                         android:layout_weight="1"
-                        android:background="@color/white"
+                        android:background="@drawable/shape_fineness"
                         android:orientation="vertical">
 
                         <TextView
@@ -363,8 +379,8 @@
                             android:id="@+id/spinner_fineness"
                             android:layout_width="@dimen/dimens_60dp"
                             android:layout_height="@dimen/dimens_35dp"
-                            android:background="@color/white"
-                            android:layout_gravity="center_horizontal" />
+                            android:layout_gravity="center_horizontal"
+                            android:background="@color/white" />
 
                         <View
                             android:layout_width="match_parent"
@@ -396,11 +412,13 @@
                             tools:ignore="SmallSp" />
 
                         <EditText
+                            android:id="@+id/et_gram"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
                             android:layout_marginTop="@dimen/dimens_7dp"
                             android:background="@color/white"
+                            android:text="1"
                             android:clickable="true"
                             android:focusable="true"
                             android:hint="1"
@@ -444,11 +462,13 @@
                             tools:ignore="SmallSp" />
 
                         <EditText
+                            android:id="@+id/et_day"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
                             android:layout_marginTop="@dimen/dimens_7dp"
                             android:background="@color/white"
+                            android:text="5"
                             android:clickable="true"
                             android:focusable="true"
                             android:hint="5"
@@ -497,6 +517,7 @@
                             android:textColor="@color/black" />
 
                         <TextView
+                            android:id="@+id/tv_price"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center_horizontal"
@@ -531,6 +552,7 @@
                             android:textColor="@color/black" />
 
                         <TextView
+                            android:id="@+id/tv_price2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center_horizontal"

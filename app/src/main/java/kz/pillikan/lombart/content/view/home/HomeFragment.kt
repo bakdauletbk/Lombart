@@ -5,13 +5,13 @@ import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.TextView
+import android.widget.*
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
@@ -19,9 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.button.MaterialButton
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_home.loadingView
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import kz.pillikan.lombart.R
 import kz.pillikan.lombart.common.helpers.convertDpToPixel
 import kz.pillikan.lombart.common.helpers.formatDate
@@ -40,6 +38,7 @@ class HomeFragment : BaseFragment() {
     private var alertDialog: Dialog? = null
     private var isDialogVisibility = false
     private val bannerAdapter by lazy { PagerAdapter(context) }
+    private var isPay = false
 
     companion object {
         const val CLEAR_SKY = "01d"
@@ -61,6 +60,16 @@ class HomeFragment : BaseFragment() {
         const val FINENESS_FIRST = 0
         const val FINENESS_SECOND = 1
         const val FINENESS_THIRD = 2
+        const val DAYS = 30
+        const val MONEY = " тг"
+        const val YEARS = "  г."
+        const val FINENESS = "Проба AU "
+        const val EMPTY = ""
+        const val NUMBERING = "№ "
+        const val CELSIUS = " ºC"
+        const val ONE = 1
+        const val TIME_MILLIS: Long = 4000
+        const val ZERO = 0
     }
 
     override fun onCreateView(
@@ -81,10 +90,10 @@ class HomeFragment : BaseFragment() {
         initViewPager()
         initRecyclerView()
         initListeners()
-        initUpdateFeed()
+        setUpdateFeed()
         initObservers()
-        initAutoScroll()
-        initTodayDate()
+        setBannerContent()
+        setTodayDate()
     }
 
     private fun initViewPager() {
@@ -106,13 +115,14 @@ class HomeFragment : BaseFragment() {
         rv_loans.apply {
             layoutManager = LinearLayoutManager(context)
         }
+
     }
 
     private fun initViewModel() {
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
     }
 
-    private fun initUpdateFeed() {
+    private fun setUpdateFeed() {
         setLoading(true)
         CoroutineScope(Dispatchers.IO).launch {
             viewModel.getLoans()
@@ -192,8 +202,121 @@ class HomeFragment : BaseFragment() {
             if (it != null) {
                 setFinenessPrice(it)
                 setSpinner(it)
+                setLoanAmount(it)
             } else {
                 errorDialog(getString(R.string.error_unknown_body))
+            }
+        })
+    }
+
+    private fun setLoanAmount(finenessPrice: FinenessPriceResponse) {
+        setPrice(finenessPrice.prices[FINENESS_FIRST].value!!.toLong())
+        ll_fineness1.onClick {
+            setEnable(FINENESS_FIRST, finenessPrice)
+        }
+        ll_fineness2.onClick {
+            setEnable(FINENESS_SECOND, finenessPrice)
+        }
+        ll_fineness3.onClick {
+            setEnable(FINENESS_THIRD, finenessPrice)
+        }
+    }
+
+    private fun setEnable(position: Int, finenessPrice: FinenessPriceResponse) {
+        setPrice(finenessPrice.prices[position].value!!.toLong())
+        spinner_fineness.setSelection(position)
+        when (position) {
+            FINENESS_FIRST -> {
+                ll_fineness1.isEnabled = false
+                ll_fineness2.isEnabled = true
+                ll_fineness3.isEnabled = true
+            }
+            FINENESS_SECOND -> {
+                ll_fineness2.isEnabled = false
+                ll_fineness1.isEnabled = true
+                ll_fineness3.isEnabled = true
+            }
+            FINENESS_THIRD -> {
+                ll_fineness3.isEnabled = false
+                ll_fineness1.isEnabled = true
+                ll_fineness2.isEnabled = true
+            }
+        }
+    }
+
+    private fun setSpinner(finenessPrice: FinenessPriceResponse) {
+        val finenessList = mutableListOf<String>()
+
+        for (i in 0 until finenessPrice.prices.size) {
+            finenessList.add(finenessPrice.prices[i].title!!)
+        }
+
+        ArrayAdapter(
+            requireContext(),
+            R.layout.item_fineness_spinner,
+            finenessList
+        ).also { adapter ->
+            spinner_fineness.adapter = adapter
+        }
+
+        spinner_fineness.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                setPrice(finenessPrice.prices[position].value!!.toLong())
+                setEnable(position, finenessPrice)
+            }
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun setPrice(price: Long) {
+        val day = et_day.text.toString().toInt()
+        setValidateText(price)
+        val gram = et_gram.text.toString().toFloat()
+        val result = ((price * gram) / DAYS) * day
+        tv_price.text = result.toLong().toString() + MONEY
+    }
+
+    private fun setValidateText(price: Long) {
+        et_day.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
+
+            @SuppressLint("SetTextI18n")
+            override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
+                if (et_day.text.isNotEmpty()) {
+                    val gram = et_gram.text.toString().toFloat()
+                    val result = ((price * gram) / DAYS) * et_day.text.toString().toInt()
+                    tv_price.text = result.toLong().toString() + MONEY
+                } else {
+                    Toast.makeText(context, getString(R.string.validate_day), Toast.LENGTH_SHORT)
+                        .show()
+                }
+            }
+
+            override fun afterTextChanged(editable: Editable) {
+            }
+        })
+        et_gram.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
+
+            @SuppressLint("SetTextI18n")
+            override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
+                if (et_gram.text.isNotEmpty()) {
+                    val gram = et_gram.text.toString().toFloat()
+                    val result = ((price * gram) / DAYS) * et_day.text.toString().toInt()
+                    tv_price.text = result.toLong().toString() + MONEY
+                } else {
+                    Toast.makeText(context, getString(R.string.validate_gram), Toast.LENGTH_SHORT)
+                        .show()
+                }
+            }
+
+            override fun afterTextChanged(editable: Editable) {
             }
         })
     }
@@ -219,53 +342,34 @@ class HomeFragment : BaseFragment() {
             when (i) {
                 FINENESS_FIRST -> {
                     tv_fineness_name1.text =
-                        "Проба AU ${finenessPrice.prices[FINENESS_FIRST].title}"
-                    tv_fineness_price1.text = "${finenessPrice.prices[FINENESS_FIRST].value} тг"
+                        FINENESS + finenessPrice.prices[FINENESS_FIRST].title
+                    tv_fineness_price1.text = finenessPrice.prices[FINENESS_FIRST].value + MONEY
                 }
                 FINENESS_SECOND -> {
                     tv_fineness_name2.text =
-                        "Проба AU ${finenessPrice.prices[FINENESS_SECOND].title}"
-                    tv_fineness_price2.text = "${finenessPrice.prices[FINENESS_SECOND].value} тг"
+                        FINENESS + finenessPrice.prices[FINENESS_SECOND].title
+                    tv_fineness_price2.text = finenessPrice.prices[FINENESS_SECOND].value + MONEY
                 }
                 FINENESS_THIRD -> {
                     tv_fineness_name3.text =
-                        "Проба AU ${finenessPrice.prices[FINENESS_THIRD].title}"
-                    tv_fineness_price3.text = "${finenessPrice.prices[FINENESS_THIRD].value} тг"
+                        FINENESS + finenessPrice.prices[FINENESS_THIRD].title
+                    tv_fineness_price3.text = finenessPrice.prices[FINENESS_THIRD].value + MONEY
                 }
             }
         }
     }
 
-    private fun setSpinner(finenessPrice: FinenessPriceResponse) {
-        val finenessList = mutableListOf<String>()
-
-        for (i in 0 until finenessPrice.prices.size) {
-            finenessList.add(finenessPrice.prices[i].title!!)
-        }
-        ArrayAdapter(
-            requireContext(),
-            R.layout.item_fineness_spinner,
-            finenessList
-        ).also { adapter ->
-            spinner_fineness.adapter = adapter
-        }
-
-        spinner_fineness.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(parent: AdapterView<*>?) {}
-
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
+    private fun setBannerContent() {
+        CoroutineScope(Dispatchers.IO).launch {
+            if (vp_banners.currentItem != bannerAdapter.count.minus(ONE)) {
+                vp_banners.setCurrentItem(vp_banners.currentItem.plus(ONE), true)
+            } else {
+                vp_banners.setCurrentItem(ZERO, true)
             }
+            delay(TIME_MILLIS)
+            setBannerContent()
+            cancel()
         }
-
-    }
-
-    private fun initAutoScroll() {
-
     }
 
     private fun setProfile(profile: ProfileInfo) {
@@ -274,7 +378,7 @@ class HomeFragment : BaseFragment() {
 
     @SuppressLint("SetTextI18n")
     private fun setWeather(weatherData: WeatherData) {
-        tv_temp.text = "${weatherData.temp} ºC"
+        tv_temp.text = weatherData.temp + CELSIUS
         when (weatherData.icon) {
             CLEAR_SKY -> setImage(R.drawable.ic_icon_sunny)
             FEW_CLOUDS -> setImage(R.drawable.ic_few_clouds)
@@ -317,8 +421,6 @@ class HomeFragment : BaseFragment() {
 
     @SuppressLint("SetTextI18n")
     fun onAlertDialog(loansList: Tickets) {
-        var isPay = false
-
         alertDialog = Dialog(requireContext())
         alertDialog!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
         alertDialog!!.setContentView(R.layout.alert_dialog_pay)
@@ -330,23 +432,20 @@ class HomeFragment : BaseFragment() {
         val tvTotalPrice: TextView = alertDialog!!.findViewById(R.id.tv_loan_amount)
         val btnPay: MaterialButton = alertDialog!!.findViewById(R.id.btn_pay_loan)
 
-        var information = ""
+        var information = EMPTY
         for (i in 0 until loansList.items.size) {
             information += "\n${loansList.items[i].Specification}\n"
         }
 
         tvLoans.text = information
-        tvId.text = "№ " + loansList.ticketInfo.Number
-        tvAmount.text = loansList.ticketInfo.TotalPayment + "тг"
-        tvDate.text = formatDate(loansList.ticketInfo.WaitDate!!) + "г"
-        tvTotalPrice.text = loansList.ticketInfo.totalDebt + "тг"
+        tvId.text = NUMBERING + loansList.ticketInfo.Number
+        tvAmount.text = loansList.ticketInfo.TotalPayment + MONEY
+        tvDate.text = formatDate(loansList.ticketInfo.WaitDate!!) + YEARS
+        tvTotalPrice.text = loansList.ticketInfo.totalDebt + MONEY
 
         btnPay.onClick {
             when (isPay) {
-                true -> {
-                    alertDialog!!.dismiss()
-                    setNavigateToPin()
-                }
+                true -> setNavigateToPin()
                 false -> {
                     isPay = true
                     btnPay.setBackgroundColor(
@@ -364,6 +463,7 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun setNavigateToPin() {
+        alertDialog!!.dismiss()
         view?.let { it1 ->
             Navigation.findNavController(it1)
                 .navigate(R.id.action_homeFragment_to_validatePinFragment)
@@ -371,9 +471,9 @@ class HomeFragment : BaseFragment() {
     }
 
     @SuppressLint("SetTextI18n", "SimpleDateFormat")
-    private fun initTodayDate() {
+    private fun setTodayDate() {
         val format = SimpleDateFormat("dd.MM.yyyy")
-        tv_this_day.text = "за " + format.format(Date()) + "г."
+        tv_this_day.text = "за " + format.format(Date()) + YEARS
     }
 
     private fun setImage(drawable: Int) {

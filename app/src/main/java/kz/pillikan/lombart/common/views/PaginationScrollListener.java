@@ -7,11 +7,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 /** Listens when list's last item appears to the bottom of RecyclerView and requests more items. */
-public abstract class SoftPaginationScrollListener extends RecyclerView.OnScrollListener {
+public abstract class PaginationScrollListener extends RecyclerView.OnScrollListener {
 
-    private LinearLayoutManager layoutManager;
+    private final LinearLayoutManager layoutManager;
 
-    public SoftPaginationScrollListener(LinearLayoutManager layoutManager) {
+    public PaginationScrollListener(LinearLayoutManager layoutManager) {
         this.layoutManager = layoutManager;
     }
 

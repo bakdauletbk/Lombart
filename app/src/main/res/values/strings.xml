@@ -18,6 +18,10 @@
     <string name="notification">Уведомления</string>
     <string name="appeal">Обращение</string>
 
+    //Toast
+    <string name="validate_gram">Введенный вами грамм некорректно!</string>
+    <string name="validate_day">Введенный вами день некорректно!</string>
+
 
     //Обработка ошибок
     <string name="error_unknown_title">Что-то пошло не так…</string>
