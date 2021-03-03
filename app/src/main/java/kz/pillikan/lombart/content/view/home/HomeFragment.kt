@@ -212,7 +212,12 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun setLoanAmount(finenessPrice: FinenessPriceResponse) {
-        setPrice(finenessPrice.prices[FINENESS_FIRST].value!!.toLong())
+        setPrice(
+            finenessPrice.prices[FINENESS_FIRST].value!!.toLong(),
+            percent1 = finenessPrice.percent1!!,
+            percent2 = finenessPrice.percent2!!,
+            limit = finenessPrice.amount_limit
+        )
         ll_fineness1.onClick {
             setEnable(FINENESS_FIRST, finenessPrice)
         }
@@ -224,9 +229,13 @@ class HomeFragment : BaseFragment() {
         }
     }
 
-
     private fun setEnable(position: Int, finenessPrice: FinenessPriceResponse) {
-        setPrice(finenessPrice.prices[position].value!!.toLong())
+        setPrice(
+            finenessPrice.prices[position].value!!.toLong(),
+            percent1 = finenessPrice.percent1!!,
+            percent2 = finenessPrice.percent2!!,
+            limit = finenessPrice.amount_limit
+        )
         spinner_fineness.setSelection(position)
         when (position) {
             FINENESS_FIRST -> {
@@ -270,27 +279,40 @@ class HomeFragment : BaseFragment() {
                 position: Int,
                 id: Long
             ) {
-                setPrice(finenessPrice.prices[position].value!!.toLong())
+                setPrice(
+                    finenessPrice.prices[position].value!!.toLong(),
+                    percent1 = finenessPrice.percent1!!,
+                    percent2 = finenessPrice.percent2!!,
+                    limit = finenessPrice.amount_limit
+                )
                 setEnable(position, finenessPrice)
             }
         }
     }
 
     @SuppressLint("SetTextI18n")
-    private fun setPrice(price: Long) {
+    private fun setPrice(price: Long, percent1: String, percent2: String, limit: Long) {
         when (et_day.text.isNotEmpty() && et_gram.text.isNotEmpty()) {
             true -> {
                 val day = et_day.text.toString().toInt()
                 setValidateText(price)
                 val gram = et_gram.text.toString().toFloat()
-                val result = ((price * gram) / DAYS) * day
-                tv_price.text = result.toLong().toString() + MONEY
+                val result = (((price * gram) / DAYS) * day).toLong()
+                when (result >= limit) {
+                    true -> {
+                        val percent = result * percent2.toFloat()
+                        tv_price.text = percent.toLong().toString() + MONEY
+                    }
+                    false -> {
+                        val percent = result * percent1.toFloat()
+                        tv_price.text = percent.toLong().toString() + MONEY
+                    }
+                }
             }
             false -> {
                 Snackbar.make(requireView(), "Введите данные!", Snackbar.LENGTH_LONG).show()
             }
         }
-
     }
 
     private fun setValidateText(price: Long) {
@@ -299,7 +321,7 @@ class HomeFragment : BaseFragment() {
 
             @SuppressLint("SetTextI18n")
             override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
-                when (et_day.text.isNotEmpty()) {
+                when (et_day.text.isNotEmpty() && et_gram.text.isNotEmpty()) {
                     true -> {
                         val gram = et_gram.text.toString().toFloat()
                         val result = ((price * gram) / DAYS) * et_day.text.toString().toInt()
@@ -325,7 +347,7 @@ class HomeFragment : BaseFragment() {
 
             @SuppressLint("SetTextI18n")
             override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
-                when (et_gram.text.isNotEmpty()) {
+                when (et_gram.text.isNotEmpty() && et_day.text.isNotEmpty()) {
                     true -> {
                         val gram = et_gram.text.toString().toFloat()
                         val result = ((price * gram) / DAYS) * et_day.text.toString().toInt()
@@ -420,7 +442,7 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun setCurrency(currencyList: ArrayList<CurrencyList>) {
-        for (i in 0 until currencyList.size) {
+        for (i in ZERO until currencyList.size) {
             when (i) {
                 USA_CURRENCY -> {
                     tv_sale_usa.text = currencyList[USA_CURRENCY].sale.toString()
@@ -461,12 +483,12 @@ class HomeFragment : BaseFragment() {
         val tvTotalPrice: TextView = alertDialog!!.findViewById(R.id.tv_loan_amount)
         val btnPay: MaterialButton = alertDialog!!.findViewById(R.id.btn_pay_loan)
 
-        var information = EMPTY
+        var specification: String = EMPTY
         for (i in ZERO until loansList.items.size) {
-            information += "\n${loansList.items[i].Specification}\n"
+            specification += "\n${loansList.items[i].Specification}\n"
         }
 
-        tvLoans.text = information
+        tvLoans.text = specification
         tvId.text = NUMBERING + loansList.ticketInfo.Number
         tvAmount.text = loansList.ticketInfo.TotalPayment + MONEY
         tvDate.text = formatDate(loansList.ticketInfo.WaitDate!!) + YEARS

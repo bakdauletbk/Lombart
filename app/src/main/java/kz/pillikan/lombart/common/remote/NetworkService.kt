@@ -115,7 +115,7 @@ interface NetworkService {
         @Header("Authorization") Authorization: String,
         @Header("appVer") appVer: String,
         @Body validatePinRequest: ValidatePinRequest
-    ): Response<FinenessPriceResponse>
+    ): Response<ResponseBody>
 
 
 }
