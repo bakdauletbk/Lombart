@@ -32,10 +32,7 @@ class RegistrationViewModel(application: Application) : AndroidViewModel(applica
     suspend fun sendSms(sendSmsRequest: SendSmsRequest) {
         viewModelScope.launch {
             try {
-                when (repository.sendSms(sendSmsRequest)) {
-                    true -> isSendSms.postValue(true)
-                    false -> isSendSms.postValue(false)
-                }
+                isSendSms.postValue(repository.sendSms(sendSmsRequest))
             } catch (e: Exception) {
                 isError.postValue(e.toString())
             }

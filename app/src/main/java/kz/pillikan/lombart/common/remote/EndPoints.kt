@@ -7,7 +7,7 @@ object EndPoints {
     const val POST_CHECK_USER = "/v1/auth/check-user"
     const val POST_VERIFICATION = "/v1/auth/verification"
     const val POST_SMS = "/v1/auth/sms"
-    const val POST_PIN = "/v1/profile/pin"
+    const val POST_PIN = "/v1/profile/set-pin"
     const val POST_RESET_PASSWORD = "/v1/auth/reset"
 
     //Content

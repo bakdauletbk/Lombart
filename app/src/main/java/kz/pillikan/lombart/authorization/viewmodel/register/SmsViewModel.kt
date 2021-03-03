@@ -25,10 +25,7 @@ class SmsViewModel(application: Application) : AndroidViewModel(application) {
     suspend fun verificationSms(checkNumberRequest: CheckNumberRequest) {
         viewModelScope.launch {
             try {
-                when (repository.verificationSms(checkNumberRequest)) {
-                    true -> isVerificationNumber.postValue(true)
-                    false -> isVerificationNumber.postValue(false)
-                }
+                isVerificationNumber.postValue(repository.verificationSms(checkNumberRequest))
             } catch (e: Exception) {
                 isError.postValue(e.toString())
             }
@@ -38,10 +35,7 @@ class SmsViewModel(application: Application) : AndroidViewModel(application) {
     suspend fun sendSms(sendSmsRequest: SendSmsRequest) {
         viewModelScope.launch {
             try {
-                when (repository.sendSms(sendSmsRequest)) {
-                    true -> isSendSms.postValue(true)
-                    false -> isSendSms.postValue(false)
-                }
+                isSendSms.postValue(repository.sendSms(sendSmsRequest))
             } catch (e: Exception) {
                 isError.postValue(e.toString())
             }

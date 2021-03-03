@@ -19,10 +19,7 @@ class AppealViewModel(application: Application) : AndroidViewModel(application) 
     suspend fun sendFeedback(feedbackRequest: FeedbackRequest) {
         viewModelScope.launch {
             try {
-                when (repository.sendFeedback(feedbackRequest)) {
-                    true -> isSuccess.postValue(true)
-                    false -> isSuccess.postValue(false)
-                }
+                isSuccess.postValue(repository.sendFeedback(feedbackRequest))
             } catch (e: Exception) {
                 isError.postValue(null)
             }

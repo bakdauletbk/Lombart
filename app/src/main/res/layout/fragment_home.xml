@@ -413,10 +413,11 @@
 
                         <EditText
                             android:id="@+id/et_gram"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
-                            android:layout_marginTop="@dimen/dimens_7dp"
+                            android:gravity="center"
+                            android:paddingTop="@dimen/dimens_7dp"
                             android:background="@color/white"
                             android:text="1"
                             android:clickable="true"
@@ -463,10 +464,11 @@
 
                         <EditText
                             android:id="@+id/et_day"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
-                            android:layout_marginTop="@dimen/dimens_7dp"
+                            android:paddingTop="@dimen/dimens_7dp"
+                            android:gravity="center"
                             android:background="@color/white"
                             android:text="5"
                             android:clickable="true"

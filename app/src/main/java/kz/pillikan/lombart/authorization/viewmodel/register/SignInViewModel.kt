@@ -24,10 +24,7 @@ class SignInViewModel(application: Application) : AndroidViewModel(application) 
     suspend fun signIn(signInRequest: SignInRequest) {
         viewModelScope.launch {
             try {
-                when (repository.signIn(signInRequest)) {
-                    true -> isSuccess.postValue(true)
-                    false -> isSuccess.postValue(false)
-                }
+                isSuccess.postValue(repository.signIn(signInRequest))
             } catch (e: Exception) {
                 Log.d(TAG, e.message.toString())
                 isError.postValue(e.toString())

@@ -1,7 +1,6 @@
 package kz.pillikan.lombart.authorization.view.register
 
 import android.os.Bundle
-import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -86,8 +85,7 @@ class SignInFragment : BaseFragment() {
                 this.context,
                 "Введенные вами данные некорректны!",
                 Toast.LENGTH_LONG
-            )
-                .show()
+            ).show()
         }
 
     }

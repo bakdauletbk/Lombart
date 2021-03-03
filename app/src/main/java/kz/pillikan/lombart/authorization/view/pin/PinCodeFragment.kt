@@ -70,6 +70,7 @@ class PinCodeFragment : BaseFragment() {
     }
 
     private fun savePinCode(pinCodeRequest: PinCodeRequest) {
+        setLoading(true)
         CoroutineScope(Dispatchers.IO).launch {
             viewModel.savePinCode(pinCodeRequest)
         }

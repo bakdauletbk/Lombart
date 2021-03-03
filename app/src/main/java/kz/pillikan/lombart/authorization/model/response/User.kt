@@ -9,5 +9,5 @@ data class User(
     @SerializedName("phone")
     val phone: String? = null,
     @SerializedName("access_token")
-    val access_token: String? = null,
+    val access_token: String? = null
 ):Serializable

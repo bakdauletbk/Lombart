@@ -1,30 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/bottom_nav"
-    app:startDestination="@id/homeFragment">
+    app:startDestination="@id/validatePinFragment">
 
     <fragment
         android:id="@+id/homeFragment"
         android:name="kz.pillikan.lombart.content.view.home.HomeFragment"
+        tools:layout="@layout/fragment_home"
         android:label="HomeFragment">
+
         <action
-            android:id="@+id/action_homeFragment_to_validatePinFragment"
-            app:destination="@id/validatePinFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+            android:id="@+id/action_homeFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/notificationsFragment"
         android:name="kz.pillikan.lombart.content.view.notifications.NotificationsFragment"
-        android:label="NotificationsFragment" />
+        android:label="NotificationsFragment"
+        tools:layout="@layout/fragment_notifications"/>
     <fragment
         android:id="@+id/profileFragment"
         android:name="kz.pillikan.lombart.content.view.profile.ProfileFragment"
-        android:label="ProfileFragment">
+        android:label="ProfileFragment"
+        tools:layout="@layout/fragment_profile">
         <action
             android:id="@+id/action_profileFragment_to_addCardFragment"
             app:destination="@id/addCardFragment" />
@@ -32,18 +33,26 @@
     <fragment
         android:id="@+id/appealFragment"
         android:name="kz.pillikan.lombart.content.view.appeal.AppealFragment"
-        android:label="AppealFragment" />
+        android:label="AppealFragment"
+        tools:layout="@layout/fragment_appeal"/>
     <fragment
         android:id="@+id/aboutFragment"
         android:name="kz.pillikan.lombart.content.view.about.AboutFragment"
-        android:label="AboutFragment" />
+        android:label="AboutFragment"
+        tools:layout="@layout/fragment_about"/>
     <fragment
         android:id="@+id/addCardFragment"
         android:name="kz.pillikan.lombart.content.view.profile.AddCardFragment"
-        android:label="AddCardFragment" />
+        android:label="AddCardFragment"
+        tools:layout="@layout/fragment_add_cards"/>
     <fragment
         android:id="@+id/validatePinFragment"
         android:name="kz.pillikan.lombart.content.view.home.ValidatePinFragment"
-        android:label="ValidatePinFragment" />
+        android:label="ValidatePinFragment"
+        tools:layout="@layout/fragment_validate_pin">
+        <action
+            android:id="@+id/action_validatePinFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
 
 </navigation>

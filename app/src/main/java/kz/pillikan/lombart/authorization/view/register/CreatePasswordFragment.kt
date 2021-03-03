@@ -75,12 +75,11 @@ class CreatePasswordFragment : BaseFragment() {
         val passwordBase64 = base64encode(password)
         val password2Base64 = base64encode(password2)
         val fTokenBase64 = base64encode(fToken)
-        val phoneBase64 = base64encode(phone!!)
         val iinBase64 = base64encode(iin!!)
 
         signUpRequest = SignUpRequest(
             iin = iinBase64,
-            phone = phoneBase64,
+            phone = phone,
             password = passwordBase64,
             password2 = password2Base64,
             ftoken = fTokenBase64

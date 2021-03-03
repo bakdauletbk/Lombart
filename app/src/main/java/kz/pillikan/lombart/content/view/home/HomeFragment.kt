@@ -37,9 +37,9 @@ class HomeFragment : BaseFragment() {
 
     private val adapters: LoansAdapter = LoansAdapter(this)
     private lateinit var viewModel: HomeViewModel
+    private val bannerAdapter by lazy { PagerAdapter(context) }
     private var alertDialog: Dialog? = null
     private var isDialogVisibility = false
-    private val bannerAdapter by lazy { PagerAdapter(context) }
     private var isPay = false
 
     companion object {
@@ -148,8 +148,8 @@ class HomeFragment : BaseFragment() {
 
     private fun initListeners() {
         ll_technical_support.onClick {
-            view?.let { it1 ->
-                Navigation.findNavController(it1)
+            view?.let {
+                Navigation.findNavController(it)
                     .navigate(R.id.appealFragment)
             }
         }
@@ -496,7 +496,8 @@ class HomeFragment : BaseFragment() {
 
         btnPay.onClick {
             when (isPay) {
-                true -> setNavigateToPin()
+                true -> {
+                }
                 false -> {
                     isPay = true
                     btnPay.setBackgroundColor(
@@ -508,17 +509,8 @@ class HomeFragment : BaseFragment() {
                 }
             }
         }
-
         alertDialog!!.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         alertDialog!!.show()
-    }
-
-    private fun setNavigateToPin() {
-        alertDialog!!.dismiss()
-        view?.let {
-            Navigation.findNavController(it)
-                .navigate(R.id.action_homeFragment_to_validatePinFragment)
-        }
     }
 
     @SuppressLint("SetTextI18n", "SimpleDateFormat")

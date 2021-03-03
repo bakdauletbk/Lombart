@@ -22,10 +22,7 @@ class CreatePasswordViewModel(application: Application) : AndroidViewModel(appli
     suspend fun createUser(signUpRequest: SignUpRequest) {
         viewModelScope.launch {
             try {
-                when (repository.createUser(signUpRequest)) {
-                    true -> isSuccess.postValue(true)
-                    false -> isSuccess.postValue(false)
-                }
+                isSuccess.postValue(repository.createUser(signUpRequest))
             } catch (e: Exception) {
                 isError.postValue(e.toString())
             }

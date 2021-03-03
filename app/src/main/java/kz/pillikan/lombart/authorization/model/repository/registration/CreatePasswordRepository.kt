@@ -27,7 +27,6 @@ class CreatePasswordRepository(application: Application) {
             appVer = BuildConfig.VERSION_NAME,
             signUpRequest = signUpRequest
         )
-
         return if (response.code() == ApiConstants.RESPONSE_SUCCESS_CODE) {
             saveUser(response.body()!!)
             true

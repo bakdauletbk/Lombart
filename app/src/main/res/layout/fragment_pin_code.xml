@@ -15,11 +15,11 @@
 
         <LinearLayout
             android:id="@+id/linearLayout"
-            android:layout_width="match_parent"
+            android:layout_width="@dimen/dimens_280dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dimens_65dp"
+            android:layout_marginBottom="@dimen/dimens_150dp"
             android:layout_marginTop="@dimen/dimens_117dp"
-            android:layout_marginEnd="@dimen/dimens_65dp"
+            android:layout_gravity="center_horizontal"
             android:gravity="center_horizontal"
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
@@ -45,8 +45,8 @@
 
             <com.alimuzaffar.lib.pin.PinEntryEditText
                 android:id="@+id/et_access_pin"
-                android:layout_width="@dimen/dimens_280dp"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_marginTop="@dimen/dimens_20dp"
                 android:cursorVisible="false"
                 android:digits="1234567890"
