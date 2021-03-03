@@ -7,6 +7,7 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +18,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_home.loadingView
 import kotlinx.coroutines.*
@@ -41,6 +43,7 @@ class HomeFragment : BaseFragment() {
     private var isPay = false
 
     companion object {
+        const val TAG = "HomeFragment"
         const val CLEAR_SKY = "01d"
         const val FEW_CLOUDS = "02d"
         const val SCATTERED_CLOUDS = "03d"
@@ -115,7 +118,6 @@ class HomeFragment : BaseFragment() {
         rv_loans.apply {
             layoutManager = LinearLayoutManager(context)
         }
-
     }
 
     private fun initViewModel() {
@@ -222,6 +224,7 @@ class HomeFragment : BaseFragment() {
         }
     }
 
+
     private fun setEnable(position: Int, finenessPrice: FinenessPriceResponse) {
         setPrice(finenessPrice.prices[position].value!!.toLong())
         spinner_fineness.setSelection(position)
@@ -247,7 +250,7 @@ class HomeFragment : BaseFragment() {
     private fun setSpinner(finenessPrice: FinenessPriceResponse) {
         val finenessList = mutableListOf<String>()
 
-        for (i in 0 until finenessPrice.prices.size) {
+        for (i in ZERO until finenessPrice.prices.size) {
             finenessList.add(finenessPrice.prices[i].title!!)
         }
 
@@ -275,11 +278,19 @@ class HomeFragment : BaseFragment() {
 
     @SuppressLint("SetTextI18n")
     private fun setPrice(price: Long) {
-        val day = et_day.text.toString().toInt()
-        setValidateText(price)
-        val gram = et_gram.text.toString().toFloat()
-        val result = ((price * gram) / DAYS) * day
-        tv_price.text = result.toLong().toString() + MONEY
+        when (et_day.text.isNotEmpty() && et_gram.text.isNotEmpty()) {
+            true -> {
+                val day = et_day.text.toString().toInt()
+                setValidateText(price)
+                val gram = et_gram.text.toString().toFloat()
+                val result = ((price * gram) / DAYS) * day
+                tv_price.text = result.toLong().toString() + MONEY
+            }
+            false -> {
+                Snackbar.make(requireView(), "Введите данные!", Snackbar.LENGTH_LONG).show()
+            }
+        }
+
     }
 
     private fun setValidateText(price: Long) {
@@ -288,13 +299,15 @@ class HomeFragment : BaseFragment() {
 
             @SuppressLint("SetTextI18n")
             override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
-                if (et_day.text.isNotEmpty()) {
-                    val gram = et_gram.text.toString().toFloat()
-                    val result = ((price * gram) / DAYS) * et_day.text.toString().toInt()
-                    tv_price.text = result.toLong().toString() + MONEY
-                } else {
-                    Toast.makeText(context, getString(R.string.validate_day), Toast.LENGTH_SHORT)
-                        .show()
+                when (et_day.text.isNotEmpty()) {
+                    true -> {
+                        val gram = et_gram.text.toString().toFloat()
+                        val result = ((price * gram) / DAYS) * et_day.text.toString().toInt()
+                        tv_price.text = result.toLong().toString() + MONEY
+                    }
+                    false -> {
+                        et_day.error = getString(R.string.validate_day)
+                    }
                 }
             }
 
@@ -302,17 +315,25 @@ class HomeFragment : BaseFragment() {
             }
         })
         et_gram.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
+            override fun beforeTextChanged(
+                charSequence: CharSequence,
+                i: Int,
+                i1: Int,
+                i2: Int
+            ) {
+            }
 
             @SuppressLint("SetTextI18n")
             override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
-                if (et_gram.text.isNotEmpty()) {
-                    val gram = et_gram.text.toString().toFloat()
-                    val result = ((price * gram) / DAYS) * et_day.text.toString().toInt()
-                    tv_price.text = result.toLong().toString() + MONEY
-                } else {
-                    Toast.makeText(context, getString(R.string.validate_gram), Toast.LENGTH_SHORT)
-                        .show()
+                when (et_gram.text.isNotEmpty()) {
+                    true -> {
+                        val gram = et_gram.text.toString().toFloat()
+                        val result = ((price * gram) / DAYS) * et_day.text.toString().toInt()
+                        tv_price.text = result.toLong().toString() + MONEY
+                    }
+                    false -> {
+                        et_gram.error = getString(R.string.validate_gram)
+                    }
                 }
             }
 
@@ -343,17 +364,20 @@ class HomeFragment : BaseFragment() {
                 FINENESS_FIRST -> {
                     tv_fineness_name1.text =
                         FINENESS + finenessPrice.prices[FINENESS_FIRST].title
-                    tv_fineness_price1.text = finenessPrice.prices[FINENESS_FIRST].value + MONEY
+                    tv_fineness_price1.text =
+                        finenessPrice.prices[FINENESS_FIRST].value + MONEY
                 }
                 FINENESS_SECOND -> {
                     tv_fineness_name2.text =
                         FINENESS + finenessPrice.prices[FINENESS_SECOND].title
-                    tv_fineness_price2.text = finenessPrice.prices[FINENESS_SECOND].value + MONEY
+                    tv_fineness_price2.text =
+                        finenessPrice.prices[FINENESS_SECOND].value + MONEY
                 }
                 FINENESS_THIRD -> {
                     tv_fineness_name3.text =
                         FINENESS + finenessPrice.prices[FINENESS_THIRD].title
-                    tv_fineness_price3.text = finenessPrice.prices[FINENESS_THIRD].value + MONEY
+                    tv_fineness_price3.text =
+                        finenessPrice.prices[FINENESS_THIRD].value + MONEY
                 }
             }
         }
@@ -361,14 +385,17 @@ class HomeFragment : BaseFragment() {
 
     private fun setBannerContent() {
         CoroutineScope(Dispatchers.IO).launch {
-            if (vp_banners.currentItem != bannerAdapter.count.minus(ONE)) {
-                vp_banners.setCurrentItem(vp_banners.currentItem.plus(ONE), true)
-            } else {
-                vp_banners.setCurrentItem(ZERO, true)
+            try {
+                if (vp_banners.currentItem != bannerAdapter.count.minus(ONE)) {
+                    vp_banners.setCurrentItem(vp_banners.currentItem.plus(ONE), true)
+                } else {
+                    vp_banners.setCurrentItem(ZERO, true)
+                }
+                delay(TIME_MILLIS)
+                setBannerContent()
+            } catch (e: Exception) {
+                Log.d(TAG, e.message.toString())
             }
-            delay(TIME_MILLIS)
-            setBannerContent()
-            cancel()
         }
     }
 
@@ -401,11 +428,13 @@ class HomeFragment : BaseFragment() {
                 }
                 EUROPA_CURRENCY -> {
                     tv_sale_europa.text = currencyList[EUROPA_CURRENCY].sale.toString()
-                    tv_purchase_europa.text = currencyList[EUROPA_CURRENCY].purchase.toString()
+                    tv_purchase_europa.text =
+                        currencyList[EUROPA_CURRENCY].purchase.toString()
                 }
                 RUSSIA_CURRENCY -> {
                     tv_sale_russia.text = currencyList[RUSSIA_CURRENCY].sale.toString()
-                    tv_purchase_russia.text = currencyList[RUSSIA_CURRENCY].purchase.toString()
+                    tv_purchase_russia.text =
+                        currencyList[RUSSIA_CURRENCY].purchase.toString()
                 }
             }
         }
@@ -433,7 +462,7 @@ class HomeFragment : BaseFragment() {
         val btnPay: MaterialButton = alertDialog!!.findViewById(R.id.btn_pay_loan)
 
         var information = EMPTY
-        for (i in 0 until loansList.items.size) {
+        for (i in ZERO until loansList.items.size) {
             information += "\n${loansList.items[i].Specification}\n"
         }
 
@@ -464,8 +493,8 @@ class HomeFragment : BaseFragment() {
 
     private fun setNavigateToPin() {
         alertDialog!!.dismiss()
-        view?.let { it1 ->
-            Navigation.findNavController(it1)
+        view?.let {
+            Navigation.findNavController(it)
                 .navigate(R.id.action_homeFragment_to_validatePinFragment)
         }
     }
