@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:cardCornerRadius="@dimen/dimens_11dp"
-    app:cardElevation="1dp"
+    app:cardElevation="@dimen/dimens_1dp"
     android:layout_marginStart="@dimen/dimens_12dp"
     android:layout_marginEnd="@dimen/dimens_12dp"
     android:id="@+id/viewMain">

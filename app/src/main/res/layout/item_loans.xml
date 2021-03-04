@@ -1,60 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginStart="@dimen/dimens_18dp"
+    android:layout_marginTop="@dimen/dimens_5dp"
+    android:layout_marginEnd="@dimen/dimens_18dp"
+    android:layout_marginBottom="@dimen/dimens_5dp"
     android:background="@drawable/shape_item_loans"
+    android:elevation="@dimen/dimens_2dp"
     android:orientation="vertical"
-    android:elevation="2dp"
-    android:layout_marginStart="18dp"
-    android:layout_marginEnd="18dp"
-    android:layout_marginTop="5dp"
-   android:layout_marginBottom="5dp"
     tools:ignore="UnusedAttribute">
 
     <TextView
         android:id="@+id/tv_id"
         android:layout_width="match_parent"
-        android:layout_marginEnd="@dimen/dimens_35dp"
-        android:layout_marginTop="8dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="18dp"
+        android:layout_marginStart="@dimen/dimens_18dp"
+        android:layout_marginTop="@dimen/dimens_8dp"
+        android:layout_marginEnd="@dimen/dimens_35dp"
         android:text="@string/loading"
-        android:textStyle="bold"
         android:textColor="@color/black"
-        android:textSize="12sp"/>
+        android:textSize="12sp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/tv_loans"
-        android:layout_marginStart="18dp"
-        android:layout_marginTop="6dp"
-        android:text="@string/loading"
-        android:textSize="18sp"
-        android:textColor="@color/black"
-        android:textStyle="bold"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dimens_18dp"
+        android:layout_marginTop="@dimen/dimens_6dp"
         android:layout_marginEnd="@dimen/dimens_35dp"
-        android:layout_height="wrap_content"/>
+        android:text="@string/loading"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="18dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="@dimen/dimens_18dp"
+        android:layout_marginTop="@dimen/dimens_8dp"
         android:orientation="horizontal">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="12sp"
+            android:text="@string/payment_amount"
             android:textColor="@color/black"
-            android:text="@string/payment_amount"/>
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/tv_price"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginStart="5dp"
+            android:layout_marginStart="@dimen/dimens_5dp"
             android:text="@string/loading"
             android:textColor="@color/black"
             android:textSize="12sp"
@@ -64,39 +65,40 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="18dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="@dimen/dimens_18dp"
+        android:layout_marginTop="@dimen/dimens_8dp"
         android:orientation="horizontal">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="12sp"
+            android:text="@string/period_time"
             android:textColor="@color/black"
-            android:text="@string/period_time"/>
+            android:textSize="12sp" />
+
         <TextView
             android:id="@+id/tv_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimens_5dp"
+            android:text="@string/loading"
             android:textColor="@color/black"
             android:textSize="12sp"
-            android:layout_marginStart="5dp"
-            android:textStyle="bold"
-            android:text="@string/loading"/>
+            android:textStyle="bold" />
     </LinearLayout>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_pay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:cornerRadius="5dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginStart="@dimen/dimens_18dp"
+        android:layout_marginTop="@dimen/dimens_12dp"
+        android:layout_marginBottom="@dimen/dimens_8dp"
         android:text="@string/pay"
-        android:textStyle="bold"
-        android:textSize="12sp"
-        android:textColor="@color/white"
         android:textAllCaps="false"
-        android:layout_marginStart="18dp"
-        android:layout_marginBottom="8dp"
-        />
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:cornerRadius="@dimen/dimens_5dp" />
 
 </LinearLayout>

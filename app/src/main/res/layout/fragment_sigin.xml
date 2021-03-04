@@ -16,13 +16,13 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="@dimen/dimens_0dp"
             android:layout_weight="1"
             android:gravity="center">
 
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="62.5dp"
+                android:layout_height="@dimen/dimens_62.5dp"
                 android:src="@drawable/ic_logo_lombart"
                 tools:ignore="ContentDescription" />
 
@@ -30,7 +30,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="@dimen/dimens_0dp"
             android:layout_weight="2"
             android:background="@drawable/shape_white_backgroud">
 
@@ -40,7 +40,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="@dimen/dimens_32dp"
                 android:text="@string/authorization"
                 android:textColor="@color/black"
                 android:textSize="22sp"
@@ -50,20 +50,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_above="@+id/ll_sign_up"
+                android:layout_marginTop="@dimen/dimens_10dp"
                 android:layout_below="@+id/tv_authorize"
-                android:layout_centerVertical="true"
-                android:layout_marginTop="48dp">
+                android:layout_centerVertical="true">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimens_48dp"
                     android:orientation="vertical">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="21dp"
-                        android:layout_marginEnd="21dp"
+                        android:layout_marginStart="@dimen/dimens_21dp"
+                        android:layout_marginEnd="@dimen/dimens_21dp"
                         android:background="@drawable/shape_edit_text_green"
                         android:orientation="horizontal">
 
@@ -71,12 +72,12 @@
                             android:id="@+id/et_iin"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginEnd="10dp"
+                            android:layout_marginEnd="@dimen/dimens_10dp"
                             android:background="@android:color/transparent"
                             android:fontFamily="@font/whitney_book"
                             android:hint="@string/inn_text"
                             android:inputType="number"
-                            android:padding="10dp"
+                            android:padding="@dimen/dimens_10dp"
                             android:textColor="@color/black"
                             android:textColorHint="@color/black"
                             android:textColorLink="@color/black"
@@ -89,9 +90,9 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="21dp"
+                        android:layout_marginStart="@dimen/dimens_21dp"
                         android:layout_marginTop="5dp"
-                        android:layout_marginEnd="21dp"
+                        android:layout_marginEnd="@dimen/dimens_21dp"
                         android:background="@drawable/shape_edit_text_gray"
                         android:orientation="horizontal">
 
@@ -99,7 +100,7 @@
                             android:id="@+id/et_password"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_margin="10dp"
+                            android:layout_margin="@dimen/dimens_10dp"
                             android:background="@android:color/transparent"
                             android:fontFamily="@font/whitney_book"
                             android:hint="@string/password"
@@ -120,8 +121,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
-                        android:layout_marginTop="21dp"
-                        android:layout_marginEnd="23dp"
+                        android:layout_marginTop="@dimen/dimens_21dp"
+                        android:layout_marginEnd="@dimen/dimens_23dp"
                         android:text="@string/remember_password"
                         android:textColor="@color/text_color_80" />
 
@@ -129,17 +130,18 @@
                         android:id="@+id/btn_to_come_in"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="25dp"
-                        android:layout_marginTop="60dp"
-                        android:layout_marginEnd="25dp"
+                        android:layout_marginStart="@dimen/dimens_25dp"
+                        android:layout_marginTop="@dimen/dimens_60dp"
+                        android:layout_marginEnd="@dimen/dimens_25dp"
+                        android:layout_marginBottom="@dimen/dimens_50dp"
                         android:backgroundTint="@color/green"
-                        android:paddingVertical="15dp"
+                        android:paddingVertical="@dimen/dimens_15dp"
                         android:text="@string/to_come_in"
                         android:textAllCaps="false"
                         android:textColor="@color/white"
                         android:textSize="18sp"
                         android:textStyle="bold"
-                        app:cornerRadius="10dp"
+                        app:cornerRadius="@dimen/dimens_10dp"
                         tools:ignore="UnusedAttribute" />
 
                 </LinearLayout>
@@ -157,17 +159,17 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="25dp"
-                    android:layout_marginBottom="30dp"
+                    android:layout_marginTop="@dimen/dimens_25dp"
+                    android:layout_marginBottom="@dimen/dimens_30dp"
                     android:text="@string/no_account"
                     android:textColor="@color/text_color" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="3dp"
-                    android:layout_marginTop="25dp"
-                    android:layout_marginBottom="30dp"
+                    android:layout_marginStart="@dimen/dimens_3dp"
+                    android:layout_marginTop="@dimen/dimens_25dp"
+                    android:layout_marginBottom="@dimen/dimens_30dp"
                     android:text="@string/sign_up"
                     android:textColor="@color/text_color"
                     android:textStyle="bold" />

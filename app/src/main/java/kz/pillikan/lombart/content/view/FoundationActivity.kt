@@ -36,8 +36,6 @@ class FoundationActivity : BaseActivity() {
     }
 
     private fun destinationListeners(navController: NavController) {
-
-
         navController.addOnDestinationChangedListener { _ , destination, _ ->
             when (destination.id){
                 R.id.profileFragment -> {
@@ -64,7 +62,6 @@ class FoundationActivity : BaseActivity() {
             }
         }
     }
-
 
 
     private fun setupNavController(navController: NavController) {

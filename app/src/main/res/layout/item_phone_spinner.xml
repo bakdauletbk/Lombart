@@ -6,9 +6,9 @@
     android:fontFamily="@font/whitney_book"
     android:gravity="start"
     android:paddingStart="@dimen/dimens_10dp"
-    android:paddingTop="5dp"
+    android:paddingTop="@dimen/dimens_8dp"
     android:paddingEnd="@dimen/dimens_10dp"
-    android:paddingBottom="@dimen/dimens_10dp"
+    android:paddingBottom="@dimen/dimens_8dp"
     android:textColor="@color/black"
     android:textSize="16sp"
     android:textStyle="bold" />

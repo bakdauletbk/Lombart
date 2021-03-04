@@ -1,57 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="18dp"
-    android:layout_marginTop="5dp"
-    android:layout_marginEnd="18dp"
-    android:layout_marginBottom="5dp"
+    android:layout_marginStart="@dimen/dimens_18dp"
+    android:layout_marginTop="@dimen/dimens_5dp"
+    android:layout_marginEnd="@dimen/dimens_18dp"
+    android:layout_marginBottom="@dimen/dimens_5dp"
     android:background="@drawable/shape_item_loans"
-    android:elevation="2dp"
-    android:orientation="vertical">
-
+    android:elevation="@dimen/dimens_2dp"
+    android:orientation="vertical"
+    tools:ignore="UnusedAttribute">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="17dp"
+        android:layout_marginStart="@dimen/dimens_15dp"
+        android:layout_marginTop="@dimen/dimens_8dp"
+        android:layout_marginEnd="@dimen/dimens_17dp"
         android:orientation="horizontal"
         android:weightSum="3">
 
         <TextView
             android:id="@+id/tv_heading"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/dimens_0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="2"
-            android:text="Lorem Ipsum"
+            android:text="@string/loading"
             android:textColor="@color/black"
             android:textSize="18sp"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tv_date"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/dimens_0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:gravity="end"
-            android:text="31.12.2020 г."
+            android:text="@string/loading"
             android:textColor="@color/black"
-            android:textSize="10sp" />
+            android:textSize="10sp"
+            tools:ignore="SmallSp" />
     </LinearLayout>
 
     <TextView
         android:id="@+id/tv_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginBottom="12dp"
-        android:text="@string/test"
+        android:layout_marginStart="@dimen/dimens_15dp"
+        android:layout_marginTop="@dimen/dimens_8dp"
+        android:layout_marginEnd="@dimen/dimens_15dp"
+        android:layout_marginBottom="@dimen/dimens_12dp"
+        android:text="@string/loading"
         android:textColor="@color/black"
         android:textSize="12sp" />
 

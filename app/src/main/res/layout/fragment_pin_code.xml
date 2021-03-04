@@ -17,7 +17,6 @@
             android:id="@+id/linearLayout"
             android:layout_width="@dimen/dimens_280dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/dimens_150dp"
             android:layout_marginTop="@dimen/dimens_117dp"
             android:layout_gravity="center_horizontal"
             android:gravity="center_horizontal"
@@ -91,6 +90,7 @@
                 app:pinCharacterMask="*"
                 app:pinCharacterSpacing="@dimen/dimens_17dp"
                 app:pinLineColors="#00980A"
+                android:layout_marginBottom="@dimen/dimens_150dp"
                 app:pinLineStroke="@dimen/dimens_2dp"
                 app:pinLineStrokeSelected="@dimen/dimens_4dp"
                 app:pinTextBottomPadding="@dimen/dimens_2dp"
@@ -99,7 +99,6 @@
         </LinearLayout>
 
     </ScrollView>
-
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_create_pin"

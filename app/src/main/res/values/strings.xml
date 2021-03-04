@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Lombart</string>
 
     //Диалог
@@ -18,9 +18,20 @@
     <string name="notification">Уведомления</string>
     <string name="appeal">Обращение</string>
 
+    //Biometric
+    <string name="cancel">Отмена</string>
+    <string name="auth_has_been_canceled">Аутентификация была отменена пользователем</string>
+    <string name="fingerprint_login">Вход по отпечатку пальца</string>
+    <string name="touch_the_fingerprint_reader">Прикоснитесь к сканеру отпечатка пальца</string>
+    <string name="authentication_canceled">Аутентификация отменена</string>
+    <string name="fingerprint_authentication_is_not_enabled_settings">Аутентификация по отпечатку пальца не включена в настройках!</string>
+    <string name="permission_is_not_included">Разрешение проверки подлинности отпечатка пальца не включено!</string>
+
+
     //Toast
     <string name="validate_gram">Введенный вами грамм некорректно!</string>
     <string name="validate_day">Введенный вами день некорректно!</string>
+    <string name="enter_your_pin_code">Введите пин код!</string>
 
 
     //Обработка ошибок
@@ -33,11 +44,24 @@
     <string name="error_auth_wrong_data_msg">Вы ввели неверный логин или пароль. Пожалуйста, проверьте ваши данные и попробуйте ещё раз</string>
 
 
+    //About
+    <string name="about"><b>Ломбард Серт</b>  - является одним из крупных ломбардов города Шымкент, обслуживающий различные финансовые потребности людей, которым нужны быстрые средства для решения своих проблем.
+Ломбард действует на рынке более 11 лет, за этот период мы завоевали доверие наших клиентов и партнеров.
+</string>
+
+    <string name="about2">В нашем ломбарде вы сможете получить за ваши золотые изделия самую высокую оценку и самые
+        низкие проценты, и главное гарантию их сохранности. Индивидуальный подход к каждому клиенту.
+        Также легко и быстро можно получить займ под залог автомобиля с правом вождения.
+        У нас нет скрытых платежей и комиссии. Удобное расположение филиалов в черте города. 14
+        филиалов по городу.
+    </string>
+
+
     //Rus - Kaz
     <string name="rus">РУС</string>
     <string name="kz">КАЗ</string>
 
-    //Loans
+    //Content
     <string name="welcome">С возвращением!</string>
     <string name="my_loans">Мои займы</string>
     <string name="pay">Оплатить</string>
@@ -100,7 +124,7 @@
     <string name="close">Закрыть</string>
     <string name="error_occurred">При обработке платежа произшла ошибка.</string>
     <string name="error_occurred_text">Пожалуйста повторите платеж или измените способ оплаты.</string>
-    <string name="loading">Загрузка...</string>
+    <string name="loading" tools:ignore="TypographyEllipsis">Загрузка...</string>
     <string name="city">Шымкент, KZ</string>
     <string name="name_user">Имя пользователя</string>
     <string name="edit_iin">Ввести ИИН</string>

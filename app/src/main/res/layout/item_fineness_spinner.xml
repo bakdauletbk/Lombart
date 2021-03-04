@@ -5,7 +5,7 @@
     android:background="@color/white"
     android:fontFamily="@font/whitney_book"
     android:gravity="center"
-    android:paddingTop="5dp"
+    android:paddingTop="@dimen/dimens_5dp"
     android:textColor="@color/black"
     android:textSize="16sp"
     android:paddingBottom="@dimen/dimens_5dp"
