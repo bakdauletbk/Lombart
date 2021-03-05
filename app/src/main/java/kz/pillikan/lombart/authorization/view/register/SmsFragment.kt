@@ -1,7 +1,8 @@
 package kz.pillikan.lombart.authorization.view.register
 
+import android.app.Activity
+import android.content.*
 import android.os.Bundle
-import android.util.Base64
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -9,11 +10,10 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
-import kotlinx.android.synthetic.main.fragment_registration.*
-import kotlinx.android.synthetic.main.fragment_sigin.*
+import com.google.android.gms.auth.api.phone.SmsRetriever
+import com.google.android.gms.common.api.CommonStatusCodes
+import com.google.android.gms.common.api.Status
 import kotlinx.android.synthetic.main.fragment_sms.*
-import kotlinx.android.synthetic.main.fragment_sms.iv_back
-import kotlinx.android.synthetic.main.fragment_sms.loadingView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -23,18 +23,46 @@ import kz.pillikan.lombart.authorization.model.request.SendSmsRequest
 import kz.pillikan.lombart.authorization.model.request.SignUpRequest
 import kz.pillikan.lombart.authorization.viewmodel.register.SmsViewModel
 import kz.pillikan.lombart.common.helpers.base64encode
+import kz.pillikan.lombart.common.helpers.convertSms
 import kz.pillikan.lombart.common.views.BaseFragment
 import org.jetbrains.anko.sdk27.coroutines.onClick
 import org.jetbrains.anko.support.v4.alert
 
 class SmsFragment : BaseFragment() {
 
+    companion object {
+        const val TAG = "SmsFragment"
+        const val CREATE_USER = "createUser"
+        const val SMS_CONSENT_REQUEST = 2
+    }
+
     private lateinit var viewModel: SmsViewModel
     private var checkNumberRequest: CheckNumberRequest? = null
     private var bundle = Bundle()
 
-    companion object {
-        const val CREATE_USER = "createUser"
+    private val smsVerificationReceiver: BroadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            when(SmsRetriever.SMS_RETRIEVED_ACTION == intent.action){
+                true ->{
+                    val extras = intent.extras
+                    val smsRetrieverStatus = extras!![SmsRetriever.EXTRA_STATUS] as Status?
+                    when (smsRetrieverStatus!!.statusCode) {
+                        CommonStatusCodes.SUCCESS -> {
+                            val consentIntent =
+                                extras.getParcelable<Intent>(SmsRetriever.EXTRA_CONSENT_INTENT)
+                            try {
+                                startActivityForResult(consentIntent, SMS_CONSENT_REQUEST)
+                            } catch (e: RuntimeException) {
+                                Log.d(TAG, "onReceive: ${e.message}")
+                            }
+                        }
+                        CommonStatusCodes.TIMEOUT -> {
+                            Toast.makeText(context, getString(R.string.delay), Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+            }
+        }
     }
 
     override fun onCreateView(
@@ -45,6 +73,20 @@ class SmsFragment : BaseFragment() {
         return inflater.inflate(R.layout.fragment_sms, container, false)
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when (requestCode) {
+            SMS_CONSENT_REQUEST -> {
+                when (resultCode == Activity.RESULT_OK) {
+                    true -> {
+                        val message = data!!.getStringExtra(SmsRetriever.EXTRA_SMS_MESSAGE)
+                        et_sms.setText(convertSms(message!!))
+                    }
+                }
+            }
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init()
@@ -52,8 +94,19 @@ class SmsFragment : BaseFragment() {
 
     private fun init() {
         initViewModel()
+        initSmsRetriever()
         iniListeners()
         initObservers()
+    }
+
+    private fun initViewModel() {
+        viewModel = ViewModelProvider(this).get(SmsViewModel::class.java)
+    }
+
+    private fun initSmsRetriever() {
+        setSendSms()
+        val intentFilter = IntentFilter(SmsRetriever.SMS_RETRIEVED_ACTION)
+        activity?.registerReceiver(smsVerificationReceiver, intentFilter)
     }
 
     private fun iniListeners() {
@@ -61,23 +114,25 @@ class SmsFragment : BaseFragment() {
             prepareLogin()
         }
         tv_retry_send_sms.onClick {
-            prepareNumber()
+            setSendSms()
         }
         iv_back.onClick {
-            view?.let {
-                Navigation.findNavController(it)
-                    .navigate(R.id.action_smsFragment_to_registrationFragment)
-            }
+            activity?.finish()
         }
     }
 
-    private fun prepareNumber() {
+    private fun setSendSms() {
         val createUser = arguments?.getSerializable(
             CREATE_USER
         ) as SignUpRequest
         val phone = createUser.phone
-        val sendSmsRequest = SendSmsRequest(phone = phone)
+        val phoneBase64 = base64encode(phone!!)
+        val sendSmsRequest = SendSmsRequest(phone = phoneBase64)
         sendSms(sendSmsRequest)
+    }
+
+    private fun setFillSms() {
+        activity?.let { SmsRetriever.getClient(it).startSmsUserConsent(null) }
     }
 
     private fun prepareLogin() {
@@ -90,17 +145,16 @@ class SmsFragment : BaseFragment() {
 
         //Base64encode
         val smsBase64 = base64encode(sms)
+        val phoneBase64 = base64encode(phone!!)
 
-        checkNumberRequest = CheckNumberRequest(phone = phone, activationcode = smsBase64)
+        checkNumberRequest = CheckNumberRequest(phone = phoneBase64, activationcode = smsBase64)
         when (sms.isNotBlank()) {
             true -> verificationSms(checkNumberRequest!!)
-            false -> {
-                Toast.makeText(
-                    this.context,
-                    "Введите смс код!",
-                    Toast.LENGTH_LONG
-                ).show()
-            }
+            false -> Toast.makeText(
+                this.context,
+                getString(R.string.enter_your_sms_code),
+                Toast.LENGTH_LONG
+            ).show()
         }
     }
 
@@ -125,22 +179,21 @@ class SmsFragment : BaseFragment() {
         viewModel.isVerificationNumber.observe(viewLifecycleOwner, {
             when (it) {
                 true -> initNavigation()
-                false -> errorDialog("Введенные вами смс некорректно")
+                false -> errorDialog(getString(R.string.the_sms_you_entered_incorrectly))
             }
         })
         viewModel.isSendSms.observe(viewLifecycleOwner, {
             when (it) {
                 true -> {
                     setLoading(false)
+                    setFillSms()
                     Toast.makeText(
                         this.context,
-                        "Смс отправлено",
+                        getString(R.string.send_sms),
                         Toast.LENGTH_LONG
                     ).show()
                 }
-                false -> {
-                    errorDialog("Введенные вами смс некорректно")
-                }
+                false -> errorDialog(getString(R.string.the_sms_you_entered_incorrectly))
             }
         })
     }
@@ -155,10 +208,6 @@ class SmsFragment : BaseFragment() {
             Navigation.findNavController(it1)
                 .navigate(R.id.action_smsFragment_to_createPasswordFragment, bundle)
         }
-    }
-
-    private fun initViewModel() {
-        viewModel = ViewModelProvider(this).get(SmsViewModel::class.java)
     }
 
     private fun errorDialog(errorMsg: String) {

@@ -117,19 +117,10 @@ class RegistrationFragment : BaseFragment() {
             }
         })
 
-        viewModel.isSendSms.observe(viewLifecycleOwner, {
-            if (it) {
-                setLoading(false)
-                initNavigation()
-            } else {
-                errorDialog(getString(R.string.error_unknown_body))
-            }
-        })
     }
 
-    private fun initNavigation() {
+    private fun initNavigation(phone: String) {
         val iin = et_enter_iin.text.toString()
-        val phone = sendSmsRequest!!.phone
 
         signUpRequest = SignUpRequest(iin = iin, phone = phone)
 
@@ -161,23 +152,10 @@ class RegistrationFragment : BaseFragment() {
                 position: Int,
                 id: Long
             ) {
-                prepareNumber(checkResponse.data[position].phone.toString())
+                btn_create.onClick {
+                    initNavigation(checkResponse.data[position].phone.toString())
+                }
             }
-        }
-    }
-
-    private fun prepareNumber(phone: String) {
-        val phoneBase64 = base64encode(phone)
-        sendSmsRequest = SendSmsRequest(phone = phoneBase64)
-        btn_create.onClick {
-            sendSms(sendSmsRequest!!)
-        }
-    }
-
-    private fun sendSms(sendSmsRequest: SendSmsRequest) {
-        setLoading(true)
-        CoroutineScope(Dispatchers.IO).launch {
-            viewModel.sendSms(sendSmsRequest)
         }
     }
 

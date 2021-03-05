@@ -53,7 +53,9 @@ class PasswordRecoveryFragment : BaseFragment() {
         toolbar_recovery.setNavigationIcon(R.drawable.ic_arrow_black)
         toolbar_recovery.setTitleTextColor(Color.BLACK)
         toolbar_recovery.setNavigationOnClickListener {
-            activity?.onBackPressed()
+            view?.let { it1 ->
+                Navigation.findNavController(it1).navigate(R.id.action_passwordRecoveryFragment_to_signInFragment)
+            }
         }
     }
 

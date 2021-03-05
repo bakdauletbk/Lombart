@@ -28,15 +28,4 @@ class RegistrationViewModel(application: Application) : AndroidViewModel(applica
             }
         }
     }
-
-    suspend fun sendSms(sendSmsRequest: SendSmsRequest) {
-        viewModelScope.launch {
-            try {
-                isSendSms.postValue(repository.sendSms(sendSmsRequest))
-            } catch (e: Exception) {
-                isError.postValue(e.toString())
-            }
-        }
-    }
-
 }

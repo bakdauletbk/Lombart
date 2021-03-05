@@ -36,10 +36,4 @@ class RegistrationRepository(application: Application) {
         }
     }
 
-    suspend fun sendSms(sendSmsRequest: SendSmsRequest): Boolean {
-        val response = networkService.sendSms(appVer = BuildConfig.VERSION_NAME, sendSmsRequest)
-        return response.code() == ApiConstants.RESPONSE_SUCCESS_CODE
-    }
-
-
 }

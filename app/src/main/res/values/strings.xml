@@ -18,6 +18,11 @@
     <string name="notification">Уведомления</string>
     <string name="appeal">Обращение</string>
 
+    //Error
+    <string name="the_sms_you_entered_incorrectly">Введенные вами смс некорректно</string>
+
+    <string name="delay">Задержка...</string>
+
     //Biometric
     <string name="cancel">Отмена</string>
     <string name="auth_has_been_canceled">Аутентификация была отменена пользователем</string>
@@ -32,6 +37,8 @@
     <string name="validate_gram">Введенный вами грамм некорректно!</string>
     <string name="validate_day">Введенный вами день некорректно!</string>
     <string name="enter_your_pin_code">Введите пин код!</string>
+    <string name="enter_your_sms_code">Введите смс код!</string>
+    <string name="send_sms">Смс отправлено</string>
 
 
     //Обработка ошибок

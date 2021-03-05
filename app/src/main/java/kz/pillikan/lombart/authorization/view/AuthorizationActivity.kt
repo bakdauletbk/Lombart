@@ -11,4 +11,7 @@ class AuthorizationActivity : BaseActivity() {
         setContentView(R.layout.activity_authorization)
     }
 
+    override fun onBackPressed() {
+
+    }
 }
