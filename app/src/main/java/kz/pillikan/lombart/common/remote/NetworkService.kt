@@ -86,7 +86,6 @@ interface NetworkService {
 
     @POST(EndPoints.POST_RESET_PASSWORD)
     suspend fun resetPassword(
-        @Header("Authorization") Authorization: String,
         @Header("appVer") appVer: String,
         @Body resetPasswordRequest: ResetPasswordRequest
     ): Response<ResponseBody>

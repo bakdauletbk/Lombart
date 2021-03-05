@@ -49,7 +49,6 @@ class PasswordRecoveryRepository(application: Application) {
 
     suspend fun resetPassword(resetPasswordRequest: ResetPasswordRequest): Boolean {
         val response = networkService.resetPassword(
-            Authorization = ApiConstants.AUTH_TOKEN_PREFIX + sessionManager.getToken(),
             appVer = BuildConfig.VERSION_NAME,
             resetPasswordRequest = resetPasswordRequest
         )

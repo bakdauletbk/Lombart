@@ -28,7 +28,25 @@
         tools:layout="@layout/fragment_profile">
         <action
             android:id="@+id/action_profileFragment_to_addCardFragment"
-            app:destination="@id/addCardFragment" />
+            app:destination="@id/addCardFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_profileFragment_to_pinCodeFragment2"
+            app:destination="@id/pinCodeFragment2"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_profileFragment_to_passwordRecoveryFragment2"
+            app:destination="@id/passwordRecoveryFragment2"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/appealFragment"
@@ -47,12 +65,20 @@
         tools:layout="@layout/fragment_add_cards"/>
     <fragment
         android:id="@+id/validatePinFragment"
-        android:name="kz.pillikan.lombart.content.view.home.ValidatePinFragment"
+        android:name="kz.pillikan.lombart.content.view.validate.ValidatePinFragment"
         android:label="ValidatePinFragment"
         tools:layout="@layout/fragment_validate_pin">
         <action
             android:id="@+id/action_validatePinFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/pinCodeFragment2"
+        android:name="kz.pillikan.lombart.authorization.view.pin.PinCodeFragment"
+        android:label="PinCodeFragment" />
+    <fragment
+        android:id="@+id/passwordRecoveryFragment2"
+        android:name="kz.pillikan.lombart.authorization.view.recovery.PasswordRecoveryFragment"
+        android:label="PasswordRecoveryFragment" />
 
 </navigation>

@@ -63,7 +63,12 @@ class SmsFragment : BaseFragment() {
         tv_retry_send_sms.onClick {
             prepareNumber()
         }
-        iv_back.onClick { activity?.onBackPressed() }
+        iv_back.onClick {
+            view?.let {
+                Navigation.findNavController(it)
+                    .navigate(R.id.action_smsFragment_to_registrationFragment)
+            }
+        }
     }
 
     private fun prepareNumber() {

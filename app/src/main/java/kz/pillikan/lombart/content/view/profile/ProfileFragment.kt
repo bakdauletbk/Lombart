@@ -1,26 +1,25 @@
 package kz.pillikan.lombart.content.view.profile
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.lifecycle.Observer
+import android.view.*
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.fragment_appeal.*
 import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.fragment_profile.loadingView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kz.pillikan.lombart.R
+import kz.pillikan.lombart.authorization.view.AuthorizationActivity
 import kz.pillikan.lombart.common.views.BaseFragment
 import kz.pillikan.lombart.content.model.response.home.ProfileInfo
 import kz.pillikan.lombart.content.model.response.profile.CardModel
 import kz.pillikan.lombart.content.viewmodel.profile.ProfileViewModel
 import org.jetbrains.anko.alert
 import org.jetbrains.anko.sdk27.coroutines.onClick
+import org.jetbrains.anko.support.v4.intentFor
 
 class ProfileFragment : BaseFragment() {
 
@@ -28,12 +27,22 @@ class ProfileFragment : BaseFragment() {
 
     private lateinit var viewModel: ProfileViewModel
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_profile, container, false)
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        setHasOptionsMenu(true)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -44,18 +53,43 @@ class ProfileFragment : BaseFragment() {
     private fun init() {
         initViewModel()
         initRecyclerView()
-        initNavigations()
+        initNavigation()
+        initToolbar()
         initUpdateFeed()
         initObservers()
     }
 
+    private fun initToolbar() {
+        toolbars.inflateMenu(R.menu.menu_toolbar)
+        toolbars.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.action_exit -> {
+                    viewModel.logout()
+                }
+            }
+            true
+        }
+    }
 
     private fun initViewModel() {
         viewModel = ViewModelProvider(this).get(ProfileViewModel::class.java)
     }
 
-
-    private fun initNavigations() {
+    private fun initNavigation() {
+        ll_reset_pin.onClick {
+            view?.let { it1 ->
+                Navigation.findNavController(it1)
+                    .navigate(R.id.action_profileFragment_to_pinCodeFragment2)
+            }
+        }
+        ll_reset_password.onClick {
+            view?.let { it1 ->
+                Navigation.findNavController(it1)
+                    .navigate(
+                        R.id.action_profileFragment_to_passwordRecoveryFragment2
+                    )
+            }
+        }
         tv_add_card.onClick {
             view?.let { it1 ->
                 Navigation.findNavController(it1)
@@ -75,10 +109,10 @@ class ProfileFragment : BaseFragment() {
     }
 
     private fun initObservers() {
-        viewModel.isError.observe(viewLifecycleOwner, Observer {
+        viewModel.isError.observe(viewLifecycleOwner, {
             errorDialog(getString(R.string.error_unknown_body))
         })
-        viewModel.cardList.observe(viewLifecycleOwner, Observer {
+        viewModel.cardList.observe(viewLifecycleOwner, {
             if (it != null) {
                 addCard(it)
             } else {
@@ -91,6 +125,17 @@ class ProfileFragment : BaseFragment() {
                 setProfileInfo(it)
             } else {
                 errorDialog(getString(R.string.error_unknown_body))
+            }
+        })
+        viewModel.isLogout.observe(viewLifecycleOwner, {
+            when (it) {
+                true -> startActivity(intentFor<AuthorizationActivity>())
+                false ->
+                    Toast.makeText(
+                        context,
+                        getString(R.string.an_error_occurred_while_logging_out),
+                        Toast.LENGTH_LONG
+                    ).show()
             }
         })
     }

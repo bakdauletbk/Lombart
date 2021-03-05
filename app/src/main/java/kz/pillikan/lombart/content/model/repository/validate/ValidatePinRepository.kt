@@ -1,4 +1,4 @@
-package kz.pillikan.lombart.content.model.repository.home
+package kz.pillikan.lombart.content.model.repository.validate
 
 import android.app.Application
 import android.content.Context

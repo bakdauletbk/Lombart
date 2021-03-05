@@ -57,7 +57,12 @@ class CreatePasswordFragment : BaseFragment() {
 
     private fun initListeners() {
         btn_proceed_.onClick { prepareLogin() }
-        iv_back.onClick { activity?.onBackPressed() }
+        iv_back.onClick {
+            view?.let {
+                Navigation.findNavController(it)
+                    .navigate(R.id.action_createPasswordFragment_to_smsFragment)
+            }
+        }
     }
 
     private fun prepareLogin() {

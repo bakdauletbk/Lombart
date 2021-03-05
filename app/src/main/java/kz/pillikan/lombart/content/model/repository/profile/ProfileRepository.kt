@@ -44,4 +44,15 @@ class ProfileRepository(application: Application) {
         }
     }
 
+    fun logout(): Boolean {
+        return try {
+            sessionManager.clear()
+            true
+        } catch (e: Exception) {
+            false
+        }
+
+
+    }
+
 }

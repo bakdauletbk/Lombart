@@ -7,8 +7,10 @@ import android.widget.Toast
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
+import com.yandex.mapkit.MapKitFactory
 import kotlinx.android.synthetic.main.activity_foundation.*
 import kz.pillikan.lombart.R
+import kz.pillikan.lombart.common.remote.ApiConstants
 import kz.pillikan.lombart.common.views.BaseActivity
 
 class FoundationActivity : BaseActivity() {
@@ -36,8 +38,8 @@ class FoundationActivity : BaseActivity() {
     }
 
     private fun destinationListeners(navController: NavController) {
-        navController.addOnDestinationChangedListener { _ , destination, _ ->
-            when (destination.id){
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
                 R.id.profileFragment -> {
                     switchMenuItem(PROFILE)
                     showBottomNavigation(navController)
@@ -63,17 +65,16 @@ class FoundationActivity : BaseActivity() {
         }
     }
 
-
     private fun setupNavController(navController: NavController) {
         bottom_navigation.itemIconTintList = null
         bottom_navigation.setupWithNavController(navController)
     }
 
-    private fun switchMenuItem(index: Int, enabled: Boolean = true){
+    private fun switchMenuItem(index: Int, enabled: Boolean = true) {
         bottom_navigation.menu.getItem(index).isEnabled = enabled
     }
 
-    private fun hideBottomNavigation(){
+    private fun hideBottomNavigation() {
         bottom_navigation.visibility = View.GONE
     }
 

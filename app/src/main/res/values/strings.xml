@@ -42,6 +42,7 @@
     <string name="error_no_internet_msg">Пожалуйста проверьте ваше интернет соединение и попробуйте ещё раз</string>
     <string name="error_auth_wrong_data_title">Авторизация не пройдена</string>
     <string name="error_auth_wrong_data_msg">Вы ввели неверный логин или пароль. Пожалуйста, проверьте ваши данные и попробуйте ещё раз</string>
+    <string name="an_error_occurred_while_logging_out">Произошла ошибка при выходе из аккаунта!</string>
 
 
     //About
@@ -133,5 +134,8 @@
     <string name="you_have_no_notification">У вас нет уведомление</string>
     <string name="to_share">Поделиться</string>
     <string name="edit_pin">Введите PIN</string>
+    <string name="sequrity">Безопасность</string>
+    <string name="reset_pin_code">Изменить код доступа</string>
+    <string name="reset_password">Сменить пароль</string>
 
 </resources>

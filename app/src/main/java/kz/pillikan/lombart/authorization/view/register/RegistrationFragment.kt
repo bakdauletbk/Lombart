@@ -66,7 +66,12 @@ class RegistrationFragment : BaseFragment() {
 
     private fun initListeners() {
         btn_create.onClick { prepareCheckIin() }
-        iv_back.onClick { activity?.onBackPressed() }
+        iv_back.onClick {
+            view?.let {
+                Navigation.findNavController(it)
+                    .navigate(R.id.action_registrationFragment_to_signInFragment)
+            }
+        }
     }
 
     private fun prepareCheckIin() {

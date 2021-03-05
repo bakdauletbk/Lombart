@@ -1,5 +1,6 @@
-package kz.pillikan.lombart.content.view.home
+package kz.pillikan.lombart.content.view.validate
 
+import android.annotation.SuppressLint
 import android.app.KeyguardManager
 import android.content.Context
 import android.content.DialogInterface
@@ -8,8 +9,6 @@ import android.hardware.biometrics.BiometricPrompt
 import android.os.Build
 import android.os.Bundle
 import android.os.CancellationSignal
-import android.security.keystore.KeyGenParameterSpec
-import android.security.keystore.KeyProperties
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,7 +26,7 @@ import kz.pillikan.lombart.common.helpers.Validators
 import kz.pillikan.lombart.common.helpers.base64encode
 import kz.pillikan.lombart.common.views.BaseFragment
 import kz.pillikan.lombart.content.model.request.home.ValidatePinRequest
-import kz.pillikan.lombart.content.viewmodel.home.ValidatePinViewModel
+import kz.pillikan.lombart.content.viewmodel.validate.ValidatePinViewModel
 import org.jetbrains.anko.sdk27.coroutines.onClick
 import org.jetbrains.anko.support.v4.alert
 
@@ -52,7 +51,6 @@ class ValidatePinFragment : BaseFragment() {
                 findNavController().navigate(ValidatePinFragmentDirections.actionValidatePinFragmentToHomeFragment())
             }
         }
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -97,7 +95,7 @@ class ValidatePinFragment : BaseFragment() {
             .setNegativeButton(
                 getString(R.string.cancel),
                 activity?.mainExecutor!!,
-                DialogInterface.OnClickListener { _, _ ->
+                DialogInterface.OnClickListener { dialog, _ ->
                     Toast.makeText(
                         context,
                         getString(R.string.authentication_canceled),
@@ -109,6 +107,7 @@ class ValidatePinFragment : BaseFragment() {
             getCancellationSignal(),
             activity?.mainExecutor!!, authenticationCallback
         )
+
     }
 
     private fun getCancellationSignal(): CancellationSignal {
@@ -124,8 +123,10 @@ class ValidatePinFragment : BaseFragment() {
         return cancellationSignal
     }
 
+    @SuppressLint("InlinedApi")
     @RequiresApi(Build.VERSION_CODES.M)
     private fun initPermission(): Boolean {
+
         val keyguardManager: KeyguardManager =
             activity?.getSystemService(Context.KEYGUARD_SERVICE)!! as KeyguardManager
 
@@ -137,6 +138,7 @@ class ValidatePinFragment : BaseFragment() {
             ).show()
             return false
         }
+
         if (ActivityCompat.checkSelfPermission(
                 requireContext(),
                 android.Manifest.permission.USE_BIOMETRIC
@@ -149,6 +151,7 @@ class ValidatePinFragment : BaseFragment() {
             ).show()
             return false
         }
+
         return if (activity?.packageManager!!.hasSystemFeature(PackageManager.FEATURE_FINGERPRINT)) {
             true
         } else true

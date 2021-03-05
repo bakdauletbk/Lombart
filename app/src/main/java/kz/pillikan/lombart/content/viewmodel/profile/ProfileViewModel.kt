@@ -14,6 +14,7 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
     var cardList: MutableLiveData<List<CardModel>> = MutableLiveData()
     var profileInfo: MutableLiveData<ProfileInfo> = MutableLiveData()
     val isError: MutableLiveData<String> = MutableLiveData()
+    val isLogout: MutableLiveData<Boolean> = MutableLiveData()
 
     private val repository: ProfileRepository = ProfileRepository(application)
 
@@ -42,4 +43,9 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
             }
         }
     }
+
+    fun logout() {
+        isLogout.postValue(repository.logout())
+    }
+
 }
