@@ -86,7 +86,7 @@ class ProfileFragment : BaseFragment() {
             view?.let { it1 ->
                 Navigation.findNavController(it1)
                     .navigate(
-                        R.id.action_profileFragment_to_passwordRecoveryFragment2
+                        R.id.action_profileFragment_to_changePassword
                     )
             }
         }

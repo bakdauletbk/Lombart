@@ -54,7 +54,8 @@ class PasswordRecoveryFragment : BaseFragment() {
         toolbar_recovery.setTitleTextColor(Color.BLACK)
         toolbar_recovery.setNavigationOnClickListener {
             view?.let { it1 ->
-                Navigation.findNavController(it1).navigate(R.id.action_passwordRecoveryFragment_to_signInFragment)
+                Navigation.findNavController(it1)
+                    .navigate(R.id.action_passwordRecoveryFragment_to_signInFragment)
             }
         }
     }
@@ -91,7 +92,7 @@ class PasswordRecoveryFragment : BaseFragment() {
             } else {
                 Toast.makeText(
                     this.context,
-                    "Введенные Вами данные некорректны!",
+                    getString(R.string.you_entered_is_incorrect),
                     Toast.LENGTH_LONG
                 ).show()
             }
@@ -128,7 +129,11 @@ class PasswordRecoveryFragment : BaseFragment() {
         viewModel.isResetPassword.observe(viewLifecycleOwner, {
             when (it) {
                 true -> {
-                    Toast.makeText(context, "Пароль успешно изменён!", Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        context,
+                        getString(R.string.password_changed_successfully),
+                        Toast.LENGTH_LONG
+                    ).show()
                     view?.let { it1 ->
                         Navigation.findNavController(it1).navigate(R.id.signInFragment)
                     }
@@ -184,7 +189,7 @@ class PasswordRecoveryFragment : BaseFragment() {
 
         when (temporary.isNotEmpty()) {
             true -> verificationNumber(checkNumberRequest)
-            false ->  Toast.makeText(
+            false -> Toast.makeText(
                 requireContext(),
                 "Введенные вами смс некорректны!",
                 Toast.LENGTH_LONG

@@ -8,8 +8,8 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="kz.pillikan.lombart.content.view.home.HomeFragment"
-        tools:layout="@layout/fragment_home"
-        android:label="HomeFragment">
+        android:label="HomeFragment"
+        tools:layout="@layout/fragment_home">
 
         <action
             android:id="@+id/action_homeFragment_to_profileFragment"
@@ -20,7 +20,7 @@
         android:id="@+id/notificationsFragment"
         android:name="kz.pillikan.lombart.content.view.notifications.NotificationsFragment"
         android:label="NotificationsFragment"
-        tools:layout="@layout/fragment_notifications"/>
+        tools:layout="@layout/fragment_notifications" />
     <fragment
         android:id="@+id/profileFragment"
         android:name="kz.pillikan.lombart.content.view.profile.ProfileFragment"
@@ -41,8 +41,8 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
         <action
-            android:id="@+id/action_profileFragment_to_passwordRecoveryFragment2"
-            app:destination="@id/passwordRecoveryFragment2"
+            android:id="@+id/action_profileFragment_to_changePassword"
+            app:destination="@id/changePassword"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
@@ -52,17 +52,17 @@
         android:id="@+id/appealFragment"
         android:name="kz.pillikan.lombart.content.view.appeal.AppealFragment"
         android:label="AppealFragment"
-        tools:layout="@layout/fragment_appeal"/>
+        tools:layout="@layout/fragment_appeal" />
     <fragment
         android:id="@+id/aboutFragment"
         android:name="kz.pillikan.lombart.content.view.about.AboutFragment"
         android:label="AboutFragment"
-        tools:layout="@layout/fragment_about"/>
+        tools:layout="@layout/fragment_about" />
     <fragment
         android:id="@+id/addCardFragment"
         android:name="kz.pillikan.lombart.content.view.profile.AddCardFragment"
         android:label="AddCardFragment"
-        tools:layout="@layout/fragment_add_cards"/>
+        tools:layout="@layout/fragment_add_cards" />
     <fragment
         android:id="@+id/validatePinFragment"
         android:name="kz.pillikan.lombart.content.view.validate.ValidatePinFragment"
@@ -77,8 +77,14 @@
         android:name="kz.pillikan.lombart.authorization.view.pin.PinCodeFragment"
         android:label="PinCodeFragment" />
     <fragment
-        android:id="@+id/passwordRecoveryFragment2"
-        android:name="kz.pillikan.lombart.authorization.view.recovery.PasswordRecoveryFragment"
-        android:label="PasswordRecoveryFragment" />
+        android:id="@+id/changePassword"
+        android:name="kz.pillikan.lombart.content.view.profile.ChangePassword"
+        android:label="ChangePassword">
+        <action
+            android:id="@+id/action_changePassword_to_profileFragment"
+            app:destination="@id/profileFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right" />
+    </fragment>
 
 </navigation>

@@ -107,6 +107,7 @@
     <string name="repeat_the_code_again">Повторить код повторно</string>
     <string name="enter_a_code">Введите код</string>
     <string name="enter_cade">Подтвердить код</string>
+    <string name="сonfirm">Подтвердить</string>
     <string name="create_a_password">Придумать пароль</string>
     <string name="password_again">Повторить пароль</string>
     <string name="proceed">Продолжить</string>
@@ -114,7 +115,7 @@
     <string name="successfully_account">Вы успешно зарегистрировались!</string>
     <string name="edit_number">Ввести номер телефона</string>
     <string name="a_temporary_password">Временный пароль</string>
-    <string name="come_up_with_a_new_password">Придумать новый пароль</string>
+    <string name="new_password">Придумать новый пароль</string>
     <string name="reestablish">Восстанавить</string>
     <string name="create_pin_code">Создать PIN код</string>
     <string name="text_pin_code">Вы будете использовать это код для входа</string>
@@ -138,6 +139,7 @@
     <string name="name_user">Имя пользователя</string>
     <string name="edit_iin">Ввести ИИН</string>
     <string name="sms_edit">Введите смс код</string>
+    <string name="password_edit">Введите пароль!</string>
     <string name="select_number">Выберите номер телефона</string>
     <string name="you_have_no_notification">У вас нет уведомление</string>
     <string name="to_share">Поделиться</string>
@@ -148,6 +150,10 @@
     <string name="price">Сумма</string>
     <string name="date">Дата</string>
     <string name="transaction_number">Номер транзакции</string>
+    <string name="current_password">Текущий пароль</string>
+    <string name="save">Сохранить</string>
+    <string name="password_changed_successfully">Пароль успешно изменён!</string>
+    <string name="you_entered_is_incorrect">Введенные Вами данные некорректны!</string>
 
 
 </resources>

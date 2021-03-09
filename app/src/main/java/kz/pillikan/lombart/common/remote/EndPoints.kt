@@ -21,4 +21,6 @@ object EndPoints {
     const val POST_FINENESS_PRICE = "/v1/cert/get-prices"
     const val POST_VALIDATE_PIN = "/v1/profile/validate-pin"
     const val POST_ADDRESS = "/v1/cert/addresses-contacts"
+    const val POST_CHECK_PASSWORD = "/v1/profile/check-password"
+    const val POST_CHANGE_PASSWORD = "/v1/profile/change-password"
 }
