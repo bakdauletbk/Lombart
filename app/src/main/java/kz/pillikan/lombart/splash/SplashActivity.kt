@@ -48,6 +48,7 @@ class SplashActivity : BaseActivity() {
 
         viewModel.isAuthorize.observe(mContext,  {
             if (it){
+                finish()
                 startActivity(intentFor<FoundationActivity>())
             }else{
                 startActivity(intentFor<AuthorizationActivity>())

@@ -16,11 +16,11 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
         <action
-            android:id="@+id/action_createPasswordFragment_to_smsFragment"
-            app:destination="@id/smsFragment"
+            android:id="@+id/action_createPasswordFragment_to_signInFragment3"
+            app:destination="@id/signInFragment"
             app:enterAnim="@anim/slide_in_left"
-            app:exitAnim="@anim/slide_out_right"
-            />
+            app:exitAnim="@anim/slide_out_right"/>
+
     </fragment>
     <fragment
         android:id="@+id/successfullyFragment"
@@ -61,11 +61,10 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
         <action
-            android:id="@+id/action_smsFragment_to_registrationFragment"
-            app:destination="@id/registrationFragment"
+            android:id="@+id/action_smsFragment_to_signInFragment"
+            app:destination="@id/signInFragment"
             app:enterAnim="@anim/slide_in_left"
-            app:exitAnim="@anim/slide_out_right"
-           />
+            app:exitAnim="@anim/slide_out_right"/>
     </fragment>
     <fragment
         android:id="@+id/pinCodeFragment"

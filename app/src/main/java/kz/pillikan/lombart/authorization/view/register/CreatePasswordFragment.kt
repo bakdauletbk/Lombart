@@ -116,7 +116,7 @@ class CreatePasswordFragment : BaseFragment() {
     private fun initNavigation() {
         view?.let { it1 ->
             Navigation.findNavController(it1)
-                .navigate(R.id.action_createPasswordFragment_to_successfullyFragment)
+                .navigate(R.id.action_createPasswordFragment_to_signInFragment3)
         }
     }
 

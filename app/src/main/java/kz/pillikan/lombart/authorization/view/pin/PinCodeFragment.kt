@@ -18,6 +18,7 @@ import kz.pillikan.lombart.common.helpers.Validators
 import kz.pillikan.lombart.common.helpers.base64encode
 import kz.pillikan.lombart.common.views.BaseFragment
 import kz.pillikan.lombart.content.view.FoundationActivity
+import org.jetbrains.anko.activityManager
 import org.jetbrains.anko.sdk27.coroutines.onClick
 import org.jetbrains.anko.support.v4.alert
 import org.jetbrains.anko.support.v4.intentFor
@@ -82,7 +83,10 @@ class PinCodeFragment : BaseFragment() {
         })
         viewModel.isSuccess.observe(viewLifecycleOwner, {
             when (it) {
-                true -> startActivity(intentFor<FoundationActivity>())
+                true -> {
+                    requireActivity().finish()
+                    startActivity(intentFor<FoundationActivity>())
+                }
                 false -> Toast.makeText(context, "Ошибка при сохранении!", Toast.LENGTH_LONG).show()
             }
         })

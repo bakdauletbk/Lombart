@@ -117,7 +117,9 @@ class SmsFragment : BaseFragment() {
             setSendSms()
         }
         iv_back.onClick {
-            activity?.finish()
+            view?.let { it1 ->
+                Navigation.findNavController(it1).navigate(R.id.action_smsFragment_to_signInFragment)
+            }
         }
     }
 

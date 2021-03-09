@@ -99,6 +99,8 @@ class HomeFragment : BaseFragment() {
         setTodayDate()
     }
 
+
+
     private fun initViewPager() {
         vp_banners.adapter = bannerAdapter
         vp_banners.apply {

@@ -56,6 +56,7 @@ class SignInFragment : BaseFragment() {
         })
         viewModel.isSuccess.observe(viewLifecycleOwner, {
             if (it) {
+                requireActivity().finish()
                 startActivity(intentFor<FoundationActivity>())
             } else {
                 onSuccessFullDialog()
