@@ -6,6 +6,7 @@ import kz.pillikan.lombart.authorization.model.response.SignInResponse
 import kz.pillikan.lombart.content.model.request.appeal.FeedbackRequest
 import kz.pillikan.lombart.content.model.request.home.ValidatePinRequest
 import kz.pillikan.lombart.content.model.request.notifications.PageRequest
+import kz.pillikan.lombart.content.model.response.about.AddressResponse
 import kz.pillikan.lombart.content.model.response.home.*
 import kz.pillikan.lombart.content.model.response.notifications.NotificationsResponse
 import okhttp3.ResponseBody
@@ -115,6 +116,12 @@ interface NetworkService {
         @Header("appVer") appVer: String,
         @Body validatePinRequest: ValidatePinRequest
     ): Response<ResponseBody>
+
+    @POST(EndPoints.POST_ADDRESS)
+    suspend fun getAddress(
+        @Header("Authorization") Authorization: String,
+        @Header("appVer") appVer: String
+    ): Response<AddressResponse>
 
 
 }

@@ -34,7 +34,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/dimens_79dp"
+                android:layout_marginTop="@dimen/dimens_50dp"
                 android:src="@drawable/ic_error"
                 tools:ignore="ContentDescription" />
 

@@ -4,18 +4,29 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import com.yandex.mapkit.MapKit
 import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.map.CameraPosition
+import com.yandex.runtime.image.ImageProvider
+import com.yandex.runtime.ui_view.ViewProvider
 import kotlinx.android.synthetic.main.fragment_about.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kz.pillikan.lombart.R
 import kz.pillikan.lombart.common.views.BaseFragment
+import kz.pillikan.lombart.content.model.response.about.AddressList
+import kz.pillikan.lombart.content.viewmodel.about.AboutViewModel
+import org.jetbrains.anko.alert
+import java.util.ArrayList
 
 
 class AboutFragment : BaseFragment() {
 
     private var mapKit: MapKit? = null
+    private lateinit var viewModel: AboutViewModel
 
     companion object {
         const val LATITUDE = 42.330639
@@ -44,7 +55,46 @@ class AboutFragment : BaseFragment() {
     }
 
     private fun lets() {
+        initViewModel()
         initMap()
+        getAddress()
+        initObservers()
+    }
+
+    private fun getAddress() {
+        setLoading(true)
+        CoroutineScope(Dispatchers.IO).launch {
+            viewModel.getAddress()
+        }
+    }
+
+    private fun initViewModel() {
+        viewModel = ViewModelProvider(this).get(AboutViewModel::class.java)
+    }
+
+    private fun initObservers() {
+        viewModel.isError.observe(viewLifecycleOwner, {
+            errorDialog(getString(R.string.error_unknown_body))
+        })
+        viewModel.addressList.observe(viewLifecycleOwner, {
+            if (it != null) {
+                setLoading(false)
+                setAddress(it)
+            } else {
+                errorDialog(getString(R.string.error_unknown_body))
+            }
+        })
+    }
+
+    private fun setAddress(addressList: ArrayList<AddressList>) {
+        for (i in 0 until addressList.size) {
+            map_view.map.mapObjects.addPlacemark(
+                Point(
+                    addressList[i].latitude!!.toDouble(), addressList[i].longitude!!.toDouble()
+                )
+            )
+        }
+
     }
 
     private fun initMap() {
@@ -55,7 +105,6 @@ class AboutFragment : BaseFragment() {
             com.yandex.mapkit.Animation(com.yandex.mapkit.Animation.Type.SMOOTH, DURATION),
             null
         )
-
     }
 
     override fun onStop() {
@@ -68,6 +117,22 @@ class AboutFragment : BaseFragment() {
         super.onStart()
         MapKitFactory.getInstance().onStart()
         map_view.onStart()
+    }
+
+    private fun errorDialog(errorMsg: String) {
+        activity?.alert {
+            title = getString(R.string.error_unknown_title)
+            message = errorMsg
+            isCancelable = false
+            positiveButton(getString(R.string.dialog_ok)) { dialog ->
+                setLoading(false)
+                dialog.dismiss()
+            }
+        }?.show()
+    }
+
+    private fun setLoading(loading: Boolean) {
+        loadingView.visibility = if (loading) View.VISIBLE else View.GONE
     }
 
 }

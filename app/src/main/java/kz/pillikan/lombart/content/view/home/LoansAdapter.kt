@@ -57,7 +57,7 @@ class LoansAdapter : RecyclerView.Adapter<LoansAdapter.LoansHolder> {
                 formatDate(loansList.ticketInfo.StartDate!!) + " - " + formatDate(loansList.ticketInfo.EndDate!!)
 
             btnPay.setOnClickListener { v: View ->
-                callback.onAlertDialog(loansList)
+                callback.onPayAlertDialog(loansList)
             }
 
         }

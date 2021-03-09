@@ -37,7 +37,6 @@ class FoundationActivity : BaseActivity() {
         destinationListeners(navController)
     }
 
-
     private fun destinationListeners(navController: NavController) {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {

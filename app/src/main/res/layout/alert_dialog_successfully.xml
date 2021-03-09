@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,9 +7,22 @@
     android:background="@drawable/shape_item_loans"
     android:orientation="vertical">
 
+    <ImageView
+        android:id="@+id/iv_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="@dimen/dimens_10dp"
+        android:layout_marginEnd="@dimen/dimens_5dp"
+        android:layout_marginBottom="@dimen/dimens_10dp"
+        android:padding="@dimen/dimens_10dp"
+        android:src="@drawable/ic_close"
+        tools:ignore="ContentDescription" />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/iv_close"
         tools:ignore="UselessParent">
 
         <LinearLayout
@@ -17,36 +30,127 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/ic_successfully"
+                tools:ignore="ContentDescription" />
+
             <TextView
                 android:id="@+id/tv_id"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginStart="@dimen/dimens_23dp"
-                android:layout_marginTop="@dimen/dimens_32dp"
+                android:layout_marginTop="@dimen/dimens_10dp"
                 android:layout_marginEnd="@dimen/dimens_20dp"
                 android:text="@string/pay_successfully"
                 android:textColor="@color/black"
                 android:textSize="22sp"
                 android:textStyle="bold" />
 
-            <ImageView
-                android:layout_width="wrap_content"
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimens_1dp"
+                android:layout_marginStart="@dimen/dimens_20dp"
+                android:layout_marginTop="@dimen/dimens_10dp"
+                android:layout_marginEnd="@dimen/dimens_10dp"
+                android:background="@color/gray" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/dimens_79dp"
-                android:src="@drawable/ic_successfully"
-                tools:ignore="ContentDescription" />
+                android:layout_marginStart="@dimen/dimens_15dp"
+                android:layout_marginTop="@dimen/dimens_9dp"
+                android:layout_marginEnd="@dimen/dimens_15dp"
+                android:baselineAligned="false"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/dimens_10dp"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/price"
+                        android:textColor="@color/gray"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimens_14dp"
+                        android:text="@string/date"
+                        android:textColor="@color/gray"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimens_14dp"
+                        android:text="@string/transaction_number"
+                        android:textColor="@color/gray"
+                        android:textSize="14sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimens_10dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_sum"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/loading"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimens_10dp"
+                        android:text="@string/loading"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_number_transaction"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimens_10dp"
+                        android:text="@string/loading"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+            </LinearLayout>
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_to_share"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dimens_20dp"
-                android:layout_marginTop="@dimen/dimens_114dp"
+                android:layout_marginTop="@dimen/dimens_35dp"
                 android:layout_marginEnd="@dimen/dimens_20dp"
                 android:layout_marginBottom="@dimen/dimens_27dp"
                 android:paddingVertical="@dimen/dimens_10dp"
-                android:text="@string/close"
+                android:text="@string/to_share"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="18sp"
@@ -57,4 +161,4 @@
 
     </ScrollView>
 
-</LinearLayout>
+</RelativeLayout>

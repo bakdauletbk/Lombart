@@ -88,6 +88,7 @@
     <string name="firstname_lastname">Имя Фамилия</string>
     <string name="your_appeal">Ваше обращение</string>
     <string name="send">Отправить</string>
+    <string name="enter_data">Введите данные!</string>
     <string name="currency">Валюта</string>
     <string name="purchase">Покупка</string>
     <string name="sale">Продажа</string>
@@ -144,5 +145,9 @@
     <string name="sequrity">Безопасность</string>
     <string name="reset_pin_code">Изменить код доступа</string>
     <string name="reset_password">Сменить пароль</string>
+    <string name="price">Сумма</string>
+    <string name="date">Дата</string>
+    <string name="transaction_number">Номер транзакции</string>
+
 
 </resources>

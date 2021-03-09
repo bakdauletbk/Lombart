@@ -20,4 +20,5 @@ object EndPoints {
     const val POST_NOTIFICATION = "/v1/notification/list"
     const val POST_FINENESS_PRICE = "/v1/cert/get-prices"
     const val POST_VALIDATE_PIN = "/v1/profile/validate-pin"
+    const val POST_ADDRESS = "/v1/cert/addresses-contacts"
 }

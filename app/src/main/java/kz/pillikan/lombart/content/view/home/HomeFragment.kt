@@ -2,6 +2,7 @@ package kz.pillikan.lombart.content.view.home
 
 import android.annotation.SuppressLint
 import android.app.Dialog
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -27,6 +28,7 @@ import kz.pillikan.lombart.common.helpers.convertDpToPixel
 import kz.pillikan.lombart.common.helpers.formatDate
 import kz.pillikan.lombart.common.views.BaseFragment
 import kz.pillikan.lombart.content.model.response.home.*
+import kz.pillikan.lombart.content.view.notifications.NotificationsFragment
 import kz.pillikan.lombart.content.viewmodel.home.HomeViewModel
 import org.jetbrains.anko.alert
 import org.jetbrains.anko.sdk27.coroutines.onClick
@@ -38,9 +40,11 @@ class HomeFragment : BaseFragment() {
     private val adapters: LoansAdapter = LoansAdapter(this)
     private lateinit var viewModel: HomeViewModel
     private val bannerAdapter by lazy { PagerAdapter(context) }
-    private var alertDialog: Dialog? = null
+    private var payAlertDialog: Dialog? = null
+    private var successAlertDialog: Dialog? = null
     private var isDialogVisibility = false
     private var isPay = false
+    private val intent = Intent()
 
     companion object {
         const val TAG = "HomeFragment"
@@ -73,6 +77,12 @@ class HomeFragment : BaseFragment() {
         const val ONE = 1
         const val TIME_MILLIS: Long = 4000
         const val ZERO = 0
+        const val NUMBER_TRANSACTION = "Номер транзакции: "
+        const val PRICE = " , Сумма: "
+        const val DATE_TRANSACTION = " , Дата транзакции: "
+        const val STATUS_PAY = " , Статус: Оплачено"
+        const val FORMAT_DATE = "dd.MM.yyyy"
+        const val FOR = "за "
     }
 
     override fun onCreateView(
@@ -98,8 +108,6 @@ class HomeFragment : BaseFragment() {
         setBannerContent()
         setTodayDate()
     }
-
-
 
     private fun initViewPager() {
         vp_banners.adapter = bannerAdapter
@@ -312,7 +320,8 @@ class HomeFragment : BaseFragment() {
                 }
             }
             false -> {
-                Snackbar.make(requireView(), "Введите данные!", Snackbar.LENGTH_LONG).show()
+                Snackbar.make(requireView(), getString(R.string.enter_data), Snackbar.LENGTH_LONG)
+                    .show()
             }
         }
     }
@@ -473,32 +482,48 @@ class HomeFragment : BaseFragment() {
     }
 
     @SuppressLint("SetTextI18n")
-    fun onAlertDialog(loansList: Tickets) {
-        alertDialog = Dialog(requireContext())
-        alertDialog!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        alertDialog!!.setContentView(R.layout.alert_dialog_pay)
+    fun onPayAlertDialog(loansList: Tickets) {
+        payAlertDialog = Dialog(requireContext())
+        payAlertDialog!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        payAlertDialog!!.setContentView(R.layout.alert_dialog_pay)
 
-        val tvId: TextView = alertDialog!!.findViewById(R.id.tv_id)
-        val tvLoans: TextView = alertDialog!!.findViewById(R.id.tv_loans)
-        val tvAmount: TextView = alertDialog!!.findViewById(R.id.tv_renewal_amount)
-        val tvDate: TextView = alertDialog!!.findViewById(R.id.tv_date)
-        val tvTotalPrice: TextView = alertDialog!!.findViewById(R.id.tv_loan_amount)
-        val btnPay: MaterialButton = alertDialog!!.findViewById(R.id.btn_pay_loan)
+        val tvId: TextView = payAlertDialog!!.findViewById(R.id.tv_id)
+        val tvLoans: TextView = payAlertDialog!!.findViewById(R.id.tv_loans)
+        val tvAmount: TextView = payAlertDialog!!.findViewById(R.id.tv_renewal_amount)
+        val tvDate: TextView = payAlertDialog!!.findViewById(R.id.tv_date)
+        val tvTotalPrice: TextView = payAlertDialog!!.findViewById(R.id.tv_loan_amount)
+        val btnPay: MaterialButton = payAlertDialog!!.findViewById(R.id.btn_pay_loan)
+        val ivClose: ImageView = payAlertDialog!!.findViewById(R.id.iv_close)
 
         var specification: String = EMPTY
         for (i in ZERO until loansList.items.size) {
             specification += "\n${loansList.items[i].Specification}\n"
         }
 
+        val price = loansList.ticketInfo.TotalPayment
+        val date = formatDate(loansList.ticketInfo.WaitDate!!)
+        val transaction = loansList.ticketInfo.Number
+
         tvLoans.text = specification
-        tvId.text = NUMBERING + loansList.ticketInfo.Number
-        tvAmount.text = loansList.ticketInfo.TotalPayment + MONEY
-        tvDate.text = formatDate(loansList.ticketInfo.WaitDate!!) + YEARS
+        tvId.text = NUMBERING + transaction
+        tvAmount.text = price + MONEY
+        tvDate.text = date + YEARS
         tvTotalPrice.text = loansList.ticketInfo.totalDebt + MONEY
+
+        ivClose.onClick {
+            payAlertDialog!!.dismiss()
+        }
 
         btnPay.onClick {
             when (isPay) {
                 true -> {
+                    isPay = false
+                    payAlertDialog!!.dismiss()
+                    onSuccessfullyAlert(
+                        price = price.toString(),
+                        date = date,
+                        transaction = transaction.toString()
+                    )
                 }
                 false -> {
                     isPay = true
@@ -511,14 +536,51 @@ class HomeFragment : BaseFragment() {
                 }
             }
         }
-        alertDialog!!.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        alertDialog!!.show()
+        payAlertDialog!!.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        payAlertDialog!!.show()
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun onSuccessfullyAlert(price: String, date: String, transaction: String) {
+        successAlertDialog = Dialog(requireContext())
+        successAlertDialog!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        successAlertDialog!!.setContentView(R.layout.alert_dialog_successfully)
+
+        val tvSum: TextView = successAlertDialog!!.findViewById(R.id.tv_sum)
+        val tvDate: TextView = successAlertDialog!!.findViewById(R.id.tv_date)
+        val tvTransaction: TextView = successAlertDialog!!.findViewById(R.id.tv_number_transaction)
+        val btnShare: MaterialButton = successAlertDialog!!.findViewById(R.id.btn_to_share)
+        val ivClose: ImageView = successAlertDialog!!.findViewById(R.id.iv_close)
+
+        tvSum.text = price + MONEY
+        tvDate.text = date + YEARS
+        tvTransaction.text = transaction
+
+        val textShare =
+            NUMBER_TRANSACTION + transaction + PRICE + price + MONEY + DATE_TRANSACTION + date + YEARS + STATUS_PAY
+
+        btnShare.onClick {
+            intent.action = Intent.ACTION_SEND
+            intent.type = NotificationsFragment.TEXT_TYPE
+            intent.putExtra(
+                Intent.EXTRA_TEXT,
+                textShare
+            )
+            startActivity(Intent.createChooser(intent, NotificationsFragment.SHARE))
+        }
+
+        ivClose.onClick {
+            successAlertDialog!!.dismiss()
+        }
+
+        successAlertDialog!!.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        successAlertDialog!!.show()
     }
 
     @SuppressLint("SetTextI18n", "SimpleDateFormat")
     private fun setTodayDate() {
-        val format = SimpleDateFormat("dd.MM.yyyy")
-        tv_this_day.text = "за " + format.format(Date()) + YEARS
+        val format = SimpleDateFormat(FORMAT_DATE)
+        tv_this_day.text = FOR + format.format(Date()) + YEARS
     }
 
     private fun setImage(drawable: Int) {
