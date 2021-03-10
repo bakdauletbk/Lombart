@@ -2,12 +2,11 @@ package kz.pillikan.lombart.content.model.repository.notifications
 
 import android.app.Application
 import android.content.Context
-import android.util.Log
 import kz.pillikan.lombart.BuildConfig
 import kz.pillikan.lombart.common.helpers.base64encode
 import kz.pillikan.lombart.common.models.Page
 import kz.pillikan.lombart.common.preference.SessionManager
-import kz.pillikan.lombart.common.remote.ApiConstants
+import kz.pillikan.lombart.common.remote.Constants
 import kz.pillikan.lombart.common.remote.Networking
 import kz.pillikan.lombart.content.model.request.notifications.PageRequest
 import kz.pillikan.lombart.content.model.response.notifications.DataList
@@ -19,7 +18,7 @@ class NotificationsRepository(application: Application) {
     }
 
     private val networkService =
-        Networking.create(ApiConstants.BASE_URL)
+        Networking.create(Constants.BASE_URL)
     private var sharedPreferences =
         application.getSharedPreferences("sessionManager", Context.MODE_PRIVATE)
     private var sessionManager: SessionManager =
@@ -31,11 +30,11 @@ class NotificationsRepository(application: Application) {
         val pageRequest = PageRequest(limit = limitBase64, page = pageBase64)
         val response =
             networkService.notificationList(
-                Authorization = ApiConstants.AUTH_TOKEN_PREFIX + sessionManager.getToken(),
+                Authorization = Constants.AUTH_TOKEN_PREFIX + sessionManager.getToken(),
                 appVer = BuildConfig.VERSION_NAME,
                 pageRequest
             )
-        return if (response.code() == ApiConstants.RESPONSE_SUCCESS_CODE) {
+        return if (response.code() == Constants.RESPONSE_SUCCESS_CODE) {
             val pageNumber = response.body()?.pages!!.toInt()
             val hasNextPage = !response.body()?.hasNext!!
             val notifications: ArrayList<DataList> = ArrayList()

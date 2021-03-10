@@ -9,13 +9,13 @@ import kz.pillikan.lombart.authorization.model.request.ResetPasswordRequest
 import kz.pillikan.lombart.authorization.model.request.SendSmsRequest
 import kz.pillikan.lombart.authorization.model.response.CheckResponse
 import kz.pillikan.lombart.common.preference.SessionManager
-import kz.pillikan.lombart.common.remote.ApiConstants
+import kz.pillikan.lombart.common.remote.Constants
 import kz.pillikan.lombart.common.remote.Networking
 
 class PasswordRecoveryRepository(application: Application) {
 
     private val networkService =
-        Networking.create(ApiConstants.BASE_URL)
+        Networking.create(Constants.BASE_URL)
     private var sharedPreferences =
         application.getSharedPreferences("sessionManager", Context.MODE_PRIVATE)
     private var sessionManager: SessionManager =
@@ -26,7 +26,7 @@ class PasswordRecoveryRepository(application: Application) {
             appVer = BuildConfig.VERSION_NAME,
             checkUserRequest = checkUserRequest
         )
-        return if (response.code() == ApiConstants.RESPONSE_SUCCESS_CODE) {
+        return if (response.code() == Constants.RESPONSE_SUCCESS_CODE) {
             response.body()
         } else {
             sessionManager.clear()
@@ -36,7 +36,7 @@ class PasswordRecoveryRepository(application: Application) {
 
     suspend fun sendSms(sendSmsRequest: SendSmsRequest): Boolean {
         val response = networkService.sendSms(appVer = BuildConfig.VERSION_NAME, sendSmsRequest)
-        return response.code() == ApiConstants.RESPONSE_SUCCESS_CODE
+        return response.code() == Constants.RESPONSE_SUCCESS_CODE
     }
 
     suspend fun verificationNumber(checkNumberRequest: CheckNumberRequest): Boolean {
@@ -44,7 +44,7 @@ class PasswordRecoveryRepository(application: Application) {
             appVer = BuildConfig.VERSION_NAME,
             checkNumberRequest = checkNumberRequest
         )
-        return response.code() == ApiConstants.RESPONSE_SUCCESS_CODE
+        return response.code() == Constants.RESPONSE_SUCCESS_CODE
     }
 
     suspend fun resetPassword(resetPasswordRequest: ResetPasswordRequest): Boolean {
@@ -52,6 +52,6 @@ class PasswordRecoveryRepository(application: Application) {
             appVer = BuildConfig.VERSION_NAME,
             resetPasswordRequest = resetPasswordRequest
         )
-        return response.code() == ApiConstants.RESPONSE_SUCCESS_CODE
+        return response.code() == Constants.RESPONSE_SUCCESS_CODE
     }
 }

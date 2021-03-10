@@ -110,36 +110,38 @@ class ProfileFragment : BaseFragment() {
 
     private fun initObservers() {
         viewModel.isError.observe(viewLifecycleOwner, {
-            errorDialog(getString(R.string.error_unknown_body))
+            errorDialogAlert()
         })
         viewModel.cardList.observe(viewLifecycleOwner, {
             if (it != null) {
                 addCard(it)
-            } else {
-                errorDialog(getString(R.string.error_unknown_body))
-            }
+            } else errorDialogAlert()
         })
         viewModel.profileInfo.observe(viewLifecycleOwner, {
             if (it != null) {
                 setLoading(false)
                 setProfileInfo(it)
-            } else {
-                errorDialog(getString(R.string.error_unknown_body))
-            }
+            } else errorDialogAlert()
         })
         viewModel.isLogout.observe(viewLifecycleOwner, {
             when (it) {
                 true -> startActivity(intentFor<AuthorizationActivity>())
-                false ->
+                false -> {
+                    setLoading(false)
                     Toast.makeText(
                         context,
                         getString(R.string.an_error_occurred_while_logging_out),
                         Toast.LENGTH_LONG
                     ).show()
+                }
             }
         })
     }
 
+    private fun errorDialogAlert(){
+        setLoading(false)
+        errorDialog(getString(R.string.error_unknown_body))
+    }
     private fun setProfileInfo(profileInfo: ProfileInfo) {
         tv_name.text = profileInfo.fio
         tv_number.text = profileInfo.phone
@@ -155,18 +157,6 @@ class ProfileFragment : BaseFragment() {
         rv_cards.apply {
             layoutManager = LinearLayoutManager(context)
         }
-    }
-
-    private fun errorDialog(errorMsg: String) {
-        activity?.alert {
-            title = getString(R.string.error_unknown_title)
-            message = errorMsg
-            isCancelable = false
-            positiveButton(getString(R.string.dialog_ok)) { dialog ->
-                setLoading(false)
-                dialog.dismiss()
-            }
-        }?.show()
     }
 
     private fun setLoading(loading: Boolean) {

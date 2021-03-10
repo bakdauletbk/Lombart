@@ -4,10 +4,9 @@ import android.app.Application
 import android.content.Context
 import kz.pillikan.lombart.BuildConfig
 import kz.pillikan.lombart.authorization.model.request.CheckUserRequest
-import kz.pillikan.lombart.authorization.model.request.SendSmsRequest
 import kz.pillikan.lombart.authorization.model.response.CheckResponse
 import kz.pillikan.lombart.common.preference.SessionManager
-import kz.pillikan.lombart.common.remote.ApiConstants
+import kz.pillikan.lombart.common.remote.Constants
 import kz.pillikan.lombart.common.remote.Networking
 
 class RegistrationRepository(application: Application) {
@@ -17,7 +16,7 @@ class RegistrationRepository(application: Application) {
     }
 
     private val networkService =
-        Networking.create(ApiConstants.BASE_URL)
+        Networking.create(Constants.BASE_URL)
     private var sharedPreferences =
         application.getSharedPreferences("sessionManager", Context.MODE_PRIVATE)
     private var sessionManager: SessionManager =
@@ -28,7 +27,7 @@ class RegistrationRepository(application: Application) {
             appVer = BuildConfig.VERSION_NAME,
             checkUserRequest = checkUserRequest
         )
-        return if (response.code() == ApiConstants.RESPONSE_SUCCESS_CODE) {
+        return if (response.code() == Constants.RESPONSE_SUCCESS_CODE) {
             response.body()
         } else {
             sessionManager.clear()

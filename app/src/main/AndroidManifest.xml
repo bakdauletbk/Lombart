@@ -30,6 +30,12 @@
 
         </activity>
 
+        <service android:name=".common.firebase.SertFirebaseService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
         <activity
             android:name=".authorization.view.AuthorizationActivity"
             android:configChanges="orientation|screenSize" />

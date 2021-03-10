@@ -176,12 +176,12 @@ class SmsFragment : BaseFragment() {
 
     private fun initObservers() {
         viewModel.isError.observe(viewLifecycleOwner, {
-            errorDialog(getString(R.string.error_unknown_body))
+            errorAlertDialog()
         })
         viewModel.isVerificationNumber.observe(viewLifecycleOwner, {
             when (it) {
                 true -> initNavigation()
-                false -> errorDialog(getString(R.string.the_sms_you_entered_incorrectly))
+                false -> errorAlertDialog()
             }
         })
         viewModel.isSendSms.observe(viewLifecycleOwner, {
@@ -195,9 +195,14 @@ class SmsFragment : BaseFragment() {
                         Toast.LENGTH_LONG
                     ).show()
                 }
-                false -> errorDialog(getString(R.string.the_sms_you_entered_incorrectly))
+                false -> errorAlertDialog()
             }
         })
+    }
+
+    private fun errorAlertDialog(){
+        setLoading(false)
+        errorDialog(getString(R.string.the_sms_you_entered_incorrectly))
     }
 
     private fun initNavigation() {
@@ -210,21 +215,6 @@ class SmsFragment : BaseFragment() {
             Navigation.findNavController(it1)
                 .navigate(R.id.action_smsFragment_to_createPasswordFragment, bundle)
         }
-    }
-
-    private fun errorDialog(errorMsg: String) {
-        alert {
-            title = getString(R.string.error_unknown_title)
-            message = errorMsg
-            isCancelable = false
-            positiveButton(getString(R.string.dialog_retry)) { dialog ->
-                setLoading(false)
-                dialog.dismiss()
-            }
-            negativeButton(getString(R.string.dialog_exit)) {
-                activity?.finish()
-            }
-        }.show()
     }
 
     private fun setLoading(loading: Boolean) {

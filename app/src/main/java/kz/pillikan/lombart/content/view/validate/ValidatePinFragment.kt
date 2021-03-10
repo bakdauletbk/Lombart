@@ -159,14 +159,19 @@ class ValidatePinFragment : BaseFragment() {
 
     private fun initObservers() {
         viewModel.isError.observe(viewLifecycleOwner, {
-            errorDialog(getString(R.string.error_unknown_body))
+            errorAlertDialog()
         })
         viewModel.isSuccess.observe(viewLifecycleOwner, {
             when (it) {
                 true -> findNavController().navigate(ValidatePinFragmentDirections.actionValidatePinFragmentToHomeFragment())
-                false -> errorDialog(getString(R.string.error_unknown_body))
+                false -> errorAlertDialog()
             }
         })
+    }
+
+    private fun errorAlertDialog(){
+        setLoading(false)
+        errorDialog(getString(R.string.error_unknown_body))
     }
 
     private fun preparePin() {
@@ -189,21 +194,6 @@ class ValidatePinFragment : BaseFragment() {
         CoroutineScope(Dispatchers.IO).launch {
             viewModel.validatePin(validatePinRequest)
         }
-    }
-
-    private fun errorDialog(errorMsg: String) {
-        alert {
-            title = getString(R.string.error_unknown_title)
-            message = errorMsg
-            isCancelable = false
-            positiveButton(getString(R.string.dialog_retry)) { dialog ->
-                setLoading(false)
-                dialog.dismiss()
-            }
-            negativeButton(getString(R.string.dialog_exit)) {
-                activity?.finish()
-            }
-        }.show()
     }
 
     private fun setLoading(loading: Boolean) {

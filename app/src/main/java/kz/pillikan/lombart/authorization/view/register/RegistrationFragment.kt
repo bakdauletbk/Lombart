@@ -17,7 +17,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kz.pillikan.lombart.R
 import kz.pillikan.lombart.authorization.model.request.CheckUserRequest
-import kz.pillikan.lombart.authorization.model.request.SendSmsRequest
 import kz.pillikan.lombart.authorization.model.request.SignUpRequest
 import kz.pillikan.lombart.authorization.model.response.CheckResponse
 import kz.pillikan.lombart.authorization.viewmodel.register.RegistrationViewModel
@@ -25,7 +24,6 @@ import kz.pillikan.lombart.common.helpers.Validators
 import kz.pillikan.lombart.common.helpers.base64encode
 import kz.pillikan.lombart.common.views.BaseFragment
 import org.jetbrains.anko.sdk27.coroutines.onClick
-import org.jetbrains.anko.support.v4.alert
 
 class RegistrationFragment : BaseFragment() {
 
@@ -37,7 +35,6 @@ class RegistrationFragment : BaseFragment() {
     }
 
     private var signUpRequest: SignUpRequest? = null
-    private var sendSmsRequest: SendSmsRequest? = null
     private var checkUserRequest: CheckUserRequest? = null
     private val bundle = Bundle()
 
@@ -105,18 +102,20 @@ class RegistrationFragment : BaseFragment() {
 
     private fun initObservers() {
         viewModel.isError.observe(viewLifecycleOwner, {
-            errorDialog(getString(R.string.error_unknown_body))
+            errorAlertDialog()
         })
         viewModel.isCheckUser.observe(viewLifecycleOwner, {
             if (it != null) {
                 setLoading(false)
                 setLogin()
                 initSpinner(it)
-            } else {
-                errorDialog(getString(R.string.error_unknown_body))
-            }
+            } else errorAlertDialog()
         })
+    }
 
+    private fun errorAlertDialog(){
+        setLoading(false)
+        errorDialog(getString(R.string.error_unknown_body))
     }
 
     private fun initNavigation(phone: String) {
@@ -157,21 +156,6 @@ class RegistrationFragment : BaseFragment() {
                 }
             }
         }
-    }
-
-    private fun errorDialog(errorMsg: String) {
-        alert {
-            title = getString(R.string.error_unknown_title)
-            message = errorMsg
-            isCancelable = false
-            positiveButton(getString(R.string.dialog_retry)) { dialog ->
-                setLoading(false)
-                dialog.dismiss()
-            }
-            negativeButton(getString(R.string.dialog_exit)) {
-                activity?.finish()
-            }
-        }.show()
     }
 
     private fun setLoading(loading: Boolean) {

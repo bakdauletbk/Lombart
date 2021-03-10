@@ -79,6 +79,7 @@ class PinCodeFragment : BaseFragment() {
 
     private fun initObservers() {
         viewModel.isError.observe(viewLifecycleOwner, {
+            setLoading(false)
             errorDialog(getString(R.string.error_unknown_body))
         })
         viewModel.isSuccess.observe(viewLifecycleOwner, {
@@ -90,21 +91,6 @@ class PinCodeFragment : BaseFragment() {
                 false -> Toast.makeText(context, "Ошибка при сохранении!", Toast.LENGTH_LONG).show()
             }
         })
-    }
-
-    private fun errorDialog(errorMsg: String) {
-        alert {
-            title = getString(R.string.error_unknown_title)
-            message = errorMsg
-            isCancelable = false
-            positiveButton(getString(R.string.dialog_retry)) { dialog ->
-                setLoading(false)
-                dialog.dismiss()
-            }
-            negativeButton(getString(R.string.dialog_exit)) {
-                activity?.finish()
-            }
-        }.show()
     }
 
     private fun setLoading(loading: Boolean) {

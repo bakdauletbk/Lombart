@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "40382885302",
+    "project_id": "sert-lombard",
+    "storage_bucket": "sert-lombard.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:40382885302:android:1d3215e29e718836512517",
+        "android_client_info": {
+          "package_name": "kz.pillikan.lombart"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "40382885302-j9vdnujefjfn324gccm2vlu1mtga5ue9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAAnYZKBd1Nz_t5N-q-8E_W2wJpUxE5cp4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "40382885302-j9vdnujefjfn324gccm2vlu1mtga5ue9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

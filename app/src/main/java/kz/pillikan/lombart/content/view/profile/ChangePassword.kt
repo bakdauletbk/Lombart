@@ -78,8 +78,7 @@ class ChangePassword : BaseFragment() {
 
     private fun initObservers() {
         viewModel.isError.observe(viewLifecycleOwner, {
-            errorDialog(getString(R.string.error_unknown_body))
-
+            errorDialogAlert()
         })
         viewModel.isCheckPassword.observe(viewLifecycleOwner, {
             when (it) {
@@ -88,7 +87,7 @@ class ChangePassword : BaseFragment() {
                     showChangePassword()
                     prepareChangePassword()
                 }
-                false -> errorDialog(getString(R.string.error_unknown_body))
+                false -> errorDialogAlert()
             }
         })
         viewModel.isChangePassword.observe(viewLifecycleOwner, {
@@ -104,9 +103,14 @@ class ChangePassword : BaseFragment() {
                             .navigate(R.id.action_changePassword_to_profileFragment)
                     }
                 }
-                false -> errorDialog(getString(R.string.error_unknown_body))
+                false -> errorDialogAlert()
             }
         })
+    }
+
+    private fun errorDialogAlert(){
+        setLoading(false)
+        errorDialog(getString(R.string.error_unknown_body))
     }
 
     private fun prepareChangePassword() {
@@ -158,17 +162,6 @@ class ChangePassword : BaseFragment() {
         }
     }
 
-    private fun errorDialog(errorMsg: String) {
-        activity?.alert {
-            title = getString(R.string.error_unknown_title)
-            message = errorMsg
-            isCancelable = false
-            positiveButton(getString(R.string.dialog_ok)) { dialog ->
-                setLoading(false)
-                dialog.dismiss()
-            }
-        }?.show()
-    }
 
     private fun setLoading(loading: Boolean) {
         loadingView.visibility = if (loading) View.VISIBLE else View.GONE

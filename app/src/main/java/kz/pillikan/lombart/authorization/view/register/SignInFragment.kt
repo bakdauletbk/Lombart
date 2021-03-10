@@ -52,6 +52,7 @@ class SignInFragment : BaseFragment() {
 
     private fun initObservers() {
         viewModel.isError.observe(viewLifecycleOwner, {
+            setLoading(false)
             errorDialog(getString(R.string.error_unknown_body))
         })
         viewModel.isSuccess.observe(viewLifecycleOwner, {
@@ -62,12 +63,18 @@ class SignInFragment : BaseFragment() {
                 onSuccessFullDialog()
             }
         })
+        viewModel.firebaseToken.observe(viewLifecycleOwner, {
+            prepareLogin(it)
+        })
     }
 
-    private fun prepareLogin() {
+    private fun createFirebaseToken() {
+        viewModel.createFMToken()
+    }
+
+    private fun prepareLogin(fToken: String) {
         val iin = et_iin.text.toString()
         val password = et_password.text.toString()
-        val fToken = "sakfoas"
 
         //Base64 encode
         val iinBase64 = base64encode(iin)
@@ -99,7 +106,7 @@ class SignInFragment : BaseFragment() {
     }
 
     private fun initListeners() {
-        btn_to_come_in.onClick { prepareLogin() }
+        btn_to_come_in.onClick { createFirebaseToken() }
         tv_remember_password.onClick {
             view?.let { it1 ->
                 Navigation.findNavController(it1)
@@ -118,21 +125,6 @@ class SignInFragment : BaseFragment() {
         alert {
             title = getString(R.string.error_auth_wrong_data_title)
             message = getString(R.string.error_auth_wrong_data_msg)
-            isCancelable = false
-            positiveButton(getString(R.string.dialog_retry)) { dialog ->
-                setLoading(false)
-                dialog.dismiss()
-            }
-            negativeButton(getString(R.string.dialog_exit)) {
-                activity?.finish()
-            }
-        }.show()
-    }
-
-    private fun errorDialog(errorMsg: String) {
-        alert {
-            title = getString(R.string.error_unknown_title)
-            message = errorMsg
             isCancelable = false
             positiveButton(getString(R.string.dialog_retry)) { dialog ->
                 setLoading(false)

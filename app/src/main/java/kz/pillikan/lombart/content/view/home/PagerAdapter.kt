@@ -9,7 +9,7 @@ import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_sliders.view.*
 import kz.pillikan.lombart.R
-import kz.pillikan.lombart.common.remote.ApiConstants
+import kz.pillikan.lombart.common.remote.Constants
 import kz.pillikan.lombart.content.model.response.home.SlidersList
 
 class PagerAdapter(val context: Context?) : PagerAdapter() {
@@ -39,7 +39,7 @@ class PagerAdapter(val context: Context?) : PagerAdapter() {
 
         Glide
             .with(this.context)
-            .load(ApiConstants.IMG_BASE_URL + ApiConstants.IMG_URL + sliderList[position].img)
+            .load(Constants.IMG_BASE_URL + Constants.IMG_URL + sliderList[position].img)
             .centerCrop()
             .into(view.iv_banner)
 

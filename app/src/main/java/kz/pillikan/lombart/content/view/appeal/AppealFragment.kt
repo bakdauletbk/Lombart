@@ -8,7 +8,6 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.fragment_appeal.*
 import kotlinx.android.synthetic.main.fragment_appeal.loadingView
-import kotlinx.android.synthetic.main.fragment_create_password.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -17,7 +16,6 @@ import kz.pillikan.lombart.common.helpers.Validators
 import kz.pillikan.lombart.common.views.BaseFragment
 import kz.pillikan.lombart.content.model.request.appeal.FeedbackRequest
 import kz.pillikan.lombart.content.viewmodel.appeal.AppealViewModel
-import org.jetbrains.anko.alert
 import org.jetbrains.anko.sdk27.coroutines.onClick
 
 class AppealFragment : BaseFragment() {
@@ -78,6 +76,7 @@ class AppealFragment : BaseFragment() {
 
     private fun initObservers() {
         viewModel.isError.observe(viewLifecycleOwner, {
+            setLoading(false)
             errorDialog(getString(R.string.error_unknown_body))
         })
         viewModel.isSuccess.observe(viewLifecycleOwner, {
@@ -98,18 +97,6 @@ class AppealFragment : BaseFragment() {
                 }
             }
         })
-    }
-
-    private fun errorDialog(errorMsg: String) {
-        activity?.alert {
-            title = getString(R.string.error_unknown_title)
-            message = errorMsg
-            isCancelable = false
-            positiveButton(getString(R.string.dialog_ok)) { dialog ->
-                setLoading(false)
-                dialog.dismiss()
-            }
-        }?.show()
     }
 
     private fun setLoading(loading: Boolean) {

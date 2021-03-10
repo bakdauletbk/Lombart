@@ -71,7 +71,7 @@ class NotificationsFragment : BaseFragment() {
 
     private fun initObservers() {
         viewModel.isError.observe(viewLifecycleOwner, {
-            errorDialog(getString(R.string.error_unknown_body))
+            errorDialogAlert()
         })
         viewModel.notificationList.observe(viewLifecycleOwner, {
             if (it != null) {
@@ -79,9 +79,14 @@ class NotificationsFragment : BaseFragment() {
                 setLoading(false)
             } else {
                 setEmptyNotification()
-                errorDialog(getString(R.string.error_unknown_body))
+                errorDialogAlert()
             }
         })
+    }
+
+    private fun errorDialogAlert() {
+        setLoading(false)
+        errorDialog(getString(R.string.error_unknown_body))
     }
 
     private fun setEmptyNotification() {
@@ -129,30 +134,15 @@ class NotificationsFragment : BaseFragment() {
             }
 
             override fun isLoading(): Boolean {
-                return  viewModel.isLoading()
+                return viewModel.isLoading()
             }
 
-             override fun loadMoreItems() {
-                 CoroutineScope(Dispatchers.IO).launch {
-                     viewModel.getNextPage()
-                 }
+            override fun loadMoreItems() {
+                CoroutineScope(Dispatchers.IO).launch {
+                    viewModel.getNextPage()
+                }
             }
         })
-    }
-
-    private fun errorDialog(errorMsg: String) {
-        if (!isDialogVisibility) {
-            isDialogVisibility = true
-            activity?.alert {
-                title = getString(R.string.error_unknown_title)
-                message = errorMsg
-                isCancelable = false
-                positiveButton(getString(R.string.dialog_ok)) { dialog ->
-                    dialog.dismiss()
-                    isDialogVisibility = false
-                }
-            }?.show()
-        }
     }
 
     private fun setLoading(loading: Boolean) {

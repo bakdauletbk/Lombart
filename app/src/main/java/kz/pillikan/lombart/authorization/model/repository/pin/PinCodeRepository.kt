@@ -5,7 +5,7 @@ import android.content.Context
 import kz.pillikan.lombart.BuildConfig
 import kz.pillikan.lombart.authorization.model.request.PinCodeRequest
 import kz.pillikan.lombart.common.preference.SessionManager
-import kz.pillikan.lombart.common.remote.ApiConstants
+import kz.pillikan.lombart.common.remote.Constants
 import kz.pillikan.lombart.common.remote.Networking
 
 
@@ -16,7 +16,7 @@ class PinCodeRepository(application: Application) {
     }
 
     private val networkService =
-        Networking.create(ApiConstants.BASE_URL)
+        Networking.create(Constants.BASE_URL)
     private var sharedPreferences =
         application.getSharedPreferences("sessionManager", Context.MODE_PRIVATE)
     private var sessionManager: SessionManager =
@@ -25,10 +25,10 @@ class PinCodeRepository(application: Application) {
     suspend fun savePinCode(pinCodeRequest: PinCodeRequest): Boolean {
         val response = networkService.pinCode(
             appVer = BuildConfig.VERSION_NAME,
-            Authorization = ApiConstants.AUTH_TOKEN_PREFIX + sessionManager.getToken(),
+            Authorization = Constants.AUTH_TOKEN_PREFIX + sessionManager.getToken(),
             pinCodeRequest = pinCodeRequest
         )
-        return response.code() == ApiConstants.RESPONSE_SUCCESS_CODE
+        return response.code() == Constants.RESPONSE_SUCCESS_CODE
     }
 
 }

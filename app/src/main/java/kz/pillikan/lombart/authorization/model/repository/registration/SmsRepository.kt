@@ -4,7 +4,7 @@ import android.app.Application
 import kz.pillikan.lombart.BuildConfig
 import kz.pillikan.lombart.authorization.model.request.CheckNumberRequest
 import kz.pillikan.lombart.authorization.model.request.SendSmsRequest
-import kz.pillikan.lombart.common.remote.ApiConstants
+import kz.pillikan.lombart.common.remote.Constants
 import kz.pillikan.lombart.common.remote.Networking
 
 class SmsRepository(application: Application) {
@@ -14,14 +14,14 @@ class SmsRepository(application: Application) {
     }
 
     private val networkService =
-        Networking.create(ApiConstants.BASE_URL)
+        Networking.create(Constants.BASE_URL)
 
     suspend fun verificationSms(checkNumberRequest: CheckNumberRequest): Boolean {
         val response = networkService.verificationNumber(
             appVer = BuildConfig.VERSION_NAME,
             checkNumberRequest = checkNumberRequest
         )
-        return response.code() == ApiConstants.RESPONSE_SUCCESS_CODE
+        return response.code() == Constants.RESPONSE_SUCCESS_CODE
     }
 
     suspend fun sendSms(sendSmsRequest: SendSmsRequest): Boolean {
@@ -29,7 +29,7 @@ class SmsRepository(application: Application) {
             appVer = BuildConfig.VERSION_NAME,
             sendSmsRequest = sendSmsRequest
         )
-        return response.code() == ApiConstants.RESPONSE_SUCCESS_CODE
+        return response.code() == Constants.RESPONSE_SUCCESS_CODE
     }
 
 

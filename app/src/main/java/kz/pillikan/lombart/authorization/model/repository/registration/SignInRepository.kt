@@ -6,7 +6,7 @@ import kz.pillikan.lombart.BuildConfig
 import kz.pillikan.lombart.authorization.model.request.SignInRequest
 import kz.pillikan.lombart.authorization.model.response.User
 import kz.pillikan.lombart.common.preference.SessionManager
-import kz.pillikan.lombart.common.remote.ApiConstants
+import kz.pillikan.lombart.common.remote.Constants
 import kz.pillikan.lombart.common.remote.Networking
 
 class SignInRepository(application: Application) {
@@ -16,7 +16,7 @@ class SignInRepository(application: Application) {
     }
 
     private val networkService =
-        Networking.create(ApiConstants.BASE_URL)
+        Networking.create(Constants.BASE_URL)
     private var sharedPreferences =
         application.getSharedPreferences("sessionManager", Context.MODE_PRIVATE)
     private var sessionManager: SessionManager =
@@ -27,7 +27,7 @@ class SignInRepository(application: Application) {
             appVer = BuildConfig.VERSION_NAME,
             signInRequest = signInRequest
         )
-        return if (response.code() == ApiConstants.RESPONSE_SUCCESS_CODE) {
+        return if (response.code() == Constants.RESPONSE_SUCCESS_CODE) {
             saveUser(response.body()!!.user)
             true
         } else {

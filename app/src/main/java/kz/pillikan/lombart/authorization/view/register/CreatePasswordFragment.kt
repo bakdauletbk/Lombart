@@ -51,25 +51,33 @@ class CreatePasswordFragment : BaseFragment() {
         initObservers()
     }
 
+    private fun createFirebaseToken() {
+        viewModel.createFMToken()
+    }
+
     private fun initViewModel() {
         viewModel = ViewModelProvider(this).get(CreatePasswordViewModel::class.java)
     }
 
     private fun initListeners() {
-        btn_proceed_.onClick { prepareLogin() }
+        btn_proceed_.onClick {
+            createFirebaseToken()
+        }
         iv_back.onClick {
-            activity?.finish()
+            view?.let { it1 ->
+                Navigation.findNavController(it1)
+                    .navigate(R.id.action_createPasswordFragment_to_signInFragment3)
+            }
         }
     }
 
-    private fun prepareLogin() {
+    private fun prepareLogin(fToken: String) {
         val createUser = arguments?.getSerializable(
             CREATE_USER
         ) as SignUpRequest
 
         val password = et_password.text.toString()
         val password2 = et_password_again.text.toString()
-        val fToken = "sakfoas"
         val iin = createUser.iin
         val phone = createUser.phone
 
@@ -78,27 +86,25 @@ class CreatePasswordFragment : BaseFragment() {
         val password2Base64 = base64encode(password2)
         val fTokenBase64 = base64encode(fToken)
         val iinBase64 = base64encode(iin!!)
+        val phoneBase64 = base64encode(phone!!)
 
         signUpRequest = SignUpRequest(
             iin = iinBase64,
-            phone = phone,
+            phone = phoneBase64,
             password = passwordBase64,
             password2 = password2Base64,
             ftoken = fTokenBase64
         )
 
         when (Validators.validatePassword(password) && Validators.validatePassword(password2) && password == password2) {
-            true -> {
-                createUser(signUpRequest!!)
-            }
-            false -> {
-                Toast.makeText(context, "Ваши пароли не совпадают!", Toast.LENGTH_SHORT).show()
-            }
+            true -> createUser(signUpRequest!!)
+            false -> Toast.makeText(context, "Ваши пароли не совпадают!", Toast.LENGTH_SHORT).show()
         }
     }
 
     private fun initObservers() {
         viewModel.isError.observe(viewLifecycleOwner, {
+            setLoading(false)
             errorDialog(getString(R.string.error_unknown_body))
         })
         viewModel.isSuccess.observe(viewLifecycleOwner, {
@@ -111,12 +117,15 @@ class CreatePasswordFragment : BaseFragment() {
                 }
             }
         })
+        viewModel.firebaseToken.observe(viewLifecycleOwner, {
+            prepareLogin(it)
+        })
     }
 
     private fun initNavigation() {
         view?.let { it1 ->
             Navigation.findNavController(it1)
-                .navigate(R.id.action_createPasswordFragment_to_signInFragment3)
+                .navigate(R.id.action_createPasswordFragment_to_successfullyFragment)
         }
     }
 
@@ -131,21 +140,6 @@ class CreatePasswordFragment : BaseFragment() {
         alert {
             title = getString(R.string.error_auth_wrong_data_title)
             message = getString(R.string.error_auth_wrong_data_msg)
-            isCancelable = false
-            positiveButton(getString(R.string.dialog_retry)) { dialog ->
-                setLoading(false)
-                dialog.dismiss()
-            }
-            negativeButton(getString(R.string.dialog_exit)) {
-                activity?.finish()
-            }
-        }.show()
-    }
-
-    private fun errorDialog(errorMsg: String) {
-        alert {
-            title = getString(R.string.error_unknown_title)
-            message = errorMsg
             isCancelable = false
             positiveButton(getString(R.string.dialog_retry)) { dialog ->
                 setLoading(false)

@@ -7,10 +7,8 @@ import android.widget.Toast
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
-import com.yandex.mapkit.MapKitFactory
 import kotlinx.android.synthetic.main.activity_foundation.*
 import kz.pillikan.lombart.R
-import kz.pillikan.lombart.common.remote.ApiConstants
 import kz.pillikan.lombart.common.views.BaseActivity
 
 class FoundationActivity : BaseActivity() {

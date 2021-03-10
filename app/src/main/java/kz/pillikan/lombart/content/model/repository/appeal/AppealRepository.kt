@@ -5,14 +5,14 @@ import android.content.Context
 import android.util.Base64
 import kz.pillikan.lombart.BuildConfig
 import kz.pillikan.lombart.common.preference.SessionManager
-import kz.pillikan.lombart.common.remote.ApiConstants
+import kz.pillikan.lombart.common.remote.Constants
 import kz.pillikan.lombart.common.remote.Networking
 import kz.pillikan.lombart.content.model.request.appeal.FeedbackRequest
 
 class AppealRepository(application: Application) {
 
     private val networkService =
-        Networking.create(ApiConstants.BASE_URL)
+        Networking.create(Constants.BASE_URL)
     private var sharedPreferences =
         application.getSharedPreferences("sessionManager", Context.MODE_PRIVATE)
     private var sessionManager: SessionManager =
@@ -33,12 +33,12 @@ class AppealRepository(application: Application) {
 
         val response =
             networkService.sendFeedback(
-                Authorization = ApiConstants.AUTH_TOKEN_PREFIX + sessionManager.getToken(),
+                Authorization = Constants.AUTH_TOKEN_PREFIX + sessionManager.getToken(),
                 appVer = BuildConfig.VERSION_NAME,
                 feedbackRequest = feedback
             )
 
-        return response.code() == ApiConstants.RESPONSE_SUCCESS_CODE
+        return response.code() == Constants.RESPONSE_SUCCESS_CODE
     }
 
 }

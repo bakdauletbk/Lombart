@@ -74,16 +74,19 @@ class AboutFragment : BaseFragment() {
 
     private fun initObservers() {
         viewModel.isError.observe(viewLifecycleOwner, {
-            errorDialog(getString(R.string.error_unknown_body))
+            errorDialog()
         })
         viewModel.addressList.observe(viewLifecycleOwner, {
             if (it != null) {
                 setLoading(false)
                 setAddress(it)
-            } else {
-                errorDialog(getString(R.string.error_unknown_body))
-            }
+            } else errorDialog()
         })
+    }
+
+    private fun errorDialog() {
+        setLoading(false)
+        errorDialog(getString(R.string.error_unknown_body))
     }
 
     private fun setAddress(addressList: ArrayList<AddressList>) {
@@ -94,7 +97,6 @@ class AboutFragment : BaseFragment() {
                 )
             )
         }
-
     }
 
     private fun initMap() {
@@ -117,18 +119,6 @@ class AboutFragment : BaseFragment() {
         super.onStart()
         MapKitFactory.getInstance().onStart()
         map_view.onStart()
-    }
-
-    private fun errorDialog(errorMsg: String) {
-        activity?.alert {
-            title = getString(R.string.error_unknown_title)
-            message = errorMsg
-            isCancelable = false
-            positiveButton(getString(R.string.dialog_ok)) { dialog ->
-                setLoading(false)
-                dialog.dismiss()
-            }
-        }?.show()
     }
 
     private fun setLoading(loading: Boolean) {

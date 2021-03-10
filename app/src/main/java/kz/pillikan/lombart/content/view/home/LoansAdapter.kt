@@ -46,6 +46,7 @@ class LoansAdapter : RecyclerView.Adapter<LoansAdapter.LoansHolder> {
         private val tvDate = root.findViewById(R.id.tv_date) as TextView
         private val btnPay = root.findViewById(R.id.btn_pay) as MaterialButton
 
+
         @SuppressLint("SetTextI18n")
         fun bind(loansList: Tickets, callback: HomeFragment) {
 

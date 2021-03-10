@@ -81,7 +81,7 @@ class PasswordRecoveryFragment : BaseFragment() {
 
     private fun initObservers() {
         viewModel.isError.observe(viewLifecycleOwner, {
-            errorDialog(getString(R.string.error_unknown_body))
+            errorDialogAlert()
         })
         viewModel.isCheckUser.observe(viewLifecycleOwner, {
             if (it != null) {
@@ -90,6 +90,7 @@ class PasswordRecoveryFragment : BaseFragment() {
                 initSpinner(it)
                 btn_reestablish.text = CONFIRM
             } else {
+                setLoading(false)
                 Toast.makeText(
                     this.context,
                     getString(R.string.you_entered_is_incorrect),
@@ -106,9 +107,7 @@ class PasswordRecoveryFragment : BaseFragment() {
                         prepareValidatePhone()
                     }
                 }
-                false -> {
-                    errorDialog(getString(R.string.error_unknown_body))
-                }
+                false -> errorDialogAlert()
             }
         })
         viewModel.isVerificationNumber.observe(viewLifecycleOwner, {
@@ -121,9 +120,7 @@ class PasswordRecoveryFragment : BaseFragment() {
                         preparePassword()
                     }
                 }
-                false -> {
-                    errorDialog(getString(R.string.error_unknown_body))
-                }
+                false -> errorDialogAlert()
             }
         })
         viewModel.isResetPassword.observe(viewLifecycleOwner, {
@@ -138,11 +135,14 @@ class PasswordRecoveryFragment : BaseFragment() {
                         Navigation.findNavController(it1).navigate(R.id.signInFragment)
                     }
                 }
-                false -> {
-                    errorDialog(getString(R.string.error_unknown_body))
-                }
+                false -> errorDialogAlert()
             }
         })
+    }
+
+    private fun errorDialogAlert(){
+        setLoading(false)
+        errorDialog(getString(R.string.error_unknown_body))
     }
 
     private fun preparePassword() {
@@ -305,16 +305,5 @@ class PasswordRecoveryFragment : BaseFragment() {
         loadingView.visibility = if (loading) View.VISIBLE else View.GONE
     }
 
-    private fun errorDialog(errorMsg: String) {
-        alert {
-            title = getString(R.string.error_unknown_title)
-            message = errorMsg
-            isCancelable = false
-            negativeButton(getString(R.string.dialog_ok)) {
-                setLoading(false)
-                it.dismiss()
-            }
-        }.show()
-    }
 
 }
