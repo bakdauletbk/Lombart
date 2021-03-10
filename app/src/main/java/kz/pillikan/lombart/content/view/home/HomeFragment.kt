@@ -140,7 +140,7 @@ class HomeFragment : BaseFragment() {
                 null -> errorAlertDialog(getString(R.string.error_unknown_body))
                 else -> {
                     setLoading(false)
-                    setCurrency(it)
+                    currencyPrice.setCurrency(it)
                 }
             }
         })
@@ -235,27 +235,6 @@ class HomeFragment : BaseFragment() {
             Constants.THUNDERSTORM -> setImage(R.drawable.ic_thunderstorm)
             Constants.SNOW -> setImage(R.drawable.ic_snow)
             Constants.MIST -> setImage(R.drawable.ic_mist)
-        }
-    }
-
-    private fun setCurrency(currencyList: ArrayList<CurrencyList>) {
-        for (i in Constants.ZERO until currencyList.size) {
-            when (i) {
-                Constants.USA_CURRENCY -> {
-                    tv_sale_usa.text = currencyList[Constants.USA_CURRENCY].sale.toString()
-                    tv_purchase_usa.text = currencyList[Constants.USA_CURRENCY].purchase.toString()
-                }
-                Constants.EUROPA_CURRENCY -> {
-                    tv_sale_europa.text = currencyList[Constants.EUROPA_CURRENCY].sale.toString()
-                    tv_purchase_europa.text =
-                        currencyList[Constants.EUROPA_CURRENCY].purchase.toString()
-                }
-                Constants.RUSSIA_CURRENCY -> {
-                    tv_sale_russia.text = currencyList[Constants.RUSSIA_CURRENCY].sale.toString()
-                    tv_purchase_russia.text =
-                        currencyList[Constants.RUSSIA_CURRENCY].purchase.toString()
-                }
-            }
         }
     }
 

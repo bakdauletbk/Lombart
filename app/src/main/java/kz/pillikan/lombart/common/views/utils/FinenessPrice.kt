@@ -6,11 +6,15 @@ import android.text.TextWatcher
 import android.view.View
 import android.widget.*
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.fragment_home.*
 import kz.pillikan.lombart.R
 import kz.pillikan.lombart.common.remote.Constants
+import kz.pillikan.lombart.content.model.response.home.CurrencyList
 import kz.pillikan.lombart.content.model.response.home.FinenessPriceResponse
 import kz.pillikan.lombart.content.view.home.HomeFragment
 import org.jetbrains.anko.sdk27.coroutines.onClick
+import org.w3c.dom.Text
+import java.util.ArrayList
 
 open class FinenessPrice {
 
@@ -18,6 +22,33 @@ open class FinenessPrice {
 
     constructor(callback: HomeFragment) : super() {
         this.callback = callback
+    }
+
+    fun setCurrency(currencyList: ArrayList<CurrencyList>) {
+        val tvSaleUsa = callback.view?.findViewById<TextView>(R.id.tv_sale_usa)
+        val tvPurchaseUsa = callback.view?.findViewById<TextView>(R.id.tv_purchase_usa)
+        val tvSaleEuropa = callback.view?.findViewById<TextView>(R.id.tv_sale_europa)
+        val tvPurchaseEuropa = callback.view?.findViewById<TextView>(R.id.tv_purchase_europa)
+        val tvSaleRus = callback.view?.findViewById<TextView>(R.id.tv_sale_russia)
+        val tvPurchaseRus = callback.view?.findViewById<TextView>(R.id.tv_purchase_russia)
+        for (i in Constants.ZERO until currencyList.size) {
+            when (i) {
+                Constants.USA_CURRENCY -> {
+                    tvSaleUsa?.text = currencyList[Constants.USA_CURRENCY].sale.toString()
+                    tvPurchaseUsa?.text = currencyList[Constants.USA_CURRENCY].purchase.toString()
+                }
+                Constants.EUROPA_CURRENCY -> {
+                    tvSaleEuropa?.text = currencyList[Constants.EUROPA_CURRENCY].sale.toString()
+                    tvPurchaseEuropa?.text =
+                        currencyList[Constants.EUROPA_CURRENCY].purchase.toString()
+                }
+                Constants.RUSSIA_CURRENCY -> {
+                    tvSaleRus?.text = currencyList[Constants.RUSSIA_CURRENCY].sale.toString()
+                    tvPurchaseRus?.text =
+                        currencyList[Constants.RUSSIA_CURRENCY].purchase.toString()
+                }
+            }
+        }
     }
 
     @SuppressLint("SetTextI18n")
