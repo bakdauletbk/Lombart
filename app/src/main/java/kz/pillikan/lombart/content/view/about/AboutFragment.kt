@@ -9,19 +9,16 @@ import com.yandex.mapkit.MapKit
 import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.map.CameraPosition
-import com.yandex.runtime.image.ImageProvider
-import com.yandex.runtime.ui_view.ViewProvider
 import kotlinx.android.synthetic.main.fragment_about.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kz.pillikan.lombart.R
 import kz.pillikan.lombart.common.views.BaseFragment
+import kz.pillikan.lombart.content.model.response.about.AboutResponse
 import kz.pillikan.lombart.content.model.response.about.AddressList
 import kz.pillikan.lombart.content.viewmodel.about.AboutViewModel
-import org.jetbrains.anko.alert
 import java.util.ArrayList
-
 
 class AboutFragment : BaseFragment() {
 
@@ -57,14 +54,17 @@ class AboutFragment : BaseFragment() {
     private fun lets() {
         initViewModel()
         initMap()
-        getAddress()
+        updateFeed()
         initObservers()
     }
 
-    private fun getAddress() {
+    private fun updateFeed() {
         setLoading(true)
         CoroutineScope(Dispatchers.IO).launch {
             viewModel.getAddress()
+        }
+        CoroutineScope(Dispatchers.IO).launch {
+            viewModel.getAbout()
         }
     }
 
@@ -82,6 +82,20 @@ class AboutFragment : BaseFragment() {
                 setAddress(it)
             } else errorDialog()
         })
+        viewModel.about.observe(viewLifecycleOwner,{
+            when(it){
+                null -> errorDialog()
+                else -> {
+                    setLoading(false)
+                    setAboutText(it)
+                }
+            }
+        })
+    }
+
+    private fun setAboutText(aboutResponse: AboutResponse) {
+        tv_text1.text = aboutResponse.text2
+        tv_text2.text = aboutResponse.text3
     }
 
     private fun errorDialog() {

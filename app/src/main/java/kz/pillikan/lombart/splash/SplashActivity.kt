@@ -3,6 +3,7 @@ package kz.pillikan.lombart.splash
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -11,6 +12,7 @@ import kz.pillikan.lombart.R
 import kz.pillikan.lombart.authorization.view.AuthorizationActivity
 import kz.pillikan.lombart.common.views.BaseActivity
 import kz.pillikan.lombart.content.view.FoundationActivity
+import kz.pillikan.lombart.content.view.home.HomeFragmentDirections
 import org.jetbrains.anko.alert
 import org.jetbrains.anko.intentFor
 
@@ -19,12 +21,18 @@ class SplashActivity : BaseActivity() {
     private lateinit var viewModel: SplashViewModel
     private var isFirstLaunch = true
     private val mContext = this
+    private var notificationId: Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
+        checkNotificationExtra()
         lets()
         observer()
+    }
+
+    private fun checkNotificationExtra() {
+        notificationId = intent.getIntExtra("NOTIFICATION_ID", 0)
     }
 
     private fun lets() {
@@ -35,7 +43,7 @@ class SplashActivity : BaseActivity() {
     }
 
     private fun observer() {
-        viewModel.isNetworkConnection.observe(mContext,  {
+        viewModel.isNetworkConnection.observe(mContext, {
             if (it) {
                 checkAuthorize()
             } else {
@@ -46,16 +54,21 @@ class SplashActivity : BaseActivity() {
             }
         })
 
-        viewModel.isAuthorize.observe(mContext,  {
-            if (it){
+        viewModel.isAuthorize.observe(mContext, {
+            if (it) {
                 finish()
-                startActivity(intentFor<FoundationActivity>())
-            }else{
+                if (notificationId != null){
+                    startActivity(intentFor<FoundationActivity>().putExtra("NOTIFICATION_ID", notificationId))
+                }else{
+                    startActivity(intentFor<FoundationActivity>())
+                }
+
+            } else {
                 startActivity(intentFor<AuthorizationActivity>())
             }
         })
 
-        viewModel.isError.observe(mContext,  {
+        viewModel.isError.observe(mContext, {
             if (it) {
                 showErrorDialogue(
                     getString(R.string.error_unknown_title),

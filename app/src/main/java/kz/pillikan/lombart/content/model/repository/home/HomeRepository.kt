@@ -90,4 +90,16 @@ class HomeRepository(application: Application) {
         }
     }
 
+    suspend fun getHeadText(): TitleResponse? {
+        val response = networkService.getHeadText(
+            Constants.AUTH_TOKEN_PREFIX + sessionManager.getToken(),
+            BuildConfig.VERSION_NAME
+        )
+        return if (response.code() == Constants.RESPONSE_SUCCESS_CODE) {
+            response.body()
+        } else {
+            null
+        }
+    }
+
 }

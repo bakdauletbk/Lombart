@@ -5,11 +5,13 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import kotlinx.android.synthetic.main.activity_foundation.*
 import kz.pillikan.lombart.R
 import kz.pillikan.lombart.common.views.BaseActivity
+import kz.pillikan.lombart.content.view.home.HomeFragmentDirections
 
 class FoundationActivity : BaseActivity() {
 
@@ -37,8 +39,11 @@ class FoundationActivity : BaseActivity() {
     }
 
     private fun checkExtraNotificationId() {
-        if (intent.getIntExtra("NOTIFICATION_ID", 0) != 0){
-            // TO-DO доделать
+        val notificationId = intent.getIntExtra("NOTIFICATION_ID", 0)
+        if (notificationId > 0) {
+             findNavController(R.id.fragment2)
+                    .navigate(R.id.action_homeFragment_to_notificationsFragment)
+
         }
     }
 
@@ -52,6 +57,7 @@ class FoundationActivity : BaseActivity() {
                 R.id.homeFragment -> {
                     switchMenuItem(HOME)
                     showBottomNavigation(navController)
+                    checkExtraNotificationId()
                 }
                 R.id.notificationsFragment -> {
                     switchMenuItem(NOTIFICATION)

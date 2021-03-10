@@ -8,6 +8,7 @@ import kz.pillikan.lombart.content.model.request.home.ValidatePinRequest
 import kz.pillikan.lombart.content.model.request.notifications.PageRequest
 import kz.pillikan.lombart.content.model.request.profile.ChangePassword
 import kz.pillikan.lombart.content.model.request.profile.CheckPassword
+import kz.pillikan.lombart.content.model.response.about.AboutResponse
 import kz.pillikan.lombart.content.model.response.about.AddressResponse
 import kz.pillikan.lombart.content.model.response.home.*
 import kz.pillikan.lombart.content.model.response.notifications.NotificationsResponse
@@ -138,6 +139,18 @@ interface NetworkService {
         @Header("appVer") appVer: String,
         @Body changePassword: ChangePassword
     ): Response<ResponseBody>
+
+    @POST(EndPoints.POST_GET_HEAD)
+    suspend fun getHeadText(
+        @Header("Authorization") Authorization: String,
+        @Header("appVer") appVer: String
+    ): Response<TitleResponse>
+
+    @POST(EndPoints.POST_ABOUT)
+    suspend fun getAbout(
+        @Header("Authorization") Authorization: String,
+        @Header("appVer") appVer: String
+    ): Response<AboutResponse>
 
 
 }

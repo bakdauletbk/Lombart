@@ -23,4 +23,6 @@ object EndPoints {
     const val POST_ADDRESS = "/v1/cert/addresses-contacts"
     const val POST_CHECK_PASSWORD = "/v1/profile/check-password"
     const val POST_CHANGE_PASSWORD = "/v1/profile/change-password"
+    const val POST_GET_HEAD = "/v1/service/get-head"
+    const val POST_ABOUT = "/v1/service/get-about"
 }

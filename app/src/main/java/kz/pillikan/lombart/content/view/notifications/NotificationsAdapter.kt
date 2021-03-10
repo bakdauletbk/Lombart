@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import kz.pillikan.lombart.R
 import kz.pillikan.lombart.common.helpers.formatDateTime
 import kz.pillikan.lombart.content.model.response.notifications.DataList
-import kz.pillikan.lombart.content.model.response.notifications.NotificationsModel
 
 
 class NotificationsAdapter : RecyclerView.Adapter<NotificationsAdapter.NotificationsViewHolder> {
