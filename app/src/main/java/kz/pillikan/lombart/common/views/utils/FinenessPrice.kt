@@ -193,7 +193,7 @@ open class FinenessPrice {
                     percent1 = percent1,
                     percent2 = percent2
                 )
-                val gram = etDay.text.toString().toFloat()
+                val gram = etGram?.text.toString().toFloat()
                 val result = price * gram
                 tvAmountOnHand?.text = result.toLong().toString() + Constants.MONEY
                 when (result >= limit) {
@@ -207,10 +207,9 @@ open class FinenessPrice {
                     }
                 }
             }
-            false -> {
-                Snackbar.make(callback.requireView(), "Введите данные!", Snackbar.LENGTH_LONG)
-                    .show()
-            }
+            false -> Snackbar.make(callback.requireView(), "Введите данные!", Snackbar.LENGTH_LONG)
+                .show()
+
         }
     }
 
@@ -227,7 +226,7 @@ open class FinenessPrice {
                 when (etDay.text.isNotEmpty() && etGram?.text!!.isNotEmpty()) {
                     true -> {
                         val day = etDay.text.toString().toInt()
-                        val gram = etDay.text.toString().toFloat()
+                        val gram = etGram?.text.toString().toFloat()
                         val result = price * gram
                         tvAmountOnHand?.text = result.toLong().toString() + Constants.MONEY
                         when (result >= limit) {
@@ -264,7 +263,7 @@ open class FinenessPrice {
                 when (etGram.text.isNotEmpty() && etDay?.text!!.isNotEmpty()) {
                     true -> {
                         val day = etDay?.text.toString().toInt()
-                        val gram = etDay?.text.toString().toFloat()
+                        val gram = etGram.text.toString().toFloat()
                         val result = price * gram
                         tvAmountOnHand?.text = result.toLong().toString() + Constants.MONEY
                         when (result >= limit) {
