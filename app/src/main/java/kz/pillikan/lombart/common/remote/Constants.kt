@@ -13,6 +13,11 @@ object Constants {
     const val ALERT_TYPE_SUCCESS = 1
     const val ZERO = 0
 
+    //Contact
+    const val PHONE = "+77782004400"
+    const val ADDRESS = "г. Шымкент, улица Т.Рыскулова, 22/4"
+    const val MAIL = "info@sertgroup.kz"
+
     //----------[Константы для Контента]
     const val MONEY = " тг"
     const val YEARS = "  г."
@@ -48,4 +53,5 @@ object Constants {
     const val STATUS_PAY = " , Статус: Оплачено"
     const val FORMAT_DATE = "dd.MM.yyyy"
     const val FOR = "за "
+    const val TEL = "tel: "
 }

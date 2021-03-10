@@ -18,6 +18,9 @@
     <string name="notification">Уведомления</string>
     <string name="appeal">Обращение</string>
 
+    //Phone
+    <string name="call"> "Чтобы позвонить, пожалуйста, Нажмите Разрешить"</string>
+
     //Error
     <string name="the_sms_you_entered_incorrectly">Введенные вами смс некорректно</string>
 
@@ -39,6 +42,9 @@
     <string name="enter_your_pin_code">Введите пин код!</string>
     <string name="enter_your_sms_code">Введите смс код!</string>
     <string name="send_sms">Смс отправлено</string>
+    <string name="data_you_entered_is_incorrect">Введенные вами данные некорректны!</string>
+    <string name="your_message_has_been_sent">Спасибо! Ваше обращение отправлено!</string>
+    <string name="your_appeal_has_not_been_sent">К Сожалению! Ваше обращение не отправлено</string>
 
 
     //Обработка ошибок

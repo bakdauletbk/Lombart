@@ -1,13 +1,18 @@
 package kz.pillikan.lombart.common.views
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.net.Uri
 import android.view.Window
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.android.material.button.MaterialButton
@@ -105,7 +110,9 @@ open class BaseFragment : Fragment() {
                 tvTransaction.text = loansList.ticketInfo.Number
 
                 val textShare =
-                    Constants.NUMBER_TRANSACTION + loansList.ticketInfo.Number + Constants.PRICE + loansList.ticketInfo.TotalPayment + Constants.MONEY + Constants.DATE_TRANSACTION + formatDate(loansList.ticketInfo.WaitDate) + Constants.YEARS + Constants.STATUS_PAY
+                    Constants.NUMBER_TRANSACTION + loansList.ticketInfo.Number + Constants.PRICE + loansList.ticketInfo.TotalPayment + Constants.MONEY + Constants.DATE_TRANSACTION + formatDate(
+                        loansList.ticketInfo.WaitDate
+                    ) + Constants.YEARS + Constants.STATUS_PAY
 
                 btnShare.onClick {
                     intent.action = Intent.ACTION_SEND
@@ -125,6 +132,68 @@ open class BaseFragment : Fragment() {
 
         alert!!.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         alert!!.show()
+    }
+
+    fun call(phone: String) {
+        if (ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.CALL_PHONE
+            )
+            != PackageManager.PERMISSION_GRANTED
+        ) {
+            // Permission is not granted
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(
+                    requireActivity(),
+                    Manifest.permission.CALL_PHONE
+                )
+            ) {
+                activity?.runOnUiThread {
+                    Toast.makeText(
+                        activity?.applicationContext,
+                        getString(R.string.call),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                ActivityCompat.requestPermissions(
+                    requireActivity(),
+                    arrayOf(Manifest.permission.CALL_PHONE),
+                    42
+                )
+                if (ContextCompat.checkSelfPermission(
+                        requireContext(),
+                        Manifest.permission.CALL_PHONE
+                    )
+                    == PackageManager.PERMISSION_GRANTED
+                ) {
+                    val intent = Intent(Intent.ACTION_CALL)
+                    intent.data = Uri.parse(Constants.TEL + phone)
+                    startActivity(intent)
+                }
+            } else {
+                // No explanation needed, we can request the permission.
+                ActivityCompat.requestPermissions(
+                    requireActivity(),
+                    arrayOf(Manifest.permission.CALL_PHONE),
+                    42
+                )
+                if (ContextCompat.checkSelfPermission(
+                        requireContext(),
+                        Manifest.permission.CALL_PHONE
+                    )
+                    == PackageManager.PERMISSION_GRANTED
+                ) {
+                    val intent = Intent(Intent.ACTION_CALL)
+                    intent.data = Uri.parse(Constants.TEL + phone)
+                    startActivity(intent)
+                }
+            }
+        } else {
+            val intent = Intent(Intent.ACTION_CALL)
+            intent.data = Uri.parse(Constants.TEL + phone)
+            startActivity(intent)
+            // Permission has already been granted
+        }
     }
 
 

@@ -1,5 +1,7 @@
 package kz.pillikan.lombart.content.view.appeal
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,12 +9,12 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.fragment_appeal.*
-import kotlinx.android.synthetic.main.fragment_appeal.loadingView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kz.pillikan.lombart.R
 import kz.pillikan.lombart.common.helpers.Validators
+import kz.pillikan.lombart.common.remote.Constants
 import kz.pillikan.lombart.common.views.BaseFragment
 import kz.pillikan.lombart.content.model.request.appeal.FeedbackRequest
 import kz.pillikan.lombart.content.viewmodel.appeal.AppealViewModel
@@ -21,6 +23,10 @@ import org.jetbrains.anko.sdk27.coroutines.onClick
 class AppealFragment : BaseFragment() {
 
     private lateinit var viewModel: AppealViewModel
+
+    companion object {
+        const val TAG = "AppealFragment"
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,6 +45,13 @@ class AppealFragment : BaseFragment() {
         initViewModel()
         initListeners()
         initObservers()
+        setData()
+    }
+
+    private fun setData() {
+        tv_address.text = Constants.ADDRESS
+        tv_phone.text = Constants.PHONE
+        tv_mail.text = Constants.MAIL
     }
 
     private fun initViewModel() {
@@ -48,6 +61,9 @@ class AppealFragment : BaseFragment() {
     private fun initListeners() {
         btn_send.onClick {
             prepareFeedback()
+        }
+        ll_phone.onClick {
+            call(Constants.PHONE)
         }
     }
 
@@ -61,7 +77,7 @@ class AppealFragment : BaseFragment() {
             true -> sendFeedback(feedbackRequest)
             false -> Toast.makeText(
                 context,
-                "Введенные вами данные некорректны!",
+                getString(R.string.data_you_entered_is_incorrect),
                 Toast.LENGTH_SHORT
             ).show()
         }
@@ -85,14 +101,14 @@ class AppealFragment : BaseFragment() {
                     setLoading(false)
                     Toast.makeText(
                         context,
-                        "Спасибо! Ваше обращение отправлено!", Toast.LENGTH_LONG
+                        getString(R.string.your_message_has_been_sent), Toast.LENGTH_LONG
                     ).show()
                 }
                 false -> {
                     setLoading(false)
                     Toast.makeText(
                         context,
-                        "К Сожалению! Ваше обращение не отправлено", Toast.LENGTH_LONG
+                        getString(R.string.your_appeal_has_not_been_sent), Toast.LENGTH_LONG
                     ).show()
                 }
             }
