@@ -4,12 +4,14 @@ import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
+import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import kz.pillikan.lombart.R
+import kz.pillikan.lombart.content.view.FoundationActivity
 import java.util.*
 
 class SertFirebaseService : FirebaseMessagingService() {
@@ -31,7 +33,23 @@ class SertFirebaseService : FirebaseMessagingService() {
     }
     private fun showNotification(params: Map<String, String>, title: String, body: String) {
         val temp = params.toString()
-        val resultPendingIntent: PendingIntent? = null
+        var resultPendingIntent: PendingIntent? = null
+
+            val resultIntent = Intent(this, FoundationActivity::class.java)
+
+        if (!params["notificationId"].isNullOrEmpty()) {
+            resultIntent.putExtra(
+                "NOTIFICATION_ID",
+                params["notificationId"]!!.toInt()
+            )
+            resultPendingIntent =
+                PendingIntent.getActivity(
+                    this,
+                    0,
+                    resultIntent,
+                    PendingIntent.FLAG_UPDATE_CURRENT
+                )
+        }
 
         val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
         val NOTIFICATION_CHANNEL_ID = "PACKAGE"

@@ -17,7 +17,7 @@ import kz.pillikan.lombart.R
 import kz.pillikan.lombart.common.helpers.convertDpToPixel
 import kz.pillikan.lombart.common.remote.Constants
 import kz.pillikan.lombart.common.views.BaseFragment
-import kz.pillikan.lombart.common.views.utils.СalculatorPrice
+import kz.pillikan.lombart.common.views.utils.FinenessPrice
 import kz.pillikan.lombart.content.model.response.home.*
 import kz.pillikan.lombart.content.viewmodel.home.HomeViewModel
 import org.jetbrains.anko.alert
@@ -28,7 +28,7 @@ import java.util.*
 class HomeFragment : BaseFragment() {
 
     private val adapters: LoansAdapter = LoansAdapter(this)
-    private val currencyPrice: СalculatorPrice = СalculatorPrice(this)
+    private val currencyPrice: FinenessPrice = FinenessPrice(this)
     private lateinit var viewModel: HomeViewModel
     private val bannerAdapter by lazy { PagerAdapter(context) }
 

@@ -33,6 +33,13 @@ class FoundationActivity : BaseActivity() {
         val navController = findNavController(R.id.fragment2)
         setupNavController(navController)
         destinationListeners(navController)
+        checkExtraNotificationId()
+    }
+
+    private fun checkExtraNotificationId() {
+        if (intent.getIntExtra("NOTIFICATION_ID", 0) != 0){
+            // TO-DO доделать
+        }
     }
 
     private fun destinationListeners(navController: NavController) {

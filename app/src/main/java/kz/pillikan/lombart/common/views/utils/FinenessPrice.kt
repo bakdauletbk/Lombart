@@ -12,7 +12,7 @@ import kz.pillikan.lombart.content.model.response.home.FinenessPriceResponse
 import kz.pillikan.lombart.content.view.home.HomeFragment
 import org.jetbrains.anko.sdk27.coroutines.onClick
 
-open class СalculatorPrice {
+open class FinenessPrice {
 
     private var callback: HomeFragment
 
@@ -151,21 +151,28 @@ open class СalculatorPrice {
     private fun setPrice(price: Long, percent1: String, percent2: String, limit: Long) {
         val etDay = callback.view?.findViewById<EditText>(R.id.et_day)
         val etGram = callback.view?.findViewById<EditText>(R.id.et_gram)
-        val tvPrice = callback.view?.findViewById<TextView>(R.id.tv_refundable_amount)
+        val tvAmount = callback.view?.findViewById<TextView>(R.id.tv_refundable_amount)
+        val tvAmountOnHand = callback.view?.findViewById<TextView>(R.id.tv_amount)
         when (etDay?.text!!.isNotEmpty() && etGram?.text!!.isNotEmpty()) {
             true -> {
                 val day = etDay.text.toString().toInt()
-                setValidateText(price)
+                setValidateText(
+                    price = price,
+                    limit = limit,
+                    percent1 = percent1,
+                    percent2 = percent2
+                )
                 val gram = etDay.text.toString().toFloat()
-                val result = (((price * gram) / Constants.DAYS) * day).toLong()
+                val result = price * gram
+                tvAmountOnHand?.text = result.toLong().toString() + Constants.MONEY
                 when (result >= limit) {
                     true -> {
-                        val percent = result * percent2.toFloat()
-                        tvPrice?.text = percent.toLong().toString() + Constants.MONEY
+                        val percent = result * percent2.toFloat() * day
+                        tvAmount?.text = percent.toLong().toString() + Constants.MONEY
                     }
                     false -> {
-                        val percent = result * percent1.toFloat()
-                        tvPrice?.text = percent.toLong().toString() + Constants.MONEY
+                        val percent = result * percent1.toFloat() * day
+                        tvAmount?.text = percent.toLong().toString() + Constants.MONEY
                     }
                 }
             }
@@ -176,10 +183,11 @@ open class СalculatorPrice {
         }
     }
 
-    private fun setValidateText(price: Long) {
+    private fun setValidateText(price: Long, limit: Long, percent1: String, percent2: String) {
         val etDay = callback.view?.findViewById<EditText>(R.id.et_day)
         val etGram = callback.view?.findViewById<EditText>(R.id.et_gram)
-        val tvPrice = callback.view?.findViewById<TextView>(R.id.tv_refundable_amount)
+        val tvAmount = callback.view?.findViewById<TextView>(R.id.tv_refundable_amount)
+        val tvAmountOnHand = callback.view?.findViewById<TextView>(R.id.tv_amount)
         etDay?.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
 
@@ -187,10 +195,20 @@ open class СalculatorPrice {
             override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
                 when (etDay.text.isNotEmpty() && etGram?.text!!.isNotEmpty()) {
                     true -> {
-                        val gram = etGram?.text.toString().toFloat()
-                        val result =
-                            ((price * gram) / Constants.DAYS) * etDay.text.toString().toInt()
-                        tvPrice?.text = result.toLong().toString() + Constants.MONEY
+                        val day = etDay.text.toString().toInt()
+                        val gram = etDay.text.toString().toFloat()
+                        val result = price * gram
+                        tvAmountOnHand?.text = result.toLong().toString() + Constants.MONEY
+                        when (result >= limit) {
+                            true -> {
+                                val percent = result * percent2.toFloat() * day
+                                tvAmount?.text = percent.toLong().toString() + Constants.MONEY
+                            }
+                            false -> {
+                                val percent = result * percent1.toFloat() * day
+                                tvAmount?.text = percent.toLong().toString() + Constants.MONEY
+                            }
+                        }
                     }
                     false -> {
                         etDay.error = "Введенный вами день некорректно!"
@@ -214,10 +232,20 @@ open class СalculatorPrice {
             override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
                 when (etGram.text.isNotEmpty() && etDay?.text!!.isNotEmpty()) {
                     true -> {
-                        val gram = etGram.text.toString().toFloat()
-                        val result =
-                            ((price * gram) / Constants.DAYS) * etDay?.text.toString().toInt()
-                        tvPrice?.text = result.toLong().toString() + Constants.MONEY
+                        val day = etDay?.text.toString().toInt()
+                        val gram = etDay?.text.toString().toFloat()
+                        val result = price * gram
+                        tvAmountOnHand?.text = result.toLong().toString() + Constants.MONEY
+                        when (result >= limit) {
+                            true -> {
+                                val percent = result * percent2.toFloat() * day
+                                tvAmount?.text = percent.toLong().toString() + Constants.MONEY
+                            }
+                            false -> {
+                                val percent = result * percent1.toFloat() * day
+                                tvAmount?.text = percent.toLong().toString() + Constants.MONEY
+                            }
+                        }
                     }
                     false -> {
                         etGram.error = "Введенный вами грамм некорректно!"
