@@ -1,7 +1,6 @@
 package kz.pillikan.lombart.content.view.home
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -32,7 +31,6 @@ class HomeFragment : BaseFragment() {
     private val currencyPrice: FinenessPriceCalculate = FinenessPriceCalculate(this)
     private lateinit var viewModel: HomeViewModel
     private val bannerAdapter by lazy { PagerAdapter(context) }
-    private val intent = Intent()
     private var isDialogVisibility = false
 
     companion object {
@@ -169,11 +167,12 @@ class HomeFragment : BaseFragment() {
         viewModel.slidersList.observe(viewLifecycleOwner, {
             when (it) {
                 null -> {
-                    showEmptySlider()
+                    hideEmptySlider()
                     errorAlertDialog(getString(R.string.error_unknown_body))
                 }
                 else -> {
                     setLoading(false)
+                    showSliders()
                     addSliderList(it)
                 }
             }
@@ -200,12 +199,16 @@ class HomeFragment : BaseFragment() {
         })
     }
 
+    private fun showSliders() {
+        vp_banners.visibility = View.VISIBLE
+    }
+
     private fun setHeadText(titleResponse: TitleResponse) {
         tv_title_home.text = titleResponse.title
         tv_description_home.text = titleResponse.text1
     }
 
-    private fun showEmptySlider() {
+    private fun hideEmptySlider() {
         vp_banners.visibility = View.GONE
     }
 

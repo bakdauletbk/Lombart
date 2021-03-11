@@ -633,6 +633,7 @@
                 android:id="@+id/vp_banners"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimens_150dp"
+                android:visibility="gone"
                 android:layout_marginTop="@dimen/dimens_22dp" />
 
             <LinearLayout

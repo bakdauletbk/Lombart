@@ -28,7 +28,6 @@ import kz.pillikan.lombart.common.views.BaseFragment
 import kz.pillikan.lombart.content.model.request.home.ValidatePinRequest
 import kz.pillikan.lombart.content.viewmodel.validate.ValidatePinViewModel
 import org.jetbrains.anko.sdk27.coroutines.onClick
-import org.jetbrains.anko.support.v4.alert
 
 class ValidatePinFragment : BaseFragment() {
 
@@ -164,14 +163,17 @@ class ValidatePinFragment : BaseFragment() {
         viewModel.isSuccess.observe(viewLifecycleOwner, {
             when (it) {
                 true -> findNavController().navigate(ValidatePinFragmentDirections.actionValidatePinFragmentToHomeFragment())
-                false -> errorAlertDialog()
+                false -> {
+                    et_pin.text?.clear()
+                    errorAlertDialog()
+                }
             }
         })
     }
 
-    private fun errorAlertDialog(){
+    private fun errorAlertDialog() {
         setLoading(false)
-        errorDialog(getString(R.string.error_unknown_body))
+        errorDialog(getString(R.string.error_pin_code_validate))
     }
 
     private fun preparePin() {

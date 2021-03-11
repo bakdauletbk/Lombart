@@ -50,6 +50,7 @@
     //Обработка ошибок
     <string name="error_unknown_title">Что-то пошло не так…</string>
     <string name="error_unknown_body">Пожалуйста проверьте ваше интернет соединение или попробуйте позднее</string>
+    <string name="error_pin_code_validate">Ваш пин код не правильный!</string>
     <string name="error_failed_connection_to_server">Не удалось установить соединение с сервером: \n</string>
     <string name="error_no_internet_title">Отсутствует интернет соединение</string>
     <string name="error_no_internet_msg">Пожалуйста проверьте ваше интернет соединение и попробуйте ещё раз</string>

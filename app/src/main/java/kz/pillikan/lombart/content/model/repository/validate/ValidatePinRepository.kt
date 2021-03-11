@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import kz.pillikan.lombart.BuildConfig
+import kz.pillikan.lombart.common.helpers.NetworkHelpers
 import kz.pillikan.lombart.common.preference.SessionManager
 import kz.pillikan.lombart.common.remote.Constants
 import kz.pillikan.lombart.common.remote.Networking
@@ -29,6 +30,10 @@ class ValidatePinRepository(application: Application) {
             Authorization = Constants.AUTH_TOKEN_PREFIX + sessionManager.getToken()
         )
         return response.code() == Constants.RESPONSE_SUCCESS_CODE
+    }
+
+    suspend fun checkNetwork(context: Context): Boolean {
+        return NetworkHelpers.isNetworkConection(context)
     }
 
 }

@@ -18,12 +18,14 @@ import kz.pillikan.lombart.common.views.BaseFragment
 import kz.pillikan.lombart.content.model.response.about.AboutResponse
 import kz.pillikan.lombart.content.model.response.about.AddressList
 import kz.pillikan.lombart.content.viewmodel.about.AboutViewModel
+import org.jetbrains.anko.alert
 import java.util.ArrayList
 
 class AboutFragment : BaseFragment() {
 
     private var mapKit: MapKit? = null
     private lateinit var viewModel: AboutViewModel
+    private var isDialogVisibility = false
 
     companion object {
         const val LATITUDE = 42.330639
@@ -137,6 +139,22 @@ class AboutFragment : BaseFragment() {
 
     private fun setLoading(loading: Boolean) {
         loadingView.visibility = if (loading) View.VISIBLE else View.GONE
+    }
+
+    private fun showAlertDialog(errorMsg: String) {
+        if (!isDialogVisibility) {
+            isDialogVisibility = true
+            activity?.alert {
+                title = getString(R.string.error_unknown_title)
+                message = errorMsg
+                isCancelable = false
+                negativeButton(getString(R.string.dialog_ok)) {
+                    setLoading(false)
+                    it.dismiss()
+                    isDialogVisibility = false
+                }
+            }?.show()
+        }
     }
 
 }

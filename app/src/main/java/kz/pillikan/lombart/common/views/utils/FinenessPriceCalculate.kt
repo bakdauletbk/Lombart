@@ -223,11 +223,11 @@ open class FinenessPriceCalculate {
                 tvAmountOnHand?.text = result.toLong().toString() + Constants.MONEY
                 when (result >= limit) {
                     true -> {
-                        val percent = result * percent2.toFloat() * day
+                        val percent = result + (result * (percent2.toFloat()/100) * day)
                         tvAmount?.text = percent.toLong().toString() + Constants.MONEY
                     }
                     false -> {
-                        val percent = result * percent1.toFloat() * day
+                        val percent = result + (result * (percent1.toFloat()/100) * day)
                         tvAmount?.text = percent.toLong().toString() + Constants.MONEY
                     }
                 }
@@ -256,11 +256,11 @@ open class FinenessPriceCalculate {
                         tvAmountOnHand?.text = result.toLong().toString() + Constants.MONEY
                         when (result >= limit) {
                             true -> {
-                                val percent = result * percent2.toFloat() * day
+                                val percent = result + (result * (percent2.toFloat()/100) * day)
                                 tvAmount?.text = percent.toLong().toString() + Constants.MONEY
                             }
                             false -> {
-                                val percent = result * percent1.toFloat() * day
+                                val percent = result + (result * (percent1.toFloat()/100) * day)
                                 tvAmount?.text = percent.toLong().toString() + Constants.MONEY
                             }
                         }
@@ -293,11 +293,11 @@ open class FinenessPriceCalculate {
                         tvAmountOnHand?.text = result.toLong().toString() + Constants.MONEY
                         when (result >= limit) {
                             true -> {
-                                val percent = result * percent2.toFloat() * day
+                                val percent = result + (result * (percent2.toFloat()/100) * day)
                                 tvAmount?.text = percent.toLong().toString() + Constants.MONEY
                             }
                             false -> {
-                                val percent = result * percent1.toFloat() * day
+                                val percent = result + (result * (percent1.toFloat()/100) * day)
                                 tvAmount?.text = percent.toLong().toString() + Constants.MONEY
                             }
                         }

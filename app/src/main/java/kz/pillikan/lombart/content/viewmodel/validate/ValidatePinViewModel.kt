@@ -1,6 +1,7 @@
 package kz.pillikan.lombart.content.viewmodel.validate
 
 import android.app.Application
+import android.content.Context
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -14,8 +15,9 @@ class ValidatePinViewModel(application: Application) : AndroidViewModel(applicat
 
     val isSuccess: MutableLiveData<Boolean> = MutableLiveData()
     val isError: MutableLiveData<String> = MutableLiveData()
+    val isNetworkConnection: MutableLiveData<Boolean> = MutableLiveData()
 
-    fun validatePin(validatePinRequest: ValidatePinRequest) {
+    suspend fun validatePin(validatePinRequest: ValidatePinRequest) {
         viewModelScope.launch {
             try {
                 val isValidate = repository.validatePin(validatePinRequest)
@@ -25,5 +27,16 @@ class ValidatePinViewModel(application: Application) : AndroidViewModel(applicat
             }
         }
     }
+
+    suspend fun checkNetwork(context: Context) {
+        viewModelScope.launch {
+            try {
+                isNetworkConnection.postValue(repository.checkNetwork(context))
+            } catch (e: java.lang.Exception) {
+                isNetworkConnection.postValue(false)
+            }
+        }
+    }
+
 
 }

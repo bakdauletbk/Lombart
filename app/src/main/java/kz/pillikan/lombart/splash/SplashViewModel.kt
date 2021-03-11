@@ -21,7 +21,7 @@ class SplashViewModel(application: Application) : AndroidViewModel(application) 
     var isAuthorize = MutableLiveData<Boolean>()
     var isError = MutableLiveData<Boolean>()
 
-    fun checkNetwork(context: Context) {
+    suspend fun checkNetwork(context: Context) {
         viewModelScope.launch {
             try {
                 isNetworkConnection.postValue(repository.checkNetwork(context))

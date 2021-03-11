@@ -48,7 +48,6 @@ class PagerAdapter(val context: Context?) : PagerAdapter() {
         pager.addView(view, 0)
 
         return view
-
     }
 
     override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
