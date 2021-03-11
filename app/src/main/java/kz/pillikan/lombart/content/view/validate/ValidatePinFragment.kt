@@ -79,7 +79,7 @@ class ValidatePinFragment : BaseFragment() {
             initBiometric()
         }
         btn_create_pin.onClick {
-            preparePin()
+            context?.let { it1 -> viewModel.checkNetwork(it1) }
         }
     }
 
@@ -160,20 +160,31 @@ class ValidatePinFragment : BaseFragment() {
         viewModel.isError.observe(viewLifecycleOwner, {
             errorAlertDialog()
         })
+        viewModel.isNetworkConnection.observe(viewLifecycleOwner, {
+            when (it) {
+                true -> preparePin()
+                false -> errorAlertDialog()
+            }
+        })
         viewModel.isSuccess.observe(viewLifecycleOwner, {
             when (it) {
                 true -> findNavController().navigate(ValidatePinFragmentDirections.actionValidatePinFragmentToHomeFragment())
                 false -> {
                     et_pin.text?.clear()
-                    errorAlertDialog()
+                    validatePinCodeAlert()
                 }
             }
         })
     }
 
-    private fun errorAlertDialog() {
+    private fun validatePinCodeAlert() {
         setLoading(false)
         errorDialog(getString(R.string.error_pin_code_validate))
+    }
+
+    private fun errorAlertDialog() {
+        setLoading(false)
+        errorDialog(getString(R.string.error_unknown_body))
     }
 
     private fun preparePin() {

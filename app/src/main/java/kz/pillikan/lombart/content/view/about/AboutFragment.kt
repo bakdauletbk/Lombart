@@ -79,14 +79,17 @@ class AboutFragment : BaseFragment() {
             errorDialog()
         })
         viewModel.addressList.observe(viewLifecycleOwner, {
-            if (it != null) {
-                setLoading(false)
-                setAddress(it)
-            } else errorDialog()
+            when (it) {
+                null -> showAlertDialog(getString(R.string.error_unknown_body))
+                else -> {
+                    setLoading(false)
+                    setAddress(it)
+                }
+            }
         })
-        viewModel.about.observe(viewLifecycleOwner,{
-            when(it){
-                null -> errorDialog()
+        viewModel.about.observe(viewLifecycleOwner, {
+            when (it) {
+                null -> showAlertDialog(getString(R.string.error_unknown_body))
                 else -> {
                     setLoading(false)
                     setAboutText(it)
