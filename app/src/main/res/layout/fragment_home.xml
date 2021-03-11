@@ -24,8 +24,8 @@
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:layout_marginTop="@dimen/dimens_10dp"
-                android:layout_marginBottom="@dimen/dimens_10dp"
                 android:layout_marginEnd="@dimen/dimens_20dp"
+                android:layout_marginBottom="@dimen/dimens_10dp"
                 android:orientation="horizontal"
                 app:sc_border_width="@dimen/dimens_1dp"
                 app:sc_tint_color="@color/green"
@@ -377,12 +377,27 @@
                             android:textSize="8sp"
                             tools:ignore="SmallSp" />
 
-                        <Spinner
-                            android:id="@+id/spinner_fineness"
-                            android:layout_width="@dimen/dimens_60dp"
-                            android:layout_height="@dimen/dimens_35dp"
-                            android:layout_gravity="center_horizontal"
-                            android:background="@color/white" />
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+
+                            <Spinner
+                                android:id="@+id/spinner_fineness"
+                                android:layout_width="@dimen/dimens_60dp"
+                                android:layout_height="@dimen/dimens_35dp"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_marginStart="@dimen/dimens_14dp"
+                                android:background="@color/white" />
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/ic_spinner_open_icon"
+                                tools:ignore="ContentDescription" />
+                        </LinearLayout>
+
 
                         <View
                             android:layout_width="match_parent"
@@ -418,18 +433,18 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
-                            android:gravity="center"
-                            android:paddingTop="@dimen/dimens_7dp"
                             android:background="@color/white"
-                            android:text="1"
                             android:clickable="true"
                             android:focusable="true"
+                            android:gravity="center"
                             android:hint="1"
                             android:inputType="numberDecimal"
                             android:maxLength="5"
                             android:maxLines="3"
                             android:paddingStart="@dimen/dimens_15dp"
+                            android:paddingTop="@dimen/dimens_7dp"
                             android:paddingEnd="@dimen/dimens_15dp"
+                            android:text="1"
                             android:textColor="@color/black"
                             android:textSize="18sp"
                             android:textStyle="bold"
@@ -469,18 +484,18 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
-                            android:paddingTop="@dimen/dimens_7dp"
-                            android:gravity="center"
                             android:background="@color/white"
-                            android:text="5"
                             android:clickable="true"
                             android:focusable="true"
+                            android:gravity="center"
                             android:hint="5"
                             android:inputType="number"
                             android:maxLength="2"
                             android:maxLines="3"
                             android:paddingStart="@dimen/dimens_15dp"
+                            android:paddingTop="@dimen/dimens_7dp"
                             android:paddingEnd="@dimen/dimens_15dp"
+                            android:text="5"
                             android:textColor="@color/black"
                             android:textSize="18sp"
                             android:textStyle="bold"
@@ -777,7 +792,7 @@
                         android:textColor="@color/black"
                         android:textSize="12sp"
                         android:textStyle="bold"
-                        tools:ignore="HardcodedText" />
+                        tools:ignore="HardcodedText,TooManyViews" />
                 </LinearLayout>
 
                 <LinearLayout

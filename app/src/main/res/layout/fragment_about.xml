@@ -50,6 +50,7 @@
                 android:layout_marginStart="@dimen/dimens_18dp"
                 android:layout_marginTop="@dimen/dimens_15dp"
                 android:layout_marginEnd="@dimen/dimens_18dp"
+                android:visibility="gone"
                 app:cardCornerRadius="@dimen/dimens_10dp">
 
                 <ImageView

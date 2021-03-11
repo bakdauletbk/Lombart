@@ -42,5 +42,4 @@ class SplashViewModel(application: Application) : AndroidViewModel(application) 
         }
     }
 
-
 }

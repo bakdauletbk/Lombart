@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="@dimen/dimens_5dp"
-        android:layout_marginTop="@dimen/dimens_10dp"
+        android:layout_marginTop="@dimen/dimens_5dp"
         android:padding="@dimen/dimens_10dp"
         android:layout_marginBottom="@dimen/dimens_10dp"
         android:src="@drawable/ic_close"
@@ -32,9 +32,9 @@
 
             <TextView
                 android:id="@+id/tv_id"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/dimens_45dp"
+                android:layout_marginEnd="@dimen/dimens_23dp"
                 android:layout_marginStart="@dimen/dimens_23dp"
                 android:layout_marginTop="@dimen/dimens_5dp"
                 android:textColor="@color/black"

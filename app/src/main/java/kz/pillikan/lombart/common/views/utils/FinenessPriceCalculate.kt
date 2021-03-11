@@ -6,17 +6,15 @@ import android.text.TextWatcher
 import android.view.View
 import android.widget.*
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.fragment_home.*
 import kz.pillikan.lombart.R
 import kz.pillikan.lombart.common.remote.Constants
 import kz.pillikan.lombart.content.model.response.home.CurrencyList
 import kz.pillikan.lombart.content.model.response.home.FinenessPriceResponse
 import kz.pillikan.lombart.content.view.home.HomeFragment
 import org.jetbrains.anko.sdk27.coroutines.onClick
-import org.w3c.dom.Text
 import java.util.ArrayList
 
-open class FinenessPrice {
+open class FinenessPriceCalculate {
 
     private var callback: HomeFragment
 
@@ -115,6 +113,15 @@ open class FinenessPrice {
         val llFineness2 = callback.view?.findViewById<LinearLayout>(R.id.ll_fineness2)
         val llFineness3 = callback.view?.findViewById<LinearLayout>(R.id.ll_fineness3)
 
+        //Text View
+        val tvFinenessName = callback.view?.findViewById<TextView>(R.id.tv_fineness_name1)
+        val tvFinenessName2 = callback.view?.findViewById<TextView>(R.id.tv_fineness_name2)
+        val tvFinenessName3 = callback.view?.findViewById<TextView>(R.id.tv_fineness_name3)
+
+        val tvFinenessPrice = callback.view?.findViewById<TextView>(R.id.tv_fineness_price1)
+        val tvFinenessPrice2 = callback.view?.findViewById<TextView>(R.id.tv_fineness_price2)
+        val tvFinenessPrice3 = callback.view?.findViewById<TextView>(R.id.tv_fineness_price3)
+
         setPrice(
             finenessPrice.prices[position].value!!.toLong(),
             percent1 = finenessPrice.percent1!!,
@@ -124,21 +131,39 @@ open class FinenessPrice {
         spinner?.setSelection(position)
         when (position) {
             Constants.FINENESS_FIRST -> {
+                setColorNameText(tvFinenessName!!, tvFinenessName2!!, tvFinenessName3!!)
+                setColorPriceText(tvFinenessPrice!!, tvFinenessPrice2!!, tvFinenessPrice3!!)
                 llFineness?.isEnabled = false
                 llFineness2?.isEnabled = true
                 llFineness3?.isEnabled = true
             }
             Constants.FINENESS_SECOND -> {
+                setColorNameText(tvFinenessName2!!, tvFinenessName!!, tvFinenessName3!!)
+                setColorPriceText(tvFinenessPrice2!!, tvFinenessPrice!!, tvFinenessPrice3!!)
                 llFineness2?.isEnabled = false
                 llFineness?.isEnabled = true
                 llFineness3?.isEnabled = true
             }
             Constants.FINENESS_THIRD -> {
+                setColorNameText(tvFinenessName3!!, tvFinenessName!!, tvFinenessName2!!)
+                setColorPriceText(tvFinenessPrice3!!, tvFinenessPrice!!, tvFinenessPrice2!!)
                 llFineness3?.isEnabled = false
                 llFineness?.isEnabled = true
                 llFineness2?.isEnabled = true
             }
         }
+    }
+
+    private fun setColorNameText(textView: TextView, textView2: TextView, textView3: TextView) {
+        textView.setTextColor(callback.resources.getColor(R.color.white))
+        textView2.setTextColor(callback.resources.getColor(R.color.black))
+        textView3.setTextColor(callback.resources.getColor(R.color.black))
+    }
+
+    private fun setColorPriceText(textView: TextView, textView2: TextView, textView3: TextView) {
+        textView.setTextColor(callback.resources.getColor(R.color.white))
+        textView2.setTextColor(callback.resources.getColor(R.color.black))
+        textView3.setTextColor(callback.resources.getColor(R.color.black))
     }
 
     fun setSpinner(finenessPrice: FinenessPriceResponse) {

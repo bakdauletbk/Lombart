@@ -8,6 +8,7 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.bottomnavigation.LabelVisibilityMode
 import kotlinx.android.synthetic.main.activity_foundation.*
 import kz.pillikan.lombart.R
 import kz.pillikan.lombart.common.views.BaseActivity
@@ -21,6 +22,9 @@ class FoundationActivity : BaseActivity() {
         const val PROFILE = 2
         const val NOTIFICATION = 3
         const val APPEAL = 4
+
+        const val NOTIFICATION_ID = "NOTIFICATION_ID"
+        const val DEFAULT_VALUE = 0
     }
 
     private var exit = false
@@ -39,10 +43,10 @@ class FoundationActivity : BaseActivity() {
     }
 
     private fun checkExtraNotificationId() {
-        val notificationId = intent.getIntExtra("NOTIFICATION_ID", 0)
+        val notificationId = intent.getIntExtra(NOTIFICATION_ID, DEFAULT_VALUE)
         if (notificationId > 0) {
-             findNavController(R.id.fragment2)
-                    .navigate(R.id.action_homeFragment_to_notificationsFragment)
+            findNavController(R.id.fragment2)
+                .navigate(R.id.action_homeFragment_to_notificationsFragment)
 
         }
     }

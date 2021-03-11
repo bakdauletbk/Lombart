@@ -1,9 +1,7 @@
 package kz.pillikan.lombart.splash
 
 import android.os.Bundle
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.findNavController
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -12,7 +10,6 @@ import kz.pillikan.lombart.R
 import kz.pillikan.lombart.authorization.view.AuthorizationActivity
 import kz.pillikan.lombart.common.views.BaseActivity
 import kz.pillikan.lombart.content.view.FoundationActivity
-import kz.pillikan.lombart.content.view.home.HomeFragmentDirections
 import org.jetbrains.anko.alert
 import org.jetbrains.anko.intentFor
 
@@ -47,7 +44,7 @@ class SplashActivity : BaseActivity() {
             if (it) {
                 checkAuthorize()
             } else {
-                showErrorDialogue(
+                showErrorDialog(
                     getString(R.string.error_no_internet_title),
                     getString(R.string.error_no_internet_msg)
                 )
@@ -56,13 +53,11 @@ class SplashActivity : BaseActivity() {
 
         viewModel.isAuthorize.observe(mContext, {
             if (it) {
-                finish()
                 if (notificationId != null){
                     startActivity(intentFor<FoundationActivity>().putExtra("NOTIFICATION_ID", notificationId))
                 }else{
                     startActivity(intentFor<FoundationActivity>())
                 }
-
             } else {
                 startActivity(intentFor<AuthorizationActivity>())
             }
@@ -70,7 +65,7 @@ class SplashActivity : BaseActivity() {
 
         viewModel.isError.observe(mContext, {
             if (it) {
-                showErrorDialogue(
+                showErrorDialog(
                     getString(R.string.error_unknown_title),
                     getString(R.string.error_unknown_body)
                 )
@@ -91,7 +86,7 @@ class SplashActivity : BaseActivity() {
         viewModel.checkAuthorize()
     }
 
-    private fun showErrorDialogue(errorTitle: String, errorMessage: String) {
+    private fun showErrorDialog(errorTitle: String, errorMessage: String) {
         alert {
             title = errorTitle
             message = errorMessage
