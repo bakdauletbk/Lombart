@@ -47,7 +47,6 @@ class FoundationActivity : BaseActivity() {
         if (notificationId > 0) {
             findNavController(R.id.fragment2)
                 .navigate(R.id.action_homeFragment_to_notificationsFragment)
-
         }
     }
 
@@ -105,7 +104,7 @@ class FoundationActivity : BaseActivity() {
             startActivity(intent)
         } else {
             Toast.makeText(
-                this, "Для выхода снова нажмите «Назад».",
+                this, getString(R.string.press_back_again_to_exit),
                 Toast.LENGTH_SHORT
             ).show()
             exit = true

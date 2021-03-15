@@ -85,7 +85,7 @@ class RegistrationFragment : BaseFragment() {
             true -> checkUser(checkUserRequest!!)
             false -> Toast.makeText(
                 this.context,
-                "Введенные Вами данные некорректны!",
+                getString(R.string.you_entered_is_incorrect),
                 Toast.LENGTH_LONG
             ).show()
         }
@@ -113,7 +113,7 @@ class RegistrationFragment : BaseFragment() {
         })
     }
 
-    private fun errorAlertDialog(){
+    private fun errorAlertDialog() {
         setLoading(false)
         errorDialog(getString(R.string.error_unknown_body))
     }

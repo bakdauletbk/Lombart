@@ -1,5 +1,6 @@
 package kz.pillikan.lombart.content.view.validate
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.KeyguardManager
 import android.content.Context
@@ -15,6 +16,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.core.hardware.fingerprint.FingerprintManagerCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.fragment_validate_pin.*
@@ -33,23 +36,6 @@ class ValidatePinFragment : BaseFragment() {
 
     private lateinit var viewModel: ValidatePinViewModel
     private var validatePinRequest: ValidatePinRequest? = null
-
-    private val authenticationCallback: BiometricPrompt.AuthenticationCallback =
-        @RequiresApi(Build.VERSION_CODES.P)
-        object : BiometricPrompt.AuthenticationCallback() {
-            override fun onAuthenticationError(errorCode: Int, errString: CharSequence?) {
-                super.onAuthenticationError(errorCode, errString)
-            }
-
-            override fun onAuthenticationFailed() {
-                super.onAuthenticationFailed()
-            }
-
-            override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult?) {
-                super.onAuthenticationSucceeded(result)
-                findNavController().navigate(ValidatePinFragmentDirections.actionValidatePinFragmentToHomeFragment())
-            }
-        }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -75,9 +61,13 @@ class ValidatePinFragment : BaseFragment() {
     }
 
     private fun setupListeners() {
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
-            initBiometric()
+        if (isSdkVersionSupported() && isFingerprintAvailable() && isHardwareSupported() && isPermissionGranted()
+        ) {
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
+                initBiometric()
+            }
         }
+
         btn_create_pin.onClick {
             context?.let { it1 -> viewModel.checkNetwork(it1) }
         }
@@ -102,9 +92,24 @@ class ValidatePinFragment : BaseFragment() {
                     ).show()
                 }).build()
 
+        val callback = object: BiometricPrompt.AuthenticationCallback() {
+            override fun onAuthenticationError(errorCode: Int, errString: CharSequence?) {
+                super.onAuthenticationError(errorCode, errString)
+            }
+
+            override fun onAuthenticationFailed() {
+                super.onAuthenticationFailed()
+            }
+
+            override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult?) {
+                super.onAuthenticationSucceeded(result)
+                findNavController().navigate(ValidatePinFragmentDirections.actionValidatePinFragmentToHomeFragment())
+            }
+        }
+
         biometricPrompt.authenticate(
             getCancellationSignal(),
-            activity?.mainExecutor!!, authenticationCallback
+            activity?.mainExecutor!!, callback
         )
 
     }
@@ -176,6 +181,29 @@ class ValidatePinFragment : BaseFragment() {
             }
         })
     }
+
+    private fun isSdkVersionSupported(): Boolean {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+    }
+
+    private fun isHardwareSupported(): Boolean {
+        val fingerprintManager = FingerprintManagerCompat.from(requireContext())
+        return fingerprintManager.isHardwareDetected
+    }
+
+    private fun isFingerprintAvailable(): Boolean {
+        val fingerprintManager = FingerprintManagerCompat.from(requireContext())
+        return fingerprintManager.hasEnrolledFingerprints()
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun isPermissionGranted(): Boolean {
+        return ActivityCompat.checkSelfPermission(
+            requireContext(),
+            Manifest.permission.USE_FINGERPRINT
+        ) == PackageManager.PERMISSION_GRANTED
+    }
+
 
     private fun validatePinCodeAlert() {
         setLoading(false)

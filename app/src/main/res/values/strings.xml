@@ -149,5 +149,10 @@
     <string name="password_changed_successfully">Пароль успешно изменён!</string>
     <string name="you_entered_is_incorrect">Введенные Вами данные некорректны!</string>
 
+    //
+    <string name="press_back_again_to_exit">Для выхода снова нажмите «Назад».</string>
+    <string name="save_error">Ошибка при сохранении!</string>
+    <string name="your_passwords_do_not_match">Ваши пароли не совпадают!</string>
+    <string name="the_sms_you_entered_are_incorrect">Введенные вами смс некорректны!</string>
 
 </resources>

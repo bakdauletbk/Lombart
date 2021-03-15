@@ -2,14 +2,17 @@ package kz.pillikan.lombart.content.view.home
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.view.marginLeft
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.viewpager2.widget.ViewPager2
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_home.loadingView
 import kotlinx.coroutines.*
@@ -30,7 +33,7 @@ class HomeFragment : BaseFragment() {
     private val adapters: LoansAdapter = LoansAdapter(this)
     private val currencyPrice: FinenessPriceCalculate = FinenessPriceCalculate(this)
     private lateinit var viewModel: HomeViewModel
-    private val bannerAdapter by lazy { PagerAdapter(context) }
+    private val bannersAdapter by lazy { PagerAdapter(context) }
     private var isDialogVisibility = false
 
     companion object {
@@ -48,6 +51,7 @@ class HomeFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init()
+
     }
 
     private fun init() {
@@ -61,8 +65,9 @@ class HomeFragment : BaseFragment() {
         setTodayDate()
     }
 
+
     private fun initViewPager() {
-        vp_banners.adapter = bannerAdapter
+        vp_banners.adapter = bannersAdapter
         vp_banners.apply {
             setPadding(
                 convertDpToPixel(Constants.PADDING),
@@ -224,20 +229,24 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun setBannerContent() {
-        CoroutineScope(Dispatchers.IO).launch {
+        CoroutineScope(Dispatchers.Main).launch {
             try {
-                if (vp_banners.currentItem != bannerAdapter.count.minus(Constants.ONE)) {
-                    vp_banners.setCurrentItem(vp_banners.currentItem.plus(Constants.ONE), true)
+                if (vp_banners.currentItem != bannersAdapter.count.minus(1)) {
+                    vp_banners.setCurrentItem(vp_banners.currentItem.plus(1), true)
                 } else {
-                    vp_banners.setCurrentItem(Constants.ZERO, true)
+                    vp_banners.setCurrentItem(0, true)
                 }
                 delay(Constants.TIME_MILLIS)
+
                 setBannerContent()
             } catch (e: Exception) {
-                Log.d(TAG, e.message.toString())
+                Log.e("BannersErma", e.message.toString())
             }
         }
+
     }
+
+
 
     private fun setProfile(profile: ProfileInfo) {
         tv_name.text = profile.fio
@@ -264,7 +273,7 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun addSliderList(sliderList: ArrayList<SlidersList>) {
-        bannerAdapter.addImageSlider(sliderList)
+        bannersAdapter.addImageSlider(sliderList)
     }
 
     @SuppressLint("SetTextI18n")

@@ -98,7 +98,7 @@ class CreatePasswordFragment : BaseFragment() {
 
         when (Validators.validatePassword(password) && Validators.validatePassword(password2) && password == password2) {
             true -> createUser(signUpRequest!!)
-            false -> Toast.makeText(context, "Ваши пароли не совпадают!", Toast.LENGTH_SHORT).show()
+            false -> Toast.makeText(context, getString(R.string.your_passwords_do_not_match), Toast.LENGTH_SHORT).show()
         }
     }
 

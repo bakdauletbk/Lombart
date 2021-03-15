@@ -140,7 +140,7 @@ class PasswordRecoveryFragment : BaseFragment() {
         })
     }
 
-    private fun errorDialogAlert(){
+    private fun errorDialogAlert() {
         setLoading(false)
         errorDialog(getString(R.string.error_unknown_body))
     }
@@ -165,7 +165,11 @@ class PasswordRecoveryFragment : BaseFragment() {
                 resetPassword(resetPasswordRequest)
             }
             false -> {
-                Toast.makeText(context, "Ваши пароли не совпадают!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    context,
+                    getString(R.string.your_passwords_do_not_match),
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
 
@@ -191,7 +195,7 @@ class PasswordRecoveryFragment : BaseFragment() {
             true -> verificationNumber(checkNumberRequest)
             false -> Toast.makeText(
                 requireContext(),
-                "Введенные вами смс некорректны!",
+                getString(R.string.the_sms_you_entered_are_incorrect),
                 Toast.LENGTH_LONG
             ).show()
         }
@@ -268,7 +272,7 @@ class PasswordRecoveryFragment : BaseFragment() {
             true -> checkUsers(checkUserRequest!!)
             false -> Toast.makeText(
                 this.context,
-                "Введенные вами данные некорректны!",
+                getString(R.string.you_entered_is_incorrect),
                 Toast.LENGTH_LONG
             ).show()
         }

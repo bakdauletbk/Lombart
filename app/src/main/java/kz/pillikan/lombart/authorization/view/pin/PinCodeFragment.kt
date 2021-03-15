@@ -64,7 +64,7 @@ class PinCodeFragment : BaseFragment() {
 
         when (Validators.validatePinCode(pinCode) && Validators.validatePinCode(pinCode2) && pinCode == pinCode2) {
             true -> savePinCode(pinCodeRequest)
-            false -> Toast.makeText(context, "Введите пин код!", Toast.LENGTH_SHORT).show()
+            false -> Toast.makeText(context, getString(R.string.enter_your_pin_code), Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -89,7 +89,7 @@ class PinCodeFragment : BaseFragment() {
                 false -> {
                     et_access_pin.text?.clear()
                     et_access_pin_repeat.text?.clear()
-                    Toast.makeText(context, "Ошибка при сохранении!", Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, getString(R.string.save_error), Toast.LENGTH_LONG).show()
                 }
             }
         })

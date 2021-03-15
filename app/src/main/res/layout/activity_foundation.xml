@@ -28,27 +28,4 @@
         app:itemTextAppearanceInactive="@style/BottomNavigationView"
         app:menu="@menu/bottom_nav_menu" />
 
-    <RelativeLayout
-        android:id="@+id/foundation_rv"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#54000000"
-        android:visibility="gone">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:orientation="vertical"
-            tools:ignore="UselessParent">
-
-            <ProgressBar
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/round_white_foreground" />
-
-        </LinearLayout>
-
-    </RelativeLayout>
-
 </RelativeLayout>

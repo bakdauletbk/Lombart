@@ -1,0 +1,158 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name">Lombart</string>
+
+    //Диалог
+    <string name="dialog_retry">Тағы да</string>
+    <string name="dialog_exit">Шығу</string>
+    <string name="dialog_ok">Oк</string>
+    <string name="no_account">Тіркелгенсіз ба?  -</string>
+    <string name="sign_up">Тіркелу</string>
+    <string name="authorization">Жүйеге кіру</string>
+    <string name="inn_text">ЖСН</string>
+    <string name="password">Құпия сөз</string>
+    <string name="remember_password">Құпия сөзді ұмыттыңыз ба?</string>
+    <string name="to_come_in">Кіру</string>
+    <string name="home">Басты бет</string>
+    <string name="about_pawnshop">Ломбард туралы</string>
+    <string name="profile">Профиль</string>
+    <string name="notification">Хабарламалар</string>
+    <string name="appeal">Шағымдану</string>
+
+    //Phone
+    <string name="call"> "Хабарласу үшін, «Рұқсат беру» түймесін басыңыз"</string>
+
+    //Error
+    <string name="the_sms_you_entered_incorrectly">Жазылған СМС дұрыс емес</string>
+
+    <string name="delay">Тежелу...</string>
+
+    //Biometric
+    <string name="cancel">Болдырмау</string>
+    <string name="auth_has_been_canceled">Аутентификацияны пайдаланушы</string>
+    <string name="fingerprint_login">Саусақ ізімен кіру</string>
+    <string name="touch_the_fingerprint_reader">Саусақ ізі сканерін түртіңіз</string>
+    <string name="authentication_canceled">Аутентификация болдырылмады</string>
+    <string name="fingerprint_authentication_is_not_enabled_settings">Саусақ ізі аутентификациясы баптауда қосылмаған !</string>
+    <string name="permission_is_not_included">Саусақ ізінің түпнұсқалығын тексеруге рұқсат етілген!</string>
+
+
+    //Toast
+    <string name="validate_gram">Сіз енгізген грамм дұрыс емес!</string>
+    <string name="validate_day"> Сіз енгізген күн дұрыс емес!</string>
+    <string name="enter_your_pin_code">PIN-кодты еңгізіңіз!</string>
+    <string name="enter_your_sms_code">СМС-кодты еңгізіңіз!</string>
+    <string name="send_sms">СМС жіберілді</string>
+    <string name="data_you_entered_is_incorrect">Жазылған деректер дұрыс емес!</string>
+    <string name="your_message_has_been_sent">Рахмет! Сіздің өтінішіңіз жіберілді!</string>
+    <string name="your_appeal_has_not_been_sent">Өкінішке орай! Сіздің өтінішіңіз жіберілмеді</string>
+
+
+    //Обработка ошибок
+    <string name="error_unknown_title">Бір ақаулар кетті…</string>
+    <string name="error_unknown_body">Ғаламтор байланысын тексеріңіз немесе кейінірек кіріңіз</string>
+    <string name="error_pin_code_validate">Сіздің PIN-кодыңыз дұрыс емес!</string>
+    <string name="error_failed_connection_to_server">Сервермен байланыс орнату мүмкін емес: \n</string>
+    <string name="error_no_internet_title">Ғаламтормен байланыс жоқ</string>
+    <string name="error_no_internet_msg">Интернет байланысын тексеріп, қайталап көріңіз</string>
+    <string name="error_auth_wrong_data_title">Авторизация өткен жоқ</string>
+    <string name="error_auth_wrong_data_msg">Сіз дұрыс емес логин немесе құпия сөзді енгіздіңіз.деректерді тексеріп, қайталап көріңіз!</string>
+    <string name="an_error_occurred_while_logging_out">Аккаунттан шығу кезінде қателік кетті!</string>
+
+
+    //Rus - Kaz
+    <string name="rus">РУС</string>
+    <string name="kz">КАЗ</string>
+
+    //Content
+    <string name="welcome">Қош келдіңіз!</string>
+    <string name="my_loans">Менің қарыздарым</string>
+    <string name="pay">Төлем жасау</string>
+    <string name="gold_content">Алтынның сынамасы</string>
+    <string name="product_weight">Өнімнің салмағы (гр)</string>
+    <string name="term">Мерзімі (5 – 60 күн)</string>
+    <string name="hand_amount">Қолға берілетін сома</string>
+    <string name="refundable_amount">Қайтарылатын сома</string>
+    <string name="detail_text">Өнімнің сынамасы мен салмағын, сондай-ақ несие құнын дәлірек анықтау үшін біздің филиалға келіңіз.</string>
+    <string name="technical_support">Техникалық қолдау</string>
+    <string name="weather">Ауа-райы</string>
+    <string name="currency_rates">Валюта бағамдары</string>
+    <string name="phone_number">Телефон нөмір</string>
+    <string name="test">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vitae vestibulum, id quis erat mauris, et lectus. Nunc leo ridiculus at euismod hendrerit arcu mi et faucibus. Dolor aliquam pretium pulvinar ac.</string>
+    <string name="test2">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Purus adipiscing proin fermentum, vitae tristique iaculis leo. Blandit facilisi consectetur vestibulum, cras vestibulum convallis. Porttitor vitae eget eu eu diam eget libero habitant. Imperdiet donec luctus nunc tortor.</string>
+    <string name="firstname_lastname">Аты-жөні</string>
+    <string name="your_appeal">Сіздің өтінішіңіз</string>
+    <string name="send">Жіберу</string>
+    <string name="enter_data">Деректерді еңгізіңіз</string>
+    <string name="currency">Валюта</string>
+    <string name="purchase">Сатып алу</string>
+    <string name="sale">Сату</string>
+    <string name="no_active_deposit">Сізде белсенді кепіл билеттері жоқ</string>
+    <string name="calculate_the_loan_amount">Қарыз сомасын есептеу</string>
+    <string name="gold_rate">1 грамм үшін алтын бағамы</string>
+    <string name="iin">ЖСН</string>
+    <string name="my_cards">Менің картам</string>
+    <string name="add_cards">Картаны қосу</string>
+    <string name="you_have_no_card">Сіздің картаңыз жоқ</string>
+    <string name="register">Тіркелу</string>
+    <string name="enter_iin">ЖСН-ді еңгізіңіз</string>
+    <string name="terms_of_use">Қосымшада тіркеліп, сіз дербес деректерді өңдеу саясатымен келісесіз және пайдаланушылық келісімді қабылдайсыз</string>
+    <string name="create_account">Аккаунт құру</string>
+    <string name="enter_confirmation_code">Растау кодын енгізіңіз</string>
+    <string name="repeat_the_code_again">Кодты қайта қайталау</string>
+    <string name="enter_a_code">Кодты еңгізіңіз</string>
+    <string name="enter_cade">Кодты растау </string>
+    <string name="сonfirm">Растау</string>
+    <string name="create_a_password">Құпия сөзді ойлап табу</string>
+    <string name="password_again">">Құпия сөзді қайталау</string>
+    <string name="proceed">Жалғастыру</string>
+    <string name="next">Әрі қарай</string>
+    <string name="successfully_account">Сіз сәтті тіркелдіңіз!</string>
+    <string name="edit_number">Ұялы телефон нөмірін еңгізіңіз</string>
+    <string name="a_temporary_password">Уақытша құпия сөз</string>
+    <string name="new_password">Жаңа құпия сөз ойлап табу</string>
+    <string name="reestablish">Қалпына келтіру </string>
+    <string name="create_pin_code">PIN-код құру</string>
+    <string name="text_pin_code">Сіз бұл кодты кіру үшін қолданасыз</string>
+    <string name="create_pin">PIN-кодты құру</string>
+    <string name="payment_amount">Төлем сомасы:</string>
+    <string name="period_time">Кезең уақыты:</string>
+    <string name="loan_information">Қарыз бойынша ақпарат</string>
+    <string name="loan_amount">Қарыз сомасы</string>
+    <string name="renewal_amount">Ұзарту сомасы</string>
+    <string name="alert_text1">*Қарыз уақытын ұзартқаннан кейінгі,жаңа мерзім</string>
+    <string name="alert_text2">дейін ұлғаяды</string>
+    <string name="select_card">Картаны таңдау</string>
+    <string name="mask_card_number">0000 0000 0000 0000</string>
+    <string name="mask_cvv">000</string>
+    <string name="pay_successfully">Төлем сәтті өтті!</string>
+    <string name="close">Жабу</string>
+    <string name="error_occurred">Төлемді өңдеу кезінде қате кетті.</string>
+    <string name="error_occurred_text">Өтінеміз, төлемді қайталаңыз немесе ақы төлеу әдісін өзгертіңіз.</string>
+    <string name="loading" tools:ignore="TypographyEllipsis">Жүктеу...</string>
+    <string name="city">Шымкент, KZ</string>
+    <string name="name_user">Пайдаланышу есімі</string>
+    <string name="edit_iin">ЖСН-ді еңгізу</string>
+    <string name="sms_edit">СМС кодты еңгізіңіз</string>
+    <string name="password_edit">Құпия сөзді енгізіңіз!</string>
+    <string name="select_number">Телефон нөмірін таңдаңыз</string>
+    <string name="you_have_no_notification">Сізде хабарлама жоқ</string>
+    <string name="to_share">Бөлісу</string>
+    <string name="edit_pin">PIN-ді еңгізіңіз</string>
+    <string name="sequrity">Қауіпсіздік</string>
+    <string name="reset_pin_code">Кодты өзгерту</string>
+    <string name="reset_password">Құпия сөзді өзгерту</string>
+    <string name="price">Сома</string>
+    <string name="date">Күні</string>
+    <string name="transaction_number">Транзакция нөмірі</string>
+    <string name="current_password">Ағымдағы құпия сөз</string>
+    <string name="save">Сақтау</string>
+    <string name="password_changed_successfully">Пароль сәтті өзгертілді!</string>
+    <string name="you_entered_is_incorrect">Сіз енгізген деректер дұрыс емес!</string>
+
+    //
+    <string name="press_back_again_to_exit">Шығу үшін "Артқа" түймесін қайтадан басыңыз».</string>
+    <string name="save_error">Сақтауда қате кетті!</string>
+    <string name="your_passwords_do_not_match">Сіздің құпия сөздеріңіз сәйкес келмейді!</string>
+    <string name="the_sms_you_entered_are_incorrect">Сіз енгізген СМС дұрыс емес!</string>
+
+</resources>

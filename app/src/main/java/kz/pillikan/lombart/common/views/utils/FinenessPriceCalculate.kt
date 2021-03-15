@@ -223,16 +223,20 @@ open class FinenessPriceCalculate {
                 tvAmountOnHand?.text = result.toLong().toString() + Constants.MONEY
                 when (result >= limit) {
                     true -> {
-                        val percent = result + (result * (percent2.toFloat()/100) * day)
+                        val percent = result + (result * (percent2.toFloat() / 100) * day)
                         tvAmount?.text = percent.toLong().toString() + Constants.MONEY
                     }
                     false -> {
-                        val percent = result + (result * (percent1.toFloat()/100) * day)
+                        val percent = result + (result * (percent1.toFloat() / 100) * day)
                         tvAmount?.text = percent.toLong().toString() + Constants.MONEY
                     }
                 }
             }
-            false -> Snackbar.make(callback.requireView(), "Введите данные!", Snackbar.LENGTH_LONG)
+            false -> Snackbar.make(
+                callback.requireView(),
+                callback.resources.getString(R.string.enter_data),
+                Snackbar.LENGTH_LONG
+            )
                 .show()
 
         }
@@ -256,11 +260,11 @@ open class FinenessPriceCalculate {
                         tvAmountOnHand?.text = result.toLong().toString() + Constants.MONEY
                         when (result >= limit) {
                             true -> {
-                                val percent = result + (result * (percent2.toFloat()/100) * day)
+                                val percent = result + (result * (percent2.toFloat() / 100) * day)
                                 tvAmount?.text = percent.toLong().toString() + Constants.MONEY
                             }
                             false -> {
-                                val percent = result + (result * (percent1.toFloat()/100) * day)
+                                val percent = result + (result * (percent1.toFloat() / 100) * day)
                                 tvAmount?.text = percent.toLong().toString() + Constants.MONEY
                             }
                         }
@@ -293,11 +297,11 @@ open class FinenessPriceCalculate {
                         tvAmountOnHand?.text = result.toLong().toString() + Constants.MONEY
                         when (result >= limit) {
                             true -> {
-                                val percent = result + (result * (percent2.toFloat()/100) * day)
+                                val percent = result + (result * (percent2.toFloat() / 100) * day)
                                 tvAmount?.text = percent.toLong().toString() + Constants.MONEY
                             }
                             false -> {
-                                val percent = result + (result * (percent1.toFloat()/100) * day)
+                                val percent = result + (result * (percent1.toFloat() / 100) * day)
                                 tvAmount?.text = percent.toLong().toString() + Constants.MONEY
                             }
                         }

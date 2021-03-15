@@ -91,7 +91,7 @@ class SignInFragment : BaseFragment() {
             true -> signIn(signInRequest!!)
             false -> Toast.makeText(
                 this.context,
-                "Введенные вами данные некорректны!",
+                getString(R.string.you_entered_is_incorrect),
                 Toast.LENGTH_LONG
             ).show()
         }

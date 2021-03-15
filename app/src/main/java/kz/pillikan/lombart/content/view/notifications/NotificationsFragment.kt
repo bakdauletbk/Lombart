@@ -52,8 +52,8 @@ class NotificationsFragment : BaseFragment() {
     }
 
     private fun init() {
-        initRecyclerView()
         initViewModel()
+        initRecyclerView()
         initNatification()
         initObservers()
     }
