@@ -8,6 +8,7 @@ import kz.pillikan.lombart.common.preference.SessionManager
 import kz.pillikan.lombart.common.remote.Constants
 import kz.pillikan.lombart.common.remote.Networking
 import kz.pillikan.lombart.content.model.request.appeal.FeedbackRequest
+import kz.pillikan.lombart.content.model.response.appeal.ResponseAdvancedData
 
 class AppealRepository(application: Application) {
 
@@ -39,6 +40,18 @@ class AppealRepository(application: Application) {
             )
 
         return response.code() == Constants.RESPONSE_SUCCESS_CODE
+    }
+
+    suspend fun getAdvancedData(): ResponseAdvancedData? {
+        val response = networkService.getAdvanceData(
+            Constants.AUTH_TOKEN_PREFIX + sessionManager.getToken(),
+            BuildConfig.VERSION_NAME
+        )
+        return if (response.code() == Constants.RESPONSE_SUCCESS_CODE){
+            response.body()
+        }else{
+            null
+        }
     }
 
 }

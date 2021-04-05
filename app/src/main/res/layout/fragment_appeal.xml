@@ -16,7 +16,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:title="Обращение"
+            app:title="@string/appeal"
             app:titleTextColor="@color/black" />
 
     </com.google.android.material.appbar.AppBarLayout>
@@ -90,12 +90,13 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/tv_appeal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="13dp"
                 android:layout_marginEnd="32dp"
-                android:text="@string/test"
+                android:text="@string/advanced_data"
                 android:textColor="@color/text_color_edit" />
 
             <com.google.android.material.button.MaterialButton

@@ -1,7 +1,5 @@
 package kz.pillikan.lombart.common.views;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;

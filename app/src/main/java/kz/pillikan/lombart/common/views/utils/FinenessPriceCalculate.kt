@@ -128,6 +128,7 @@ open class FinenessPriceCalculate {
             percent2 = finenessPrice.percent2!!,
             limit = finenessPrice.amount_limit
         )
+
         spinner?.setSelection(position)
         when (position) {
             Constants.FINENESS_FIRST -> {

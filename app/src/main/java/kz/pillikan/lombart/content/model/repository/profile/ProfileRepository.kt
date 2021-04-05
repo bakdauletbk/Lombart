@@ -51,8 +51,6 @@ class ProfileRepository(application: Application) {
         } catch (e: Exception) {
             false
         }
-
-
     }
 
 }

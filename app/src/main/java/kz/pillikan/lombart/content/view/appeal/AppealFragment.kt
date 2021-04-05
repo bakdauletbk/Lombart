@@ -1,7 +1,6 @@
 package kz.pillikan.lombart.content.view.appeal
 
-import android.content.Intent
-import android.net.Uri
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,9 +13,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kz.pillikan.lombart.R
 import kz.pillikan.lombart.common.helpers.Validators
-import kz.pillikan.lombart.common.remote.Constants
 import kz.pillikan.lombart.common.views.BaseFragment
 import kz.pillikan.lombart.content.model.request.appeal.FeedbackRequest
+import kz.pillikan.lombart.content.model.response.appeal.ResponseAdvancedData
 import kz.pillikan.lombart.content.viewmodel.appeal.AppealViewModel
 import org.jetbrains.anko.sdk27.coroutines.onClick
 
@@ -43,15 +42,16 @@ class AppealFragment : BaseFragment() {
 
     private fun init() {
         initViewModel()
+        updateFeed()
         initListeners()
         initObservers()
-        setData()
     }
 
-    private fun setData() {
-        tv_address.text = Constants.ADDRESS
-        tv_phone.text = Constants.PHONE
-        tv_mail.text = Constants.MAIL
+    private fun updateFeed() {
+        setLoading(true)
+        CoroutineScope(Dispatchers.IO).launch {
+            viewModel.getAdvancedData()
+        }
     }
 
     private fun initViewModel() {
@@ -62,9 +62,7 @@ class AppealFragment : BaseFragment() {
         btn_send.onClick {
             prepareFeedback()
         }
-        ll_phone.onClick {
-            call(Constants.PHONE)
-        }
+
     }
 
     private fun prepareFeedback() {
@@ -113,6 +111,32 @@ class AppealFragment : BaseFragment() {
                 }
             }
         })
+        viewModel.advancedData.observe(viewLifecycleOwner, {
+            when (it != null) {
+                true -> {
+                    setAdvancedData(it)
+                }
+                false -> {
+                    setLoading(false)
+                    errorDialog(getString(R.string.error_failed_connection_to_server))
+                }
+            }
+        })
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun setAdvancedData(advancedData: ResponseAdvancedData) {
+        setLoading(false)
+        tv_address.text = advancedData.address
+        tv_phone.text = advancedData.phone
+        tv_mail.text = advancedData.email
+
+        tv_appeal.text =
+            getString(R.string.appeal_text) + advancedData.phone + getString(R.string.appeal_text_end)
+
+        ll_phone.onClick {
+            call(advancedData.phone.toString())
+        }
     }
 
     private fun setLoading(loading: Boolean) {

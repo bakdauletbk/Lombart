@@ -6,6 +6,7 @@
     android:layout_height="match_parent">
 
     <ScrollView
+        android:id="@+id/scrollView2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toTopOf="@+id/btn_create_pin"
@@ -17,8 +18,8 @@
             android:id="@+id/linearLayout"
             android:layout_width="@dimen/dimens_280dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dimens_60dp"
             android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/dimens_60dp"
             android:gravity="center_horizontal"
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
@@ -62,6 +63,17 @@
 
         </LinearLayout>
     </ScrollView>
+
+    <ImageView
+        android:id="@+id/iv_finger_print"
+        android:layout_width="@dimen/dimens_50dp"
+        android:layout_height="@dimen/dimens_50dp"
+        android:layout_marginBottom="@dimen/dimens_30dp"
+        android:src="@drawable/ic_print_finger"
+        app:layout_constraintBottom_toTopOf="@+id/btn_create_pin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="ContentDescription" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_create_pin"

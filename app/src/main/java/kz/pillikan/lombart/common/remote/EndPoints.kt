@@ -25,4 +25,5 @@ object EndPoints {
     const val POST_CHANGE_PASSWORD = "/v1/profile/change-password"
     const val POST_GET_HEAD = "/v1/service/get-head"
     const val POST_ABOUT = "/v1/service/get-about"
+    const val POST_ADVANCED_DATA = "/v1/service/get-advanced-data"
 }

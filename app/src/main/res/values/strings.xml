@@ -12,6 +12,7 @@
     <string name="password">Пароль</string>
     <string name="remember_password">Не помню пароль?</string>
     <string name="to_come_in">Войти</string>
+
     <string name="home">Главная</string>
     <string name="about_pawnshop">О ломбарде</string>
     <string name="profile">Профиль</string>
@@ -51,7 +52,7 @@
     <string name="error_unknown_title">Что-то пошло не так…</string>
     <string name="error_unknown_body">Пожалуйста проверьте ваше интернет соединение или попробуйте позднее</string>
     <string name="error_pin_code_validate">Ваш пин код не правильный!</string>
-    <string name="error_failed_connection_to_server">Не удалось установить соединение с сервером: \n</string>
+    <string name="error_failed_connection_to_server">Не удалось установить соединение с сервером</string>
     <string name="error_no_internet_title">Отсутствует интернет соединение</string>
     <string name="error_no_internet_msg">Пожалуйста проверьте ваше интернет соединение и попробуйте ещё раз</string>
     <string name="error_auth_wrong_data_title">Авторизация не пройдена</string>
@@ -148,6 +149,9 @@
     <string name="save">Сохранить</string>
     <string name="password_changed_successfully">Пароль успешно изменён!</string>
     <string name="you_entered_is_incorrect">Введенные Вами данные некорректны!</string>
+    <string name="advanced_data">Если у Вас возникли какие-либо вопросы, свяжитесь с нами, используя форму указанную выше. В случае возникновения дополнительных вопросов, касающихся залогового билета и процентов, пожалуйста, обратитесь в службу поддержки по номеру: Загрузка… Служба поддержи работает ежедневно с 09:00 до 18:00</string>
+    <string name="appeal_text">Если у Вас возникли какие-либо вопросы, свяжитесь с нами, используя форму указанную выше. В случае возникновения дополнительных вопросов, касающихся залогового билета и процентов, пожалуйста, обратитесь в службу поддержки по номеру: +</string>
+    <string name="appeal_text_end">. Служба поддержи работает ежедневно с 09:00 до 18:00</string>
 
     //
     <string name="press_back_again_to_exit">Для выхода снова нажмите «Назад».</string>

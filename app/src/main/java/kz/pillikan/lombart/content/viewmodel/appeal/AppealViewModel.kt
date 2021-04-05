@@ -8,6 +8,7 @@ import kotlinx.coroutines.launch
 import kz.pillikan.lombart.authorization.model.repository.registration.SignInRepository
 import kz.pillikan.lombart.content.model.repository.appeal.AppealRepository
 import kz.pillikan.lombart.content.model.request.appeal.FeedbackRequest
+import kz.pillikan.lombart.content.model.response.appeal.ResponseAdvancedData
 
 class AppealViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -15,6 +16,7 @@ class AppealViewModel(application: Application) : AndroidViewModel(application) 
 
     val isSuccess: MutableLiveData<Boolean> = MutableLiveData()
     val isError: MutableLiveData<String> = MutableLiveData()
+    val advancedData = MutableLiveData<ResponseAdvancedData>()
 
     suspend fun sendFeedback(feedbackRequest: FeedbackRequest) {
         viewModelScope.launch {
@@ -26,4 +28,13 @@ class AppealViewModel(application: Application) : AndroidViewModel(application) 
         }
     }
 
+    suspend fun getAdvancedData() {
+        viewModelScope.launch {
+            try {
+                advancedData.postValue(repository.getAdvancedData())
+            } catch (e: Exception) {
+                isError.postValue(null)
+            }
+        }
+    }
 }

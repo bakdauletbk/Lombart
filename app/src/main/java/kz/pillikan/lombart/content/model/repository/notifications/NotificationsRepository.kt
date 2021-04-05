@@ -37,9 +37,13 @@ class NotificationsRepository(application: Application) {
         return if (response.code() == Constants.RESPONSE_SUCCESS_CODE) {
             val pageNumber = response.body()?.pages!!.toInt()
             val hasNextPage = !response.body()?.hasNext!!
-            val notifications: ArrayList<DataList> = ArrayList()
-            for (i in response.body()?.data?.indices!!) {
-                notifications.add(response.body()!!.data[i])
+            val notifications: ArrayList<DataList> = arrayListOf()
+            when (response.body()!!.data != null) {
+                true -> {
+                    for (i in response.body()?.data?.indices!!) {
+                        notifications.add(response.body()!!.data[i])
+                    }
+                }
             }
 
             val notificationPage: Page<DataList>? =

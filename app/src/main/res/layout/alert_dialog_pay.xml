@@ -15,7 +15,6 @@
         android:layout_marginEnd="@dimen/dimens_5dp"
         android:layout_marginTop="@dimen/dimens_5dp"
         android:padding="@dimen/dimens_10dp"
-        android:layout_marginBottom="@dimen/dimens_10dp"
         android:src="@drawable/ic_close"
         tools:ignore="ContentDescription" />
 

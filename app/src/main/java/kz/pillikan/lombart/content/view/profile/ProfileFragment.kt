@@ -17,7 +17,6 @@ import kz.pillikan.lombart.common.views.BaseFragment
 import kz.pillikan.lombart.content.model.response.home.ProfileInfo
 import kz.pillikan.lombart.content.model.response.profile.CardModel
 import kz.pillikan.lombart.content.viewmodel.profile.ProfileViewModel
-import org.jetbrains.anko.alert
 import org.jetbrains.anko.sdk27.coroutines.onClick
 import org.jetbrains.anko.support.v4.intentFor
 
@@ -50,8 +49,6 @@ class ProfileFragment : BaseFragment() {
         setHasOptionsMenu(true)
     }
 
-
-
     private fun init() {
         initViewModel()
         initRecyclerView()
@@ -65,9 +62,7 @@ class ProfileFragment : BaseFragment() {
         toolbars.inflateMenu(R.menu.menu_toolbar)
         toolbars.setOnMenuItemClickListener {
             when (it.itemId) {
-                R.id.action_exit -> {
-                    viewModel.logout()
-                }
+                R.id.action_exit -> viewModel.logout()
             }
             true
         }
@@ -115,15 +110,16 @@ class ProfileFragment : BaseFragment() {
             errorDialogAlert()
         })
         viewModel.cardList.observe(viewLifecycleOwner, {
-            if (it != null) {
-                addCard(it)
-            } else errorDialogAlert()
+            when (it != null) {
+                true -> addCard(it)
+                false -> errorDialogAlert()
+            }
         })
         viewModel.profileInfo.observe(viewLifecycleOwner, {
-            if (it != null) {
-                setLoading(false)
-                setProfileInfo(it)
-            } else errorDialogAlert()
+            when (it != null) {
+                true -> setProfileInfo(it)
+                false -> errorDialogAlert()
+            }
         })
         viewModel.isLogout.observe(viewLifecycleOwner, {
             when (it) {
@@ -140,11 +136,13 @@ class ProfileFragment : BaseFragment() {
         })
     }
 
-    private fun errorDialogAlert(){
+    private fun errorDialogAlert() {
         setLoading(false)
         errorDialog(getString(R.string.error_unknown_body))
     }
+
     private fun setProfileInfo(profileInfo: ProfileInfo) {
+        setLoading(false)
         tv_name.text = profileInfo.fio
         tv_number.text = profileInfo.phone
         tv_iin.text = profileInfo.iin

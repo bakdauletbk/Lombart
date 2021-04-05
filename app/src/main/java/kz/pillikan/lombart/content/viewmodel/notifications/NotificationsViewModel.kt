@@ -6,12 +6,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import kz.pillikan.lombart.common.models.Page
+import kz.pillikan.lombart.common.remote.Constants
 import kz.pillikan.lombart.content.model.repository.notifications.NotificationsRepository
 import kz.pillikan.lombart.content.model.response.notifications.DataList
 
 class NotificationsViewModel(application: Application) : AndroidViewModel(application) {
 
-    var notificationList: MutableLiveData<List<DataList>> = MutableLiveData()
+    val notificationList: MutableLiveData<List<DataList>> = MutableLiveData()
     val isError: MutableLiveData<String> = MutableLiveData()
     private val repository: NotificationsRepository = NotificationsRepository(application)
 
@@ -19,12 +20,14 @@ class NotificationsViewModel(application: Application) : AndroidViewModel(applic
     private var isLoading = true
 
     fun getInitialPage() {
-        loadPage(0)
+        loadPage(Constants.ZERO)
     }
 
     fun getNextPage() {
         viewModelScope.launch {
-            val nextPage = if (notificationsPage != null) notificationsPage!!.getPageNumber() + 1 else 0
+            val nextPage =
+                if (notificationsPage != null) notificationsPage!!.getPageNumber()
+                    .plus(Constants.ONE) else Constants.ZERO
             loadPage(nextPage)
         }
     }
@@ -50,7 +53,7 @@ class NotificationsViewModel(application: Application) : AndroidViewModel(applic
                     } else {
                         notificationList.postValue(notificationsPage!!.getContent())
                     }
-                }else{
+                } else {
                     isLoading = false
                 }
             } catch (e: Exception) {

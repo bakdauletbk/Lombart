@@ -2,28 +2,28 @@ package kz.pillikan.lombart.content.view.home
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.core.view.marginLeft
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.viewpager2.widget.ViewPager2
 import kotlinx.android.synthetic.main.fragment_home.*
-import kotlinx.android.synthetic.main.fragment_home.loadingView
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kz.pillikan.lombart.R
 import kz.pillikan.lombart.common.helpers.convertDpToPixel
 import kz.pillikan.lombart.common.remote.Constants
 import kz.pillikan.lombart.common.views.BaseFragment
 import kz.pillikan.lombart.common.views.utils.FinenessPriceCalculate
 import kz.pillikan.lombart.content.model.response.home.*
+import kz.pillikan.lombart.content.view.FoundationActivity
 import kz.pillikan.lombart.content.viewmodel.home.HomeViewModel
 import org.jetbrains.anko.alert
+import org.jetbrains.anko.sdk27.coroutines.onCheckedChange
 import org.jetbrains.anko.sdk27.coroutines.onClick
 import java.text.SimpleDateFormat
 import java.util.*
@@ -35,6 +35,7 @@ class HomeFragment : BaseFragment() {
     private lateinit var viewModel: HomeViewModel
     private val bannersAdapter by lazy { PagerAdapter(context) }
     private var isDialogVisibility = false
+    private var foundationActivity: FoundationActivity? = null
 
     companion object {
         const val TAG = "HomeFragment"
@@ -51,11 +52,12 @@ class HomeFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init()
-
     }
 
     private fun init() {
         initViewModel()
+        initActivity()
+        setLanguage()
         initViewPager()
         initRecyclerView()
         initListeners()
@@ -65,6 +67,18 @@ class HomeFragment : BaseFragment() {
         setTodayDate()
     }
 
+    private fun initActivity() {
+        foundationActivity = activity as FoundationActivity?
+    }
+
+    private fun setLanguage() {
+        rb_kz.onCheckedChange { _, _ ->
+            foundationActivity?.setLocaleLanguage("kk")
+        }
+        rb_rus.onCheckedChange { _, _ ->
+            foundationActivity?.setLocaleLanguage("ru")
+        }
+    }
 
     private fun initViewPager() {
         vp_banners.adapter = bannersAdapter
@@ -118,10 +132,7 @@ class HomeFragment : BaseFragment() {
 
     private fun initListeners() {
         ll_technical_support.onClick {
-            view?.let {
-                Navigation.findNavController(it)
-                    .navigate(R.id.appealFragment)
-            }
+            foundationActivity?.navigateToAppeal()
         }
     }
 
@@ -130,76 +141,76 @@ class HomeFragment : BaseFragment() {
             errorAlertDialog(getString(R.string.error_unknown_body))
         })
         viewModel.loanList.observe(viewLifecycleOwner, {
-            when (it) {
-                null -> {
-                    showEmptyLoans()
-                    errorAlertDialog(getString(R.string.error_unknown_body))
-                }
-                else -> {
+            when (it != null) {
+                true -> {
                     setLoading(false)
                     showIsNotEmpty()
                     addLoans(it)
                 }
+                false -> {
+                    showEmptyLoans()
+                    errorAlertDialog(getString(R.string.error_unknown_body))
+                }
             }
         })
         viewModel.currencyList.observe(viewLifecycleOwner, {
-            when (it) {
-                null -> errorAlertDialog(getString(R.string.error_unknown_body))
-                else -> {
+            when (it != null) {
+                true -> {
                     setLoading(false)
                     currencyPrice.setCurrency(it)
                 }
+                false -> errorAlertDialog(getString(R.string.error_unknown_body))
             }
         })
         viewModel.weatherData.observe(viewLifecycleOwner, {
-            when (it) {
-                null -> errorAlertDialog(getString(R.string.error_unknown_body))
-                else -> {
+            when (it != null) {
+                true -> {
                     setLoading(false)
                     setWeather(it)
                 }
+                false -> errorAlertDialog(getString(R.string.error_unknown_body))
             }
         })
         viewModel.profileInfo.observe(viewLifecycleOwner, {
-            when (it) {
-                null -> errorAlertDialog(getString(R.string.error_unknown_body))
-                else -> {
+            when (it != null) {
+                true -> {
                     setLoading(false)
                     setProfile(it)
                 }
+                false -> errorAlertDialog(getString(R.string.error_unknown_body))
             }
         })
         viewModel.slidersList.observe(viewLifecycleOwner, {
-            when (it) {
-                null -> {
-                    hideEmptySlider()
-                    errorAlertDialog(getString(R.string.error_unknown_body))
-                }
-                else -> {
+            when (it != null) {
+                true -> {
                     setLoading(false)
                     showSliders()
                     addSliderList(it)
                 }
+                false -> {
+                    hideEmptySlider()
+                    errorAlertDialog(getString(R.string.error_unknown_body))
+                }
             }
         })
         viewModel.finenessPrice.observe(viewLifecycleOwner, {
-            when (it) {
-                null -> errorAlertDialog(getString(R.string.error_unknown_body))
-                else -> {
+            when (it != null) {
+                true -> {
                     setLoading(false)
                     currencyPrice.setFinenessPrice(it)
                     currencyPrice.setSpinner(it)
                     currencyPrice.setLoanAmount(it)
                 }
+                false -> errorAlertDialog(getString(R.string.error_unknown_body))
             }
         })
         viewModel.headText.observe(viewLifecycleOwner, {
-            when (it) {
-                null -> errorAlertDialog(getString(R.string.error_unknown_body))
-                else -> {
+            when (it != null) {
+                true -> {
                     setLoading(false)
                     setHeadText(it)
                 }
+                false -> errorAlertDialog(getString(R.string.error_unknown_body))
             }
         })
     }
@@ -231,10 +242,10 @@ class HomeFragment : BaseFragment() {
     private fun setBannerContent() {
         CoroutineScope(Dispatchers.Main).launch {
             try {
-                if (vp_banners.currentItem != bannersAdapter.count.minus(1)) {
-                    vp_banners.setCurrentItem(vp_banners.currentItem.plus(1), true)
+                if (vp_banners.currentItem != bannersAdapter.count.minus(Constants.ONE)) {
+                    vp_banners.setCurrentItem(vp_banners.currentItem.plus(Constants.ONE), true)
                 } else {
-                    vp_banners.setCurrentItem(0, true)
+                    vp_banners.setCurrentItem(Constants.ZERO, true)
                 }
                 delay(Constants.TIME_MILLIS)
 
@@ -245,7 +256,6 @@ class HomeFragment : BaseFragment() {
         }
 
     }
-
 
 
     private fun setProfile(profile: ProfileInfo) {

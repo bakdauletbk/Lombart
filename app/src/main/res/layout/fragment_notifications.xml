@@ -15,7 +15,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:title="Уведомления"
+            app:title="@string/notification"
             app:titleTextColor="@color/black" />
 
     </com.google.android.material.appbar.AppBarLayout>

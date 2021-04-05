@@ -18,6 +18,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kz.pillikan.lombart.R
+import kz.pillikan.lombart.common.helpers.formatDateTime
+import kz.pillikan.lombart.common.remote.Constants
 import kz.pillikan.lombart.common.views.BaseFragment
 import kz.pillikan.lombart.common.views.PaginationScrollListener
 import kz.pillikan.lombart.content.model.response.notifications.DataList
@@ -31,7 +33,6 @@ class NotificationsFragment : BaseFragment() {
     private var alertDialog: Dialog? = null
     private lateinit var viewModel: NotificationsViewModel
     private val intent = Intent()
-    private var isDialogVisibility = false
 
     companion object {
         const val SHARE = "Share"
@@ -74,12 +75,12 @@ class NotificationsFragment : BaseFragment() {
             errorDialogAlert()
         })
         viewModel.notificationList.observe(viewLifecycleOwner, {
-            if (it != null) {
-                addNotifications(it)
-                setLoading(false)
-            } else {
-                setEmptyNotification()
-                errorDialogAlert()
+            when (it != null) {
+                true -> {
+                    addNotifications(it)
+                    setLoading(false)
+                }
+                false -> setEmptyNotification()
             }
         })
     }
@@ -90,6 +91,7 @@ class NotificationsFragment : BaseFragment() {
     }
 
     private fun setEmptyNotification() {
+        setLoading(false)
         rv_notifications.visibility = View.GONE
         tv_empty.visibility = View.VISIBLE
     }
@@ -110,12 +112,14 @@ class NotificationsFragment : BaseFragment() {
         tvTitle.text = dataList.title
         tvDescription.text = dataList.description
 
+        val shareText = "${dataList.title}\n\n${dataList.description}\n\n${formatDateTime(dataList.created_at!!) + Constants.YEARS}"
+
         btnShare.onClick {
             intent.action = Intent.ACTION_SEND
             intent.type = TEXT_TYPE
             intent.putExtra(
                 Intent.EXTRA_TEXT,
-                dataList.description
+                shareText
             )
             startActivity(Intent.createChooser(intent, SHARE))
         }
@@ -138,6 +142,7 @@ class NotificationsFragment : BaseFragment() {
             }
 
             override fun loadMoreItems() {
+                setLoading(true)
                 CoroutineScope(Dispatchers.IO).launch {
                     viewModel.getNextPage()
                 }

@@ -1,6 +1,7 @@
 package kz.pillikan.lombart.content.view.notifications
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -54,7 +55,11 @@ class NotificationsAdapter : RecyclerView.Adapter<NotificationsAdapter.Notificat
 
         @SuppressLint("SetTextI18n")
         fun bind(notificationsList: DataList, callback: NotificationsFragment) {
-            tvDate.text = formatDateTime(notificationsList.created_at!!) + " г."
+            try {
+                tvDate.text = formatDateTime(notificationsList.created_at!!) + " г."
+            }catch (e:NullPointerException){
+                Log.d("Adapter", "bind: ${e.message}")
+            }
             tvDescription.text = notificationsList.description
             tvHeading.text = notificationsList.title
 

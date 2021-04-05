@@ -10,6 +10,7 @@ import kz.pillikan.lombart.content.model.request.profile.ChangePassword
 import kz.pillikan.lombart.content.model.request.profile.CheckPassword
 import kz.pillikan.lombart.content.model.response.about.AboutResponse
 import kz.pillikan.lombart.content.model.response.about.AddressResponse
+import kz.pillikan.lombart.content.model.response.appeal.ResponseAdvancedData
 import kz.pillikan.lombart.content.model.response.home.*
 import kz.pillikan.lombart.content.model.response.notifications.NotificationsResponse
 import okhttp3.ResponseBody
@@ -152,5 +153,10 @@ interface NetworkService {
         @Header("appVer") appVer: String
     ): Response<AboutResponse>
 
+    @POST(EndPoints.POST_ADVANCED_DATA)
+    suspend fun getAdvanceData(
+        @Header("Authorization") Authorization: String,
+        @Header("appVer") appVer: String
+    ): Response<ResponseAdvancedData>
 
 }

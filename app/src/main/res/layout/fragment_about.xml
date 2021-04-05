@@ -16,7 +16,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:title="О компании"
+            app:title="@string/about_pawnshop"
             app:titleTextColor="@color/black" />
 
     </com.google.android.material.appbar.AppBarLayout>

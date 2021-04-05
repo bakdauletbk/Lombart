@@ -1,5 +1,6 @@
 package kz.pillikan.lombart.content.view.about
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,11 +10,13 @@ import com.yandex.mapkit.MapKit
 import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.map.CameraPosition
+import com.yandex.runtime.ui_view.ViewProvider
 import kotlinx.android.synthetic.main.fragment_about.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kz.pillikan.lombart.R
+import kz.pillikan.lombart.common.remote.Constants
 import kz.pillikan.lombart.common.views.BaseFragment
 import kz.pillikan.lombart.content.model.response.about.AboutResponse
 import kz.pillikan.lombart.content.model.response.about.AddressList
@@ -79,23 +82,24 @@ class AboutFragment : BaseFragment() {
             errorDialog()
         })
         viewModel.addressList.observe(viewLifecycleOwner, {
-            when (it) {
-                null -> showAlertDialog(getString(R.string.error_unknown_body))
-                else -> {
+            when (it != null) {
+                true -> {
                     setLoading(false)
                     setAddress(it)
                 }
+                false -> showAlertDialog(getString(R.string.error_failed_connection_to_server))
             }
         })
         viewModel.about.observe(viewLifecycleOwner, {
-            when (it) {
-                null -> showAlertDialog(getString(R.string.error_unknown_body))
-                else -> {
+            when (it != null) {
+                true -> {
                     setLoading(false)
                     setAboutText(it)
                 }
+                false -> showAlertDialog(getString(R.string.error_failed_connection_to_server))
             }
         })
+
     }
 
     private fun setAboutText(aboutResponse: AboutResponse) {
@@ -108,12 +112,21 @@ class AboutFragment : BaseFragment() {
         errorDialog(getString(R.string.error_unknown_body))
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     private fun setAddress(addressList: ArrayList<AddressList>) {
-        for (i in 0 until addressList.size) {
+        for (i in Constants.ZERO until addressList.size) {
+
+            val view = View(requireContext()).apply {
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                    background = requireContext().getDrawable(R.drawable.ic_point)
+                }
+            }
+
             map_view.map.mapObjects.addPlacemark(
                 Point(
                     addressList[i].latitude!!.toDouble(), addressList[i].longitude!!.toDouble()
-                )
+                ),
+                ViewProvider(view)
             )
         }
     }

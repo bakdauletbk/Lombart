@@ -16,7 +16,7 @@
             android:id="@+id/toolbars"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:title="Профиль"
+            app:title="@string/profile"
             app:titleTextColor="@color/black" />
 
     </com.google.android.material.appbar.AppBarLayout>

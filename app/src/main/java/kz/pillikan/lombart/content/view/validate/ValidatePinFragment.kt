@@ -5,7 +5,9 @@ import android.annotation.SuppressLint
 import android.app.KeyguardManager
 import android.content.Context
 import android.content.DialogInterface
+import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
+import android.content.res.Configuration
 import android.hardware.biometrics.BiometricPrompt
 import android.os.Build
 import android.os.Bundle
@@ -68,6 +70,15 @@ class ValidatePinFragment : BaseFragment() {
             }
         }
 
+        iv_finger_print.onClick {
+            if (isSdkVersionSupported() && isFingerprintAvailable() && isHardwareSupported() && isPermissionGranted()
+            ) {
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
+                    initBiometric()
+                }
+            }
+        }
+
         btn_create_pin.onClick {
             context?.let { it1 -> viewModel.checkNetwork(it1) }
         }
@@ -92,7 +103,7 @@ class ValidatePinFragment : BaseFragment() {
                     ).show()
                 }).build()
 
-        val callback = object: BiometricPrompt.AuthenticationCallback() {
+        val callback = object : BiometricPrompt.AuthenticationCallback() {
             override fun onAuthenticationError(errorCode: Int, errString: CharSequence?) {
                 super.onAuthenticationError(errorCode, errString)
             }

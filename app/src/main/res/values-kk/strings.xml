@@ -12,6 +12,7 @@
     <string name="password">Құпия сөз</string>
     <string name="remember_password">Құпия сөзді ұмыттыңыз ба?</string>
     <string name="to_come_in">Кіру</string>
+
     <string name="home">Басты бет</string>
     <string name="about_pawnshop">Ломбард туралы</string>
     <string name="profile">Профиль</string>
@@ -148,6 +149,9 @@
     <string name="save">Сақтау</string>
     <string name="password_changed_successfully">Пароль сәтті өзгертілді!</string>
     <string name="you_entered_is_incorrect">Сіз енгізген деректер дұрыс емес!</string>
+    <string name="advanced_data">Егер сізде сұрақтар туындаса, жоғарыда көрсетілген форманы пайдаланып бізге хабарласыңыз. Кепілдік билеті мен пайыздарға қатысты қосымша сұрақтар туындаған жағдайда, қолдау қызметіне мына нөмір бойынша хабарласыңыз: Жүктеу.... Қолдау қызметі күн сайын сағат 09:00-ден 18:00-ге дейін жұмыс істейді</string>
+    <string name="appeal_text">Егер сізде сұрақтар туындаса, жоғарыда көрсетілген форманы пайдаланып бізге хабарласыңыз. Кепілдік билеті мен пайыздарға қатысты қосымша сұрақтар туындаған жағдайда, қолдау қызметіне мына нөмір бойынша хабарласыңыз: +</string>
+    <string name="appeal_text_end">. Қолдау қызметі күн сайын сағат 09:00-ден 18:00-ге дейін жұмыс істейді</string>
 
     //
     <string name="press_back_again_to_exit">Шығу үшін "Артқа" түймесін қайтадан басыңыз».</string>

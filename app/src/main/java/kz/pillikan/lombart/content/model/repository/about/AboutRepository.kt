@@ -8,6 +8,7 @@ import kz.pillikan.lombart.common.remote.Constants
 import kz.pillikan.lombart.common.remote.Networking
 import kz.pillikan.lombart.content.model.response.about.AboutResponse
 import kz.pillikan.lombart.content.model.response.about.AddressList
+import kz.pillikan.lombart.content.model.response.appeal.ResponseAdvancedData
 
 class AboutRepository(application: Application) {
 
@@ -32,6 +33,18 @@ class AboutRepository(application: Application) {
 
     suspend fun getAbout(): AboutResponse? {
         val response = networkService.getAbout(
+            Constants.AUTH_TOKEN_PREFIX + sessionManager.getToken(),
+            BuildConfig.VERSION_NAME
+        )
+        return if (response.code() == Constants.RESPONSE_SUCCESS_CODE){
+            response.body()
+        }else{
+            null
+        }
+    }
+
+    suspend fun getAdvancedData():ResponseAdvancedData? {
+        val response = networkService.getAdvanceData(
             Constants.AUTH_TOKEN_PREFIX + sessionManager.getToken(),
             BuildConfig.VERSION_NAME
         )

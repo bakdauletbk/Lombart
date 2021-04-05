@@ -36,7 +36,6 @@
             android:id="@+id/tv_date"
             android:layout_width="@dimen/dimens_0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:gravity="end"
             android:text="@string/loading"

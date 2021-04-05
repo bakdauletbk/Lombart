@@ -8,6 +8,7 @@ import kotlinx.coroutines.launch
 import kz.pillikan.lombart.content.model.repository.about.AboutRepository
 import kz.pillikan.lombart.content.model.response.about.AboutResponse
 import kz.pillikan.lombart.content.model.response.about.AddressList
+import kz.pillikan.lombart.content.model.response.appeal.ResponseAdvancedData
 import kotlin.Exception
 
 class AboutViewModel(application: Application) : AndroidViewModel(application) {
@@ -17,6 +18,7 @@ class AboutViewModel(application: Application) : AndroidViewModel(application) {
     val isError: MutableLiveData<String> = MutableLiveData()
     val addressList: MutableLiveData<ArrayList<AddressList>> = MutableLiveData()
     val about: MutableLiveData<AboutResponse> = MutableLiveData()
+    val advancedData = MutableLiveData<ResponseAdvancedData>()
 
     suspend fun getAddress() {
         viewModelScope.launch {
@@ -37,8 +39,17 @@ class AboutViewModel(application: Application) : AndroidViewModel(application) {
     suspend fun getAbout() {
         viewModelScope.launch {
             try {
-                val response = repository.getAbout()
-                about.postValue(response)
+                about.postValue(repository.getAbout())
+            } catch (e: Exception) {
+                isError.postValue(null)
+            }
+        }
+    }
+
+    suspend fun getAdvancedData() {
+        viewModelScope.launch {
+            try {
+                advancedData.postValue(repository.getAdvancedData())
             } catch (e: Exception) {
                 isError.postValue(null)
             }
