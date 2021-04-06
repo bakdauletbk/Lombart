@@ -1,9 +1,9 @@
 package kz.pillikan.lombart.content.view
 
-import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
-import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
@@ -11,6 +11,8 @@ import kotlinx.android.synthetic.main.activity_foundation.*
 import kz.pillikan.lombart.R
 import kz.pillikan.lombart.common.remote.Constants
 import kz.pillikan.lombart.common.views.BaseActivity
+import kz.pillikan.lombart.content.viewmodel.FoundationViewModel
+import java.util.*
 
 class FoundationActivity : BaseActivity() {
 
@@ -20,14 +22,13 @@ class FoundationActivity : BaseActivity() {
         const val PROFILE = 2
         const val NOTIFICATION = 3
         const val APPEAL = 4
-
         const val NOTIFICATION_ID = "NOTIFICATION_ID"
         const val DEFAULT_VALUE = 0
     }
 
-    private var currentNavigationItemId = Constants.ZERO
+    private lateinit var viewModel: FoundationViewModel
 
-    private var exit = false
+    private var currentNavigationItemId = Constants.ZERO
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,11 +37,53 @@ class FoundationActivity : BaseActivity() {
     }
 
     private fun lets() {
+        initViewModel()
+        getIsLanguage()
+        getLanguageSession()
+        initObservers()
         val navController = findNavController(R.id.fragment2)
         setupNavController(navController)
         destinationListeners(navController)
         initBottomNavigation()
         checkExtraNotificationId()
+    }
+
+    private fun getLanguageSession() {
+        viewModel.getLanguage()
+    }
+
+    private fun initObservers() {
+        viewModel.getIsFirstLanguage.observe(this, {
+            when (it) {
+                true -> Log.d("First", "TRUE")
+                false -> {
+                    setLanguage()
+                    Log.d("First", "FALSE")
+                }
+            }
+        })
+        viewModel.language.observe(this, {
+            when (it != null) {
+                true -> {
+                    setLocaleLanguage(it)
+                }
+                false -> {
+                }
+            }
+        })
+    }
+
+    private fun getIsLanguage() {
+        viewModel.getIsFirstLanguage()
+    }
+
+    private fun initViewModel() {
+        viewModel = ViewModelProvider(this).get(FoundationViewModel::class.java)
+    }
+
+    private fun setLanguage() {
+        viewModel.setLanguage(Constants.RUS)
+        viewModel.setIsFirstLanguage()
     }
 
     private fun initBottomNavigation() {
@@ -57,6 +100,15 @@ class FoundationActivity : BaseActivity() {
             true
         }
 
+    }
+
+    fun setTitleMenu() {
+        bottom_navigation.menu.getItem(Constants.HOME).title = getString(R.string.home)
+        bottom_navigation.menu.getItem(Constants.ABOUT).title = getString(R.string.about_pawnshop)
+        bottom_navigation.menu.getItem(Constants.PROFILE).title = getString(R.string.profile)
+        bottom_navigation.menu.getItem(Constants.NOTIFICATION).title =
+            getString(R.string.notification)
+        bottom_navigation.menu.getItem(Constants.APPEAL).title = getString(R.string.appeal)
     }
 
     fun navigateToAppeal() {

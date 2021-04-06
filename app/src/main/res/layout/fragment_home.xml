@@ -18,7 +18,7 @@
             android:gravity="center_vertical"
             android:paddingTop="@dimen/dimens_10dp">
 
-            <info.hoang8f.android.segmented.SegmentedGroup
+            <LinearLayout
                 android:layout_width="@dimen/dimens_75dp"
                 android:layout_height="@dimen/dimens_23dp"
                 android:layout_alignParentEnd="true"
@@ -27,27 +27,76 @@
                 android:layout_marginEnd="@dimen/dimens_20dp"
                 android:layout_marginBottom="@dimen/dimens_10dp"
                 android:orientation="horizontal"
-                app:sc_border_width="@dimen/dimens_1dp"
-                app:sc_tint_color="@color/green"
-                segmentedgroup:sc_checked_text_color="@color/white"
-                segmentedgroup:sc_corner_radius="@dimen/dimens_2dp">
+                android:weightSum="2">
 
-                <RadioButton
-                    android:id="@+id/rb_rus"
-                    style="@style/RadioButton_custom"
+                <LinearLayout
+                    android:id="@+id/ll_rus"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="@string/rus" />
+                    android:gravity="center">
 
-                <RadioButton
-                    android:id="@+id/rb_kz"
-                    style="@style/RadioButton_custom"
-                    android:layout_width="@dimen/dimens_0dp"
-                    android:layout_height="wrap_content"
+                    <TextView
+                        android:id="@+id/tv_rus"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/rus"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/black" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_kz"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="@string/kz" />
-            </info.hoang8f.android.segmented.SegmentedGroup>
+                    android:gravity="center">
+
+                    <TextView
+                        android:id="@+id/tv_kaz"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/kz"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/black" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+            <!--            <info.hoang8f.android.segmented.SegmentedGroup-->
+            <!--                android:layout_width="@dimen/dimens_75dp"-->
+            <!--                android:layout_height="@dimen/dimens_23dp"-->
+            <!--                android:layout_alignParentEnd="true"-->
+            <!--                android:layout_centerVertical="true"-->
+            <!--                android:layout_marginTop="@dimen/dimens_10dp"-->
+            <!--                android:layout_marginEnd="@dimen/dimens_20dp"-->
+            <!--                android:layout_marginBottom="@dimen/dimens_10dp"-->
+            <!--                android:orientation="horizontal"-->
+            <!--                app:sc_border_width="@dimen/dimens_1dp"-->
+            <!--                app:sc_tint_color="@color/green"-->
+            <!--                segmentedgroup:sc_checked_text_color="@color/white"-->
+            <!--                segmentedgroup:sc_corner_radius="@dimen/dimens_2dp">-->
+
+            <!--                <RadioButton-->
+            <!--                    android:id="@+id/rb_rus"-->
+            <!--                    style="@style/RadioButton_custom"-->
+            <!--                    android:layout_width="0dp"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:layout_weight="1"-->
+            <!--                    android:text="@string/rus" />-->
+
+            <!--                <RadioButton-->
+            <!--                    android:id="@+id/rb_kz"-->
+            <!--                    style="@style/RadioButton_custom"-->
+            <!--                    android:layout_width="@dimen/dimens_0dp"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:layout_weight="1"-->
+            <!--                    android:text="@string/kz" />-->
+            <!--                -->
+            <!--            </info.hoang8f.android.segmented.SegmentedGroup>-->
 
             <ImageView
                 android:layout_width="wrap_content"

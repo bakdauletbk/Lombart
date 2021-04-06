@@ -17,6 +17,17 @@ class HomeRepository(application: Application) {
     private var sessionManager: SessionManager =
         SessionManager(sharedPreferences)
 
+    fun getLanguage(): String = sessionManager.getLanguage().toString()
+
+    fun setLanguage(language: String): Boolean {
+        return try {
+            sessionManager.setLanguage(language)
+            true
+        } catch (e: Exception) {
+            false
+        }
+    }
+
     suspend fun getLoans(): ArrayList<Tickets>? {
         val response = networkService.ticketsList(
             Constants.AUTH_TOKEN_PREFIX + sessionManager.getToken(),

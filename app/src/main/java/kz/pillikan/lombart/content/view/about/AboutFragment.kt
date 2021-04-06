@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
 import com.yandex.mapkit.MapKit
 import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.geometry.Point
@@ -110,6 +111,13 @@ class AboutFragment : BaseFragment() {
     private fun setAboutText(aboutResponse: AboutResponse) {
         tv_text1.text = aboutResponse.text2
         tv_text2.text = aboutResponse.text3
+        cv_image.visibility = View.VISIBLE
+        Glide
+            .with(requireView())
+            .load(Constants.IMG_BASE_URL + Constants.IMG_URL_ABOUT + aboutResponse.img)
+            .centerCrop()
+            .into(iv_image_about)
+
     }
 
     private fun errorDialog() {

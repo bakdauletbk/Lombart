@@ -1,6 +1,7 @@
 package kz.pillikan.lombart.content.viewmodel.home
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -10,6 +11,10 @@ import kz.pillikan.lombart.content.model.response.home.*
 
 class HomeViewModel(application: Application) : AndroidViewModel(application) {
 
+    companion object {
+        const val TAG = "HomeViewModel"
+    }
+
     var loanList: MutableLiveData<ArrayList<Tickets>> = MutableLiveData()
     val isError: MutableLiveData<String> = MutableLiveData()
     val currencyList: MutableLiveData<ArrayList<CurrencyList>> = MutableLiveData()
@@ -18,8 +23,26 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
     val slidersList: MutableLiveData<ArrayList<SlidersList>> = MutableLiveData()
     val finenessPrice: MutableLiveData<FinenessPriceResponse> = MutableLiveData()
     val headText: MutableLiveData<TitleResponse> = MutableLiveData()
+    val getLanguage = MutableLiveData<String>()
+    val setLanguage= MutableLiveData<Boolean>()
 
     private val repository: HomeRepository = HomeRepository(application)
+
+    fun getLanguage() {
+        try {
+            getLanguage.postValue(repository.getLanguage())
+        } catch (e: Exception) {
+            Log.e(TAG, "getLanguage: ${e.message} ")
+        }
+    }
+
+    fun setLanguage(language:String){
+        try {
+            setLanguage.postValue(repository.setLanguage(language))
+        }catch (e:Exception){
+            Log.e(TAG, "setLanguage: ${e.message} ")
+        }
+    }
 
     suspend fun getLoans() {
         viewModelScope.launch {

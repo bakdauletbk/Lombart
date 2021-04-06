@@ -4,6 +4,7 @@ object Constants {
     const val BASE_URL = "https://api-cert.smartideagroup.kz"
     const val IMG_BASE_URL = "https://st-cert.smartideagroup.kz"
     const val IMG_URL = "/images/slider/"
+    const val IMG_URL_ABOUT = "/images/material/"
     const val RESPONSE_SUCCESS_CODE = 200
     const val AUTH_TOKEN_PREFIX = "Bearer "
     const val YANDEX_API_KEY = "9e4e7459-a0e7-4f56-bb33-e14d68b432fa"
@@ -60,4 +61,16 @@ object Constants {
     const val MAX_DAY = 60
 
     const val ONE_HUNDRED = 100
+
+    const val KAZ = "kk"
+    const val RUS = "ru"
+
+    //Menu item
+    const val HOME = 0
+    const val ABOUT = 1
+    const val PROFILE = 2
+    const val NOTIFICATION = 3
+    const val APPEAL = 4
+
+    var firstRefresh = false
 }

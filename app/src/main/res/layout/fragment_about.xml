@@ -45,6 +45,7 @@
                 android:textSize="14sp" />
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/cv_image"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimens_150dp"
                 android:layout_marginStart="@dimen/dimens_18dp"
@@ -54,10 +55,10 @@
                 app:cardCornerRadius="@dimen/dimens_10dp">
 
                 <ImageView
+                    android:id="@+id/iv_image_about"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/test_image"
                     tools:ignore="ContentDescription" />
 
             </androidx.cardview.widget.CardView>

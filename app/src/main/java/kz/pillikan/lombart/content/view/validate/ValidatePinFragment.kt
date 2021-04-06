@@ -252,7 +252,12 @@ class ValidatePinFragment : BaseFragment() {
     }
 
     private fun setLoading(loading: Boolean) {
-        loadingView.visibility = if (loading) View.VISIBLE else View.GONE
+        try {
+            loadingView.visibility = if (loading) View.VISIBLE else View.GONE
+
+        }catch (e:NullPointerException){
+
+        }
     }
 
 }

@@ -1,15 +1,17 @@
 package kz.pillikan.lombart.content.view.home
 
 import android.annotation.SuppressLint
-import android.app.Dialog
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.coroutines.CoroutineScope
@@ -25,14 +27,12 @@ import kz.pillikan.lombart.content.model.response.home.*
 import kz.pillikan.lombart.content.view.FoundationActivity
 import kz.pillikan.lombart.content.viewmodel.home.HomeViewModel
 import org.jetbrains.anko.alert
-import org.jetbrains.anko.sdk27.coroutines.onCheckedChange
 import org.jetbrains.anko.sdk27.coroutines.onClick
 import java.text.SimpleDateFormat
 import java.util.*
 
 class HomeFragment : BaseFragment() {
 
-    private var alert: Dialog? = null
     private val adapters: LoansAdapter = LoansAdapter(this)
     private val currencyPrice: FinenessPriceCalculate = FinenessPriceCalculate(this)
     private lateinit var viewModel: HomeViewModel
@@ -81,12 +81,22 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun setLanguage() {
-//        rb_kz.onCheckedChange { _, _ ->
-//            foundationActivity?.setLocaleLanguage("kk")
-//        }
-//        rb_rus.onCheckedChange { _, _ ->
-//            foundationActivity?.setLocaleLanguage("ru")
-//        }
+        ll_kz.onClick {
+            changeLanguage(Constants.KAZ)
+        }
+        ll_rus.onClick {
+            changeLanguage(Constants.RUS)
+        }
+    }
+
+    private fun changeLanguage(language: String) {
+        foundationActivity?.setLocaleLanguage(language)
+        viewModel.setLanguage(language)
+        view?.let { it1 ->
+            Navigation.findNavController(it1)
+                .navigate(R.id.homeFragment)
+        }
+        foundationActivity?.setTitleMenu()
     }
 
     private fun initViewPager() {
@@ -116,6 +126,7 @@ class HomeFragment : BaseFragment() {
 
     private fun setUpdateFeed() {
         setLoading(true)
+        viewModel.getLanguage()
         CoroutineScope(Dispatchers.IO).launch {
             viewModel.getLoans()
         }
@@ -143,34 +154,8 @@ class HomeFragment : BaseFragment() {
         ll_technical_support.onClick {
             foundationActivity?.navigateToAppeal()
         }
-//        et_day.onClick {
-//            showAlertPickerDays()
-//        }
     }
 
-//    private fun showAlertPickerDays() {
-//        alert = Dialog(requireContext())
-//        alert!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
-//        alert!!.setContentView(R.layout.alert_dialog_number_picker)
-//
-//        val numberPicker = alert!!.findViewById<NumberPicker>(R.id.numberPickerDays)
-//        val btnOk = alert!!.findViewById<TextView>(R.id.okButton)
-//        val btnCancel = alert!!.findViewById<TextView>(R.id.cancelButton)
-//
-//        numberPicker.minValue = 5
-//        numberPicker.maxValue = 60
-//
-//        btnOk.setOnClickListener {
-//            et_day.text = numberPicker.value.toString()
-//            alert!!.dismiss()
-//        }
-//        btnCancel.setOnClickListener {
-//            alert!!.dismiss()
-//        }
-//
-//        alert!!.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-//        alert!!.show()
-//    }
 
     private fun initObservers() {
         viewModel.isError.observe(viewLifecycleOwner, {
@@ -249,6 +234,20 @@ class HomeFragment : BaseFragment() {
                 false -> errorAlertDialog(getString(R.string.error_unknown_body))
             }
         })
+        viewModel.getLanguage.observe(viewLifecycleOwner, {
+            when (it) {
+                Constants.KAZ -> showLanguage(ll_kz,tv_kaz,Constants.KAZ)
+                Constants.RUS -> showLanguage(ll_rus,tv_rus,Constants.RUS)
+            }
+        })
+    }
+
+    @SuppressLint("UseCompatLoadingForDrawables")
+    private fun showLanguage(ll: LinearLayout, textView: TextView, lang: String) {
+        ll.background = resources.getDrawable(R.drawable.shape_language)
+        textView.setTextColor(resources.getColor(R.color.white))
+        foundationActivity?.setLocaleLanguage(lang)
+        foundationActivity?.setTitleMenu()
     }
 
     private fun showSliders() {
@@ -279,7 +278,10 @@ class HomeFragment : BaseFragment() {
         CoroutineScope(Dispatchers.Main).launch {
             try {
                 if (vp_banners.currentItem != bannersAdapter.count.minus(Constants.ONE)) {
-                    vp_banners.setCurrentItem(vp_banners.currentItem.plus(Constants.ONE), true)
+                    vp_banners.setCurrentItem(
+                        vp_banners.currentItem.plus(Constants.ONE),
+                        true
+                    )
                 } else {
                     vp_banners.setCurrentItem(Constants.ZERO, true)
                 }
@@ -290,9 +292,7 @@ class HomeFragment : BaseFragment() {
                 Log.e("BannersErma", e.message.toString())
             }
         }
-
     }
-
 
     private fun setProfile(profile: ProfileInfo) {
         tv_name.text = profile.fio

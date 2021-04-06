@@ -6,5 +6,7 @@ data class AboutResponse(
     @SerializedName("text2")
     val text2: String? = null,
     @SerializedName("text3")
-    val text3: String? = null
+    val text3: String? = null,
+    @SerializedName("img")
+    val img: String? = null
 )
