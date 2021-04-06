@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/bg">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="@dimen/dimens_60dp"
+        android:layout_marginTop="@dimen/dimens_25dp"
+        android:layout_marginEnd="@dimen/dimens_60dp"
+        android:fontFamily="@font/whitney_book"
+        android:text="@string/select_a_period_of_days"
+        android:textColor="@color/gray_color"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <NumberPicker
+        android:id="@+id/numberPickerDays"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title"
+        android:layout_centerHorizontal="true"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginTop="@dimen/dimens_0dp"
+        android:fontFamily="@font/whitney_book"
+        android:solidColor="@color/bg"
+        android:theme="@style/AppTheme.Picker" />
+
+    <TextView
+        android:id="@+id/okButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/numberPickerDays"
+        android:layout_alignEnd="@+id/numberPickerDays"
+        android:layout_marginStart="@dimen/dimens_10dp"
+        android:layout_marginTop="@dimen/dimens_10dp"
+        android:padding="@dimen/dimens_10dp"
+        android:layout_marginEnd="-140dp"
+        android:fontFamily="@font/whitney_book"
+        android:text="@string/dialog_ok"
+        android:layout_marginBottom="@dimen/dimens_10dp"
+        android:textColor="@color/gray_color"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/cancelButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/dimens_10dp"
+        android:layout_below="@+id/numberPickerDays"
+        android:layout_marginTop="@dimen/dimens_10dp"
+        android:layout_marginEnd="@dimen/dimens_10dp"
+        android:layout_toStartOf="@+id/okButton"
+        android:fontFamily="@font/whitney_book"
+        android:text="@string/cancellation"
+        android:textColor="@color/gray_color"
+        android:textSize="18sp" />
+
+</RelativeLayout>

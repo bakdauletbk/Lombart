@@ -1,7 +1,6 @@
 package kz.pillikan.lombart.content.view
 
 import android.content.Intent
-import android.content.res.Configuration
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -12,8 +11,6 @@ import kotlinx.android.synthetic.main.activity_foundation.*
 import kz.pillikan.lombart.R
 import kz.pillikan.lombart.common.remote.Constants
 import kz.pillikan.lombart.common.views.BaseActivity
-import org.jetbrains.anko.intentFor
-import java.util.*
 
 class FoundationActivity : BaseActivity() {
 
@@ -109,24 +106,24 @@ class FoundationActivity : BaseActivity() {
             when (destination.id) {
                 R.id.profileFragment -> {
                     switchMenuItem(PROFILE)
-                    showBottomNavigation(navController)
+                    showBottomNavigation()
                 }
                 R.id.homeFragment -> {
                     switchMenuItem(HOME)
-                    showBottomNavigation(navController)
+                    showBottomNavigation()
                     checkExtraNotificationId()
                 }
                 R.id.notificationsFragment -> {
                     switchMenuItem(NOTIFICATION)
-                    showBottomNavigation(navController)
+                    showBottomNavigation()
                 }
                 R.id.appealFragment -> {
                     switchMenuItem(APPEAL)
-                    showBottomNavigation(navController)
+                    showBottomNavigation()
                 }
                 R.id.aboutFragment -> {
                     switchMenuItem(ABOUT)
-                    showBottomNavigation(navController)
+                    showBottomNavigation()
                 }
                 else -> hideBottomNavigation()
             }
@@ -146,7 +143,7 @@ class FoundationActivity : BaseActivity() {
         bottom_navigation.visibility = View.GONE
     }
 
-    private fun showBottomNavigation(navController: NavController) {
+    private fun showBottomNavigation() {
         bottom_navigation.visibility = View.VISIBLE
     }
 

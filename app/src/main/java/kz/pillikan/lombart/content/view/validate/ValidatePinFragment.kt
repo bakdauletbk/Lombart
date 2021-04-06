@@ -5,9 +5,7 @@ import android.annotation.SuppressLint
 import android.app.KeyguardManager
 import android.content.Context
 import android.content.DialogInterface
-import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
-import android.content.res.Configuration
 import android.hardware.biometrics.BiometricPrompt
 import android.os.Build
 import android.os.Bundle
@@ -18,7 +16,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.core.hardware.fingerprint.FingerprintManagerCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -95,7 +92,7 @@ class ValidatePinFragment : BaseFragment() {
             .setNegativeButton(
                 getString(R.string.cancel),
                 activity?.mainExecutor!!,
-                DialogInterface.OnClickListener { dialog, _ ->
+                DialogInterface.OnClickListener { _, _ ->
                     Toast.makeText(
                         context,
                         getString(R.string.authentication_canceled),
@@ -214,7 +211,6 @@ class ValidatePinFragment : BaseFragment() {
             Manifest.permission.USE_FINGERPRINT
         ) == PackageManager.PERMISSION_GRANTED
     }
-
 
     private fun validatePinCodeAlert() {
         setLoading(false)

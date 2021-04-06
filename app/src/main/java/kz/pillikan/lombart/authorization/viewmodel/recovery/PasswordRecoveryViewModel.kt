@@ -40,7 +40,7 @@ class PasswordRecoveryViewModel(application: Application) : AndroidViewModel(app
     suspend fun sendSms(sendSmsRequest: SendSmsRequest) {
         viewModelScope.launch {
             try {
-                when (val isSend = repository.sendSms(sendSmsRequest)) {
+                when (repository.sendSms(sendSmsRequest)) {
                     true -> isSendSms.postValue(true)
                     false -> isSendSms.postValue(false)
                 }

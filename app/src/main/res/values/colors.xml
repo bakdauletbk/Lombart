@@ -24,4 +24,6 @@
     <color name="text_color_80">#801C1939</color>
     <color name="text_color_edit">#50555C</color>
     <color name="text_register">#2C2948</color>
+    <color name="gray_color">#4D4D4D</color>
+    <color name="bg">#f7f7f7</color>
 </resources>

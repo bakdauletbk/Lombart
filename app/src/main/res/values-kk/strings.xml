@@ -158,5 +158,7 @@
     <string name="save_error">Сақтауда қате кетті!</string>
     <string name="your_passwords_do_not_match">Сіздің құпия сөздеріңіз сәйкес келмейді!</string>
     <string name="the_sms_you_entered_are_incorrect">Сіз енгізген СМС дұрыс емес!</string>
-
+    <string name="five">5</string>
+    <string name="select_a_period_of_days">Күндер кезеңін таңдаңыз</string>
+    <string name="cancellation">Бас тарту</string>
 </resources>

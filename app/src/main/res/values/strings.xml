@@ -158,5 +158,8 @@
     <string name="save_error">Ошибка при сохранении!</string>
     <string name="your_passwords_do_not_match">Ваши пароли не совпадают!</string>
     <string name="the_sms_you_entered_are_incorrect">Введенные вами смс некорректны!</string>
+    <string name="five">5</string>
+    <string name="select_a_period_of_days">Выбрать срок дней</string>
+    <string name="cancellation">Отмена</string>
 
 </resources>

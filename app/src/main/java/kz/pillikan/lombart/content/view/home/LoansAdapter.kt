@@ -22,6 +22,7 @@ class LoansAdapter : RecyclerView.Adapter<LoansAdapter.LoansHolder> {
     }
 
     fun addLoans(loansList: ArrayList<Tickets>) {
+        this.loansList.clear()
         this.loansList.addAll(loansList)
         notifyDataSetChanged()
     }

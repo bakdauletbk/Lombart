@@ -18,7 +18,6 @@ open class BaseActivity : AppCompatActivity() {
         val config = Configuration()
         config.setLocale(locale)
         baseContext.resources.updateConfiguration(config,baseContext.resources.displayMetrics)
-
     }
 
 }

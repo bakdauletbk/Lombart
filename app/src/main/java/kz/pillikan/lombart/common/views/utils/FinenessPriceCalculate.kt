@@ -206,7 +206,7 @@ open class FinenessPriceCalculate {
 
     @SuppressLint("SetTextI18n")
     private fun setPrice(price: Long, percent1: String, percent2: String, limit: Long) {
-        val etDay = callback.view?.findViewById<EditText>(R.id.et_day)
+        val etDay = callback.view?.findViewById<TextView>(R.id.et_day)
         val etGram = callback.view?.findViewById<EditText>(R.id.et_gram)
         val tvAmount = callback.view?.findViewById<TextView>(R.id.tv_refundable_amount)
         val tvAmountOnHand = callback.view?.findViewById<TextView>(R.id.tv_amount)
@@ -244,41 +244,42 @@ open class FinenessPriceCalculate {
     }
 
     private fun setValidateText(price: Long, limit: Long, percent1: String, percent2: String) {
-        val etDay = callback.view?.findViewById<EditText>(R.id.et_day)
+        val etDay = callback.view?.findViewById<TextView>(R.id.et_day)
         val etGram = callback.view?.findViewById<EditText>(R.id.et_gram)
         val tvAmount = callback.view?.findViewById<TextView>(R.id.tv_refundable_amount)
         val tvAmountOnHand = callback.view?.findViewById<TextView>(R.id.tv_amount)
-        etDay?.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
+//        etDay?.addTextChangedListener(object : TextWatcher {
+//            override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
+//
+//            @SuppressLint("SetTextI18n")
+//            override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
+//                when (etDay.text.isNotEmpty() && etGram?.text!!.isNotEmpty()) {
+//                    true -> {
+//                        val day = etDay.text.toString().toInt()
+//                        val gram = etGram?.text.toString().toFloat()
+//                        val result = price * gram
+//                        tvAmountOnHand?.text = result.toLong().toString() + Constants.MONEY
+//                        when (result >= limit) {
+//                            true -> {
+//                                val percent = result + (result * (percent2.toFloat() / 100) * day)
+//                                tvAmount?.text = percent.toLong().toString() + Constants.MONEY
+//                            }
+//                            false -> {
+//                                val percent = result + (result * (percent1.toFloat() / 100) * day)
+//                                tvAmount?.text = percent.toLong().toString() + Constants.MONEY
+//                            }
+//                        }
+//                    }
+//                    false -> {
+//                        etDay.error = "Введенный вами день некорректно!"
+//                    }
+//                }
+//            }
+//
+//            override fun afterTextChanged(editable: Editable) {
+//            }
+//        })
 
-            @SuppressLint("SetTextI18n")
-            override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
-                when (etDay.text.isNotEmpty() && etGram?.text!!.isNotEmpty()) {
-                    true -> {
-                        val day = etDay.text.toString().toInt()
-                        val gram = etGram?.text.toString().toFloat()
-                        val result = price * gram
-                        tvAmountOnHand?.text = result.toLong().toString() + Constants.MONEY
-                        when (result >= limit) {
-                            true -> {
-                                val percent = result + (result * (percent2.toFloat() / 100) * day)
-                                tvAmount?.text = percent.toLong().toString() + Constants.MONEY
-                            }
-                            false -> {
-                                val percent = result + (result * (percent1.toFloat() / 100) * day)
-                                tvAmount?.text = percent.toLong().toString() + Constants.MONEY
-                            }
-                        }
-                    }
-                    false -> {
-                        etDay.error = "Введенный вами день некорректно!"
-                    }
-                }
-            }
-
-            override fun afterTextChanged(editable: Editable) {
-            }
-        })
         etGram?.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(
                 charSequence: CharSequence,
