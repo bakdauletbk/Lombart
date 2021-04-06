@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.TextView
+import androidx.activity.addCallback
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.button.MaterialButton
@@ -37,6 +38,12 @@ class NotificationsFragment : BaseFragment() {
     companion object {
         const val SHARE = "Share"
         const val TEXT_TYPE = "text/plain"
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
+        }
     }
 
     override fun onCreateView(

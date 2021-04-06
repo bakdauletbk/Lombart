@@ -14,6 +14,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.hardware.fingerprint.FingerprintManagerCompat
@@ -35,6 +36,12 @@ class ValidatePinFragment : BaseFragment() {
 
     private lateinit var viewModel: ValidatePinViewModel
     private var validatePinRequest: ValidatePinRequest? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

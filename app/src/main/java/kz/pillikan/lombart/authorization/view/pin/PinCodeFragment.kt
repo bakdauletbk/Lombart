@@ -83,8 +83,9 @@ class PinCodeFragment : BaseFragment() {
         viewModel.isSuccess.observe(viewLifecycleOwner, {
             when (it) {
                 true -> {
-                    requireActivity().finish()
                     startActivity(intentFor<FoundationActivity>())
+                    requireActivity().finish()
+
                 }
                 false -> {
                     et_access_pin.text?.clear()

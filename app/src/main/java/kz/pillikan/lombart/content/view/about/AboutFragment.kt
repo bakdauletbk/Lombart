@@ -2,17 +2,13 @@ package kz.pillikan.lombart.content.view.about
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
-import android.view.View.OnTouchListener
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.lifecycle.ViewModelProvider
 import com.yandex.mapkit.MapKit
 import com.yandex.mapkit.MapKitFactory
-import com.yandex.mapkit.geometry.Geometry
 import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.map.CameraPosition
 import com.yandex.runtime.ui_view.ViewProvider
@@ -27,7 +23,6 @@ import kz.pillikan.lombart.content.model.response.about.AboutResponse
 import kz.pillikan.lombart.content.model.response.about.AddressList
 import kz.pillikan.lombart.content.viewmodel.about.AboutViewModel
 import org.jetbrains.anko.alert
-import org.jetbrains.anko.sdk27.coroutines.onTouch
 import java.util.*
 
 
@@ -36,7 +31,6 @@ class AboutFragment : BaseFragment() {
     private var mapKit: MapKit? = null
     private lateinit var viewModel: AboutViewModel
     private var isDialogVisibility = false
-    private var geometry: Geometry? = null
 
     companion object {
         const val LATITUDE = 42.330639
@@ -47,8 +41,11 @@ class AboutFragment : BaseFragment() {
         const val DURATION = 0F
     }
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
+        }
     }
 
     override fun onCreateView(

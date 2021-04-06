@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.fragment_appeal.*
 import kotlinx.coroutines.CoroutineScope
@@ -25,6 +26,12 @@ class AppealFragment : BaseFragment() {
 
     companion object {
         const val TAG = "AppealFragment"
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
+        }
     }
 
     override fun onCreateView(

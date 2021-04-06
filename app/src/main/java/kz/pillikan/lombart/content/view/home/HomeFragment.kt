@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.view.Window
 import android.widget.NumberPicker
 import android.widget.TextView
+import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -46,6 +47,12 @@ class HomeFragment : BaseFragment() {
 
     companion object {
         const val TAG = "HomeFragment"
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
+        }
     }
 
     override fun onCreateView(

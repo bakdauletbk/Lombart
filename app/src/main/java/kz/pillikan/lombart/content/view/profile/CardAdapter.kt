@@ -20,6 +20,7 @@ class CardAdapter : RecyclerView.Adapter<CardAdapter.CardAdapterViewHolder> {
     }
 
     fun addCard(cardList: List<CardModel>) {
+        this.cardList.clear()
         this.cardList.addAll(cardList)
         notifyDataSetChanged()
     }

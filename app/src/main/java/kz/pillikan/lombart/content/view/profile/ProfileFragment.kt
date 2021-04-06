@@ -3,6 +3,7 @@ package kz.pillikan.lombart.content.view.profile
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -29,6 +30,8 @@ class ProfileFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
+        }
     }
 
     override fun onCreateView(
@@ -123,7 +126,10 @@ class ProfileFragment : BaseFragment() {
         })
         viewModel.isLogout.observe(viewLifecycleOwner, {
             when (it) {
-                true -> startActivity(intentFor<AuthorizationActivity>())
+                true -> {
+                    startActivity(intentFor<AuthorizationActivity>())
+                    activity?.finish()
+                }
                 false -> {
                     setLoading(false)
                     Toast.makeText(

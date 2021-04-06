@@ -147,19 +147,4 @@ class FoundationActivity : BaseActivity() {
         bottom_navigation.visibility = View.VISIBLE
     }
 
-    override fun onBackPressed() {
-        if (exit) {
-            val intent = Intent(Intent.ACTION_MAIN)
-            intent.addCategory(Intent.CATEGORY_HOME)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-            startActivity(intent)
-        } else {
-            Toast.makeText(
-                this, getString(R.string.press_back_again_to_exit),
-                Toast.LENGTH_SHORT
-            ).show()
-            exit = true
-        }
-    }
-
 }

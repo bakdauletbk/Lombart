@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.addCallback
 import androidx.navigation.Navigation
 import kotlinx.android.synthetic.main.fragment_add_cards.*
 import kz.pillikan.lombart.R
@@ -16,6 +17,17 @@ class AddCardFragment : BaseFragment() {
         @JvmStatic
         fun newInstance(): AddCardFragment {
             return AddCardFragment()
+        }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
+            view?.let { it1 ->
+                Navigation.findNavController(it1)
+                    .navigate(R.id.profileFragment)
+            }
         }
     }
 

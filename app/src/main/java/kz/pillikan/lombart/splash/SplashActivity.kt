@@ -55,11 +55,14 @@ class SplashActivity : BaseActivity() {
             if (it) {
                 if (notificationId != null){
                     startActivity(intentFor<FoundationActivity>().putExtra("NOTIFICATION_ID", notificationId))
+                    finish()
                 }else{
                     startActivity(intentFor<FoundationActivity>())
+                    finish()
                 }
             } else {
                 startActivity(intentFor<AuthorizationActivity>())
+                finish()
             }
         })
 
