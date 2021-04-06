@@ -478,37 +478,28 @@
                             android:textSize="8sp"
                             tools:ignore="SmallSp" />
 
-                        <TextView
+
+                        <EditText
                             android:id="@+id/et_day"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:background="@color/white"
+                            android:clickable="true"
+                            android:focusable="true"
                             android:gravity="center"
+                            android:hint="5"
+                            android:inputType="number"
+                            android:maxLength="2"
+                            android:maxLines="3"
+                            android:paddingStart="@dimen/dimens_15dp"
                             android:paddingTop="@dimen/dimens_7dp"
-                            android:text="@string/five"
+                            android:paddingEnd="@dimen/dimens_15dp"
+                            android:text="5"
                             android:textColor="@color/black"
                             android:textSize="18sp"
-                            android:textStyle="bold" />
-                        <!--                        <EditText-->
-                        <!--                            android:id="@+id/et_day"-->
-                        <!--                            android:layout_width="match_parent"-->
-                        <!--                            android:layout_height="wrap_content"-->
-                        <!--                            android:layout_gravity="center_horizontal"-->
-                        <!--                            android:background="@color/white"-->
-                        <!--                            android:clickable="true"-->
-                        <!--                            android:focusable="true"-->
-                        <!--                            android:gravity="center"-->
-                        <!--                            android:hint="5"-->
-                        <!--                            android:inputType="number"-->
-                        <!--                            android:maxLength="2"-->
-                        <!--                            android:maxLines="3"-->
-                        <!--                            android:paddingStart="@dimen/dimens_15dp"-->
-                        <!--                            android:paddingTop="@dimen/dimens_7dp"-->
-                        <!--                            android:paddingEnd="@dimen/dimens_15dp"-->
-                        <!--                            android:text="5"-->
-                        <!--                            android:textColor="@color/black"-->
-                        <!--                            android:textSize="18sp"-->
-                        <!--                            android:textStyle="bold"-->
-                        <!--                            tools:ignore="Autofill,HardcodedText" />-->
+                            android:textStyle="bold"
+                            tools:ignore="Autofill,HardcodedText" />
 
                         <View
                             android:layout_width="match_parent"

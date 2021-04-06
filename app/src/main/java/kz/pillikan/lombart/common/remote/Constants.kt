@@ -54,4 +54,10 @@ object Constants {
     const val FORMAT_DATE = "dd.MM.yyyy"
     const val FOR = "за "
     const val TEL = "tel: "
+
+    //Validate Days
+    const val MIN_DAY = 5
+    const val MAX_DAY = 60
+
+    const val ONE_HUNDRED = 100
 }

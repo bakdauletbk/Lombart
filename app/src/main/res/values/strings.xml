@@ -161,5 +161,6 @@
     <string name="five">5</string>
     <string name="select_a_period_of_days">Выбрать срок дней</string>
     <string name="cancellation">Отмена</string>
+    <string name="the_day_you_entered_is_incorrect">Введенный вами день некорректный!</string>
 
 </resources>
