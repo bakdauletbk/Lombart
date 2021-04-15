@@ -52,7 +52,7 @@ object Constants {
     const val TEL = "tel: "
 
     //Validate Days
-    const val MIN_DAY = 5
+    const val MIN_DAY = 1
     const val MAX_DAY = 45
     const val MAX_DAY_THIRTY = 30
 

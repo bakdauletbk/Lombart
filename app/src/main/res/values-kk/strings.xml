@@ -70,8 +70,8 @@
     <string name="pay">Төлем жасау</string>
     <string name="gold_content">Алтынның сынамасы</string>
     <string name="product_weight">Өнімнің салмағы (гр)</string>
-    <string name="term">Мерзімі (5 – 45 күн)</string>
-    <string name="term_">Мерзімі (5 – 30 күн)</string>
+    <string name="term">Мерзімі (1 – 45 күн)</string>
+    <string name="term_">Мерзімі (1 – 30 күн)</string>
     <string name="hand_amount">Қолға берілетін сома</string>
     <string name="refundable_amount">Қайтарылатын сома</string>
     <string name="detail_text">Өнімнің сынамасы мен салмағын, сондай-ақ несие құнын дәлірек анықтау үшін біздің филиалға келіңіз.</string>

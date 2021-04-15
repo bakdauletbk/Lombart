@@ -70,8 +70,8 @@
     <string name="pay">Оплатить</string>
     <string name="gold_content">Проба золота</string>
     <string name="product_weight">Вес изделия (гр)</string>
-    <string name="term">Срок (5 – 45 дней)</string>
-    <string name="term_">Срок (5 – 30 дней)</string>
+    <string name="term">Срок (1 – 45 дней)</string>
+    <string name="term_">Срок (1 – 30 дней)</string>
     <string name="hand_amount">Сумма на руки</string>
     <string name="refundable_amount">Сумма к возврату</string>
     <string name="detail_text">*Для более точного определения пробы и веса изделия, а также стоимости займа, пожалуйста, посетите наш ближайший филиал.</string>
