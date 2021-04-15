@@ -18,6 +18,7 @@
     <color name="gray_shape">#F7F7F7</color>
 
     <color name="green">#00980A</color>
+    <color name="greens">#00C048</color>
     <color name="green_20">#2000980A</color>
     <color name="text_color">#1C1939</color>
     <color name="text_color80">#801C1939</color>
@@ -26,4 +27,7 @@
     <color name="text_register">#2C2948</color>
     <color name="gray_color">#4D4D4D</color>
     <color name="bg">#f7f7f7</color>
+
+    <color name="blue">#004BAD</color>
+
 </resources>

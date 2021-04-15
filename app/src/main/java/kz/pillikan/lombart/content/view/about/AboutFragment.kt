@@ -1,17 +1,18 @@
 package kz.pillikan.lombart.content.view.about
 
 import android.annotation.SuppressLint
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.lifecycle.ViewModelProvider
-import com.bumptech.glide.Glide
 import com.yandex.mapkit.MapKit
 import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.geometry.Point
-import com.yandex.mapkit.map.CameraPosition
+import com.yandex.mapkit.map.*
 import com.yandex.runtime.ui_view.ViewProvider
 import kotlinx.android.synthetic.main.fragment_about.*
 import kotlinx.coroutines.CoroutineScope
@@ -20,14 +21,14 @@ import kotlinx.coroutines.launch
 import kz.pillikan.lombart.R
 import kz.pillikan.lombart.common.remote.Constants
 import kz.pillikan.lombart.common.views.BaseFragment
-import kz.pillikan.lombart.content.model.response.about.AboutResponse
 import kz.pillikan.lombart.content.model.response.about.AddressList
 import kz.pillikan.lombart.content.viewmodel.about.AboutViewModel
 import org.jetbrains.anko.alert
+import org.jetbrains.anko.sdk27.coroutines.onClick
 import java.util.*
 
 
-class AboutFragment : BaseFragment() {
+class AboutFragment : BaseFragment(), MapObjectTapListener {
 
     private var mapKit: MapKit? = null
     private lateinit var viewModel: AboutViewModel
@@ -36,12 +37,11 @@ class AboutFragment : BaseFragment() {
     companion object {
         const val LATITUDE = 42.330639
         const val LONGITUDE = 69.600967
-        const val ZOOM = 11.0f
+        const val ZOOM = 12.0f
         const val AZIMUTH = 0.0f
         const val TILT = 0.0f
         const val DURATION = 0F
     }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,9 +74,6 @@ class AboutFragment : BaseFragment() {
         CoroutineScope(Dispatchers.IO).launch {
             viewModel.getAddress()
         }
-        CoroutineScope(Dispatchers.IO).launch {
-            viewModel.getAbout()
-        }
     }
 
     private fun initViewModel() {
@@ -96,28 +93,6 @@ class AboutFragment : BaseFragment() {
                 false -> showAlertDialog(getString(R.string.error_failed_connection_to_server))
             }
         })
-        viewModel.about.observe(viewLifecycleOwner, {
-            when (it != null) {
-                true -> {
-                    setLoading(false)
-                    setAboutText(it)
-                }
-                false -> showAlertDialog(getString(R.string.error_failed_connection_to_server))
-            }
-        })
-
-    }
-
-    private fun setAboutText(aboutResponse: AboutResponse) {
-        tv_text1.text = aboutResponse.text2
-        tv_text2.text = aboutResponse.text3
-        cv_image.visibility = View.VISIBLE
-        Glide
-            .with(requireView())
-            .load(Constants.IMG_BASE_URL + Constants.IMG_URL_ABOUT + aboutResponse.img)
-            .centerCrop()
-            .into(iv_image_about)
-
     }
 
     private fun errorDialog() {
@@ -130,17 +105,55 @@ class AboutFragment : BaseFragment() {
         for (i in Constants.ZERO until addressList.size) {
 
             val view = View(requireContext()).apply {
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-                    background = requireContext().getDrawable(R.drawable.ic_point)
-                }
+                background = requireContext().getDrawable(R.drawable.ic_point)
             }
 
-            map_view.map.mapObjects.addPlacemark(
+            val pointCollection: MapObjectCollection = map_view.map.mapObjects.addCollection()
+
+            val placeMark: PlacemarkMapObject = pointCollection.addPlacemark(
                 Point(
                     addressList[i].latitude!!.toDouble(), addressList[i].longitude!!.toDouble()
                 ),
                 ViewProvider(view)
             )
+
+            placeMark.userData = addressList[i]
+
+            placeMark.addTapListener(this)
+        }
+    }
+
+    override fun onMapObjectTap(mapObject: MapObject, point: Point): Boolean {
+        val userData: AddressList = mapObject.userData as AddressList
+        initDetailInfoAddress(userData)
+        return true
+    }
+
+    private fun initDetailInfoAddress(locationData: AddressList) {
+        cl_detail_map.visibility = View.VISIBLE
+        tv_address_map.text = locationData.address
+
+        tv_date.text = locationData.work_time
+        tv_content.text = locationData.content
+        tv_title_map.text = locationData.name
+
+        tv_close_detail.onClick {
+            cl_detail_map.visibility = View.GONE
+        }
+
+        ll_call.onClick {
+            call(locationData.phone.toString())
+        }
+        ll_location.onClick {
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = Uri.parse("geo:${locationData.latitude},${locationData.longitude}?z=11");
+            startActivity(intent);
+        }
+        ll_whatsapp.onClick {
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data =
+                Uri.parse(Constants.WHATSAPP_URI + locationData.whats_app)
+            startActivity(intent)
         }
     }
 

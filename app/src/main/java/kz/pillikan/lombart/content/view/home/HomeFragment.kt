@@ -1,12 +1,16 @@
 package kz.pillikan.lombart.content.view.home
 
 import android.annotation.SuppressLint
+import android.app.Dialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
 import android.widget.LinearLayout
+import android.widget.NumberPicker
 import android.widget.TextView
 import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
@@ -39,6 +43,7 @@ class HomeFragment : BaseFragment() {
     private val bannersAdapter by lazy { PagerAdapter(context) }
     private var isDialogVisibility = false
     private var foundationActivity: FoundationActivity? = null
+    private var alert: Dialog? = null
 
     companion object {
         const val TAG = "HomeFragment"
@@ -156,6 +161,30 @@ class HomeFragment : BaseFragment() {
         }
     }
 
+    private fun showAlertPickerDays() {
+        alert = Dialog(requireContext())
+        alert!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        alert!!.setContentView(R.layout.alert_dialog_number_picker)
+
+        val numberPicker = alert!!.findViewById<NumberPicker>(R.id.numberPickerDays)
+        val btnOk = alert!!.findViewById<TextView>(R.id.okButton)
+        val btnCancel = alert!!.findViewById<TextView>(R.id.cancelButton)
+
+        numberPicker.minValue = 5
+        numberPicker.maxValue = 60
+
+        btnOk.setOnClickListener {
+            val number = numberPicker.value.toString()
+//            et_day.text = number
+            alert!!.dismiss()
+        }
+        btnCancel.setOnClickListener {
+            alert!!.dismiss()
+        }
+
+        alert!!.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        alert!!.show()
+    }
 
     private fun initObservers() {
         viewModel.isError.observe(viewLifecycleOwner, {
@@ -289,7 +318,6 @@ class HomeFragment : BaseFragment() {
 
                 setBannerContent()
             } catch (e: Exception) {
-                Log.e("BannersErma", e.message.toString())
             }
         }
     }

@@ -12,7 +12,6 @@ import kz.pillikan.lombart.R
 import kz.pillikan.lombart.common.remote.Constants
 import kz.pillikan.lombart.common.views.BaseActivity
 import kz.pillikan.lombart.content.viewmodel.FoundationViewModel
-import java.util.*
 
 class FoundationActivity : BaseActivity() {
 

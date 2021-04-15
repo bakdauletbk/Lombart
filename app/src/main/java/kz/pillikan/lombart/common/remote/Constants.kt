@@ -3,21 +3,16 @@ package kz.pillikan.lombart.common.remote
 object Constants {
     const val BASE_URL = "https://api-cert.smartideagroup.kz"
     const val IMG_BASE_URL = "https://st-cert.smartideagroup.kz"
-    const val IMG_URL = "/images/slider/"
+    const val IMG_SLIDER_URL = "/images/slider/"
     const val IMG_URL_ABOUT = "/images/material/"
     const val RESPONSE_SUCCESS_CODE = 200
     const val AUTH_TOKEN_PREFIX = "Bearer "
-    const val YANDEX_API_KEY = "9e4e7459-a0e7-4f56-bb33-e14d68b432fa"
+    const val YANDEX_API_KEY = "704ca01a-a014-47f8-9d6c-a926b47b6d2b"
 
     //----------[Константы для вызова алерта]
     const val ALERT_TYPE_LOAN_DETAILS = 0
     const val ALERT_TYPE_SUCCESS = 1
     const val ZERO = 0
-
-    //Contact
-    const val PHONE = "+77782004400"
-    const val ADDRESS = "г. Шымкент, улица Т.Рыскулова, 22/4"
-    const val MAIL = "info@sertgroup.kz"
 
     //----------[Константы для Контента]
     const val MONEY = " тг"
@@ -72,5 +67,6 @@ object Constants {
     const val NOTIFICATION = 3
     const val APPEAL = 4
 
-    var firstRefresh = false
+    //Uri
+    const val WHATSAPP_URI = "http://api.whatsapp.com/send?phone="
 }

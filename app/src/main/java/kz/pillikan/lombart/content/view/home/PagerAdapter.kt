@@ -1,5 +1,6 @@
 package kz.pillikan.lombart.content.view.home
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -31,6 +32,7 @@ class PagerAdapter(val context: Context?) : PagerAdapter() {
         return sliderList.size
     }
 
+    @SuppressLint("InflateParams")
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
 
         inflater = context?.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -39,7 +41,7 @@ class PagerAdapter(val context: Context?) : PagerAdapter() {
 
         Glide
             .with(this.context)
-            .load(Constants.IMG_BASE_URL + Constants.IMG_URL + sliderList[position].img)
+            .load(Constants.IMG_BASE_URL + Constants.IMG_SLIDER_URL + sliderList[position].img)
             .centerCrop()
             .into(view.iv_banner)
 

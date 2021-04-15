@@ -10,5 +10,13 @@ data class AddressList(
     @SerializedName("longitude")
     val longitude: String? = null,
     @SerializedName("latitude")
-    val latitude: String? = null
+    val latitude: String? = null,
+    @SerializedName("work_time")
+    val work_time: String? = null,
+    @SerializedName("content")
+    val content: String? = null,
+    @SerializedName("phone")
+    val phone: String? = null,
+    @SerializedName("whats_app")
+    val whats_app: String? = null
 )

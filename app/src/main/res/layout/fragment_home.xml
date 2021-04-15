@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:segmentedgroup="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -26,6 +25,7 @@
                 android:layout_marginTop="@dimen/dimens_10dp"
                 android:layout_marginEnd="@dimen/dimens_20dp"
                 android:layout_marginBottom="@dimen/dimens_10dp"
+                android:baselineAligned="false"
                 android:orientation="horizontal"
                 android:weightSum="2">
 
@@ -41,9 +41,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/rus"
+                        android:textColor="@color/black"
                         android:textSize="12sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/black" />
+                        android:textStyle="bold" />
 
                 </LinearLayout>
 
@@ -59,44 +59,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/kz"
+                        android:textColor="@color/black"
                         android:textSize="12sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/black" />
+                        android:textStyle="bold" />
 
                 </LinearLayout>
 
             </LinearLayout>
-            <!--            <info.hoang8f.android.segmented.SegmentedGroup-->
-            <!--                android:layout_width="@dimen/dimens_75dp"-->
-            <!--                android:layout_height="@dimen/dimens_23dp"-->
-            <!--                android:layout_alignParentEnd="true"-->
-            <!--                android:layout_centerVertical="true"-->
-            <!--                android:layout_marginTop="@dimen/dimens_10dp"-->
-            <!--                android:layout_marginEnd="@dimen/dimens_20dp"-->
-            <!--                android:layout_marginBottom="@dimen/dimens_10dp"-->
-            <!--                android:orientation="horizontal"-->
-            <!--                app:sc_border_width="@dimen/dimens_1dp"-->
-            <!--                app:sc_tint_color="@color/green"-->
-            <!--                segmentedgroup:sc_checked_text_color="@color/white"-->
-            <!--                segmentedgroup:sc_corner_radius="@dimen/dimens_2dp">-->
-
-            <!--                <RadioButton-->
-            <!--                    android:id="@+id/rb_rus"-->
-            <!--                    style="@style/RadioButton_custom"-->
-            <!--                    android:layout_width="0dp"-->
-            <!--                    android:layout_height="wrap_content"-->
-            <!--                    android:layout_weight="1"-->
-            <!--                    android:text="@string/rus" />-->
-
-            <!--                <RadioButton-->
-            <!--                    android:id="@+id/rb_kz"-->
-            <!--                    style="@style/RadioButton_custom"-->
-            <!--                    android:layout_width="@dimen/dimens_0dp"-->
-            <!--                    android:layout_height="wrap_content"-->
-            <!--                    android:layout_weight="1"-->
-            <!--                    android:text="@string/kz" />-->
-            <!--                -->
-            <!--            </info.hoang8f.android.segmented.SegmentedGroup>-->
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -446,7 +415,6 @@
                                 tools:ignore="ContentDescription" />
                         </LinearLayout>
 
-
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/dimens_0.5dp"
@@ -526,7 +494,6 @@
                             android:textColor="@color/gray"
                             android:textSize="8sp"
                             tools:ignore="SmallSp" />
-
 
                         <EditText
                             android:id="@+id/et_day"
@@ -816,7 +783,7 @@
                         android:layout_weight="1"
                         android:gravity="center_horizontal"
                         android:src="@drawable/ic_icon_europa"
-                        tools:ignore="ContentDescription,NestedWeights" />
+                        tools:ignore="ContentDescription,NestedWeights,TooManyViews" />
 
                     <TextView
                         android:id="@+id/tv_sale_europa"
