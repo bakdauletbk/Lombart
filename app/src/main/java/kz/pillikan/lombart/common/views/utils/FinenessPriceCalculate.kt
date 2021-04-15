@@ -210,8 +210,11 @@ open class FinenessPriceCalculate {
         val etGram = callback.view?.findViewById<EditText>(R.id.et_gram)
         val tvAmount = callback.view?.findViewById<TextView>(R.id.tv_refundable_amount)
         val tvAmountOnHand = callback.view?.findViewById<TextView>(R.id.tv_amount)
+        val tvValidateDays = callback.view?.findViewById<TextView>(R.id.tv_validate_days)
         when (etDay?.text!!.isNotEmpty() && etGram?.text!!.isNotEmpty() && etDay.text.toString()
-            .toInt() >= Constants.MIN_DAY && etDay.text.toString().toInt() <= Constants.MAX_DAY ) {
+            .toInt() >= Constants.MIN_DAY && etDay.text.toString()
+            .toInt() <= Constants.MAX_DAY && etGram.text.toString()
+            .toDouble() <= Constants.ONE_THOUSAND) {
             true -> {
                 val day = etDay.text.toString().toInt()
                 setValidateText(
@@ -225,14 +228,34 @@ open class FinenessPriceCalculate {
                 tvAmountOnHand?.text = result.toLong().toString() + Constants.MONEY
                 when (result >= limit) {
                     true -> {
-                        val percent =
-                            result + (result * (percent2.toFloat() / Constants.ONE_HUNDRED) * day)
-                        tvAmount?.text = percent.toLong().toString() + Constants.MONEY
+                        tvValidateDays?.text = callback.getString(R.string.term_)
+                        if (etDay.text.toString()
+                                .toInt() >= Constants.MIN_DAY && etDay.text.toString()
+                                .toInt() <= Constants.MAX_DAY_THIRTY
+                        ) {
+                            val percent =
+                                result + (result * (percent2.toFloat() / Constants.ONE_HUNDRED) * day)
+                            tvAmount?.text = percent.toLong().toString() + Constants.MONEY
+                        } else {
+                            val errorText =
+                                callback.getString(R.string.maximum_value_thirty_days)
+                            etDay.error = errorText
+                        }
                     }
                     false -> {
-                        val percent =
-                            result + (result * (percent1.toFloat() / Constants.ONE_HUNDRED) * day)
-                        tvAmount?.text = percent.toLong().toString() + Constants.MONEY
+                        tvValidateDays?.text = callback.getString(R.string.term)
+                        if (etDay.text.toString()
+                                .toInt() >= Constants.MIN_DAY && etDay.text.toString()
+                                .toInt() <= Constants.MAX_DAY
+                        ) {
+                            val percent =
+                                result + (result * (percent1.toFloat() / Constants.ONE_HUNDRED) * day)
+                            tvAmount?.text = percent.toLong().toString() + Constants.MONEY
+                        } else {
+                            val errorText =
+                                callback.getString(R.string.maximum_value_forty_five_days)
+                            etDay.error = errorText
+                        }
                     }
                 }
             }
@@ -251,6 +274,7 @@ open class FinenessPriceCalculate {
         val etGram = callback.view?.findViewById<EditText>(R.id.et_gram)
         val tvAmount = callback.view?.findViewById<TextView>(R.id.tv_refundable_amount)
         val tvAmountOnHand = callback.view?.findViewById<TextView>(R.id.tv_amount)
+        val tvValidateDays = callback.view?.findViewById<TextView>(R.id.tv_validate_days)
 
         etDay?.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
@@ -259,7 +283,8 @@ open class FinenessPriceCalculate {
             override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
                 when (etDay.text.isNotEmpty() && etGram?.text!!.isNotEmpty() && etDay.text.toString()
                     .toInt() >= Constants.MIN_DAY && etDay.text.toString()
-                    .toInt() <= Constants.MAX_DAY) {
+                    .toInt() <= Constants.MAX_DAY && etGram.text.toString()
+                    .toDouble() <= Constants.ONE_THOUSAND) {
                     true -> {
                         val day = etDay.text.toString().toInt()
                         val gram = etGram?.text.toString().toFloat()
@@ -267,14 +292,34 @@ open class FinenessPriceCalculate {
                         tvAmountOnHand?.text = result.toLong().toString() + Constants.MONEY
                         when (result >= limit) {
                             true -> {
-                                val percent =
-                                    result + (result * (percent2.toFloat() / Constants.ONE_HUNDRED) * day)
-                                tvAmount?.text = percent.toLong().toString() + Constants.MONEY
+                                tvValidateDays?.text = callback.getString(R.string.term_)
+                                if (etDay.text.toString()
+                                        .toInt() >= Constants.MIN_DAY && etDay.text.toString()
+                                        .toInt() <= Constants.MAX_DAY_THIRTY
+                                ) {
+                                    val percent =
+                                        result + (result * (percent2.toFloat() / Constants.ONE_HUNDRED) * day)
+                                    tvAmount?.text = percent.toLong().toString() + Constants.MONEY
+                                } else {
+                                    val errorText =
+                                        callback.getString(R.string.maximum_value_thirty_days)
+                                    etDay.error = errorText
+                                }
                             }
                             false -> {
-                                val percent =
-                                    result + (result * (percent1.toFloat() / Constants.ONE_HUNDRED) * day)
-                                tvAmount?.text = percent.toLong().toString() + Constants.MONEY
+                                tvValidateDays?.text = callback.getString(R.string.term)
+                                if (etDay.text.toString()
+                                        .toInt() >= Constants.MIN_DAY && etDay.text.toString()
+                                        .toInt() <= Constants.MAX_DAY
+                                ) {
+                                    val percent =
+                                        result + (result * (percent1.toFloat() / Constants.ONE_HUNDRED) * day)
+                                    tvAmount?.text = percent.toLong().toString() + Constants.MONEY
+                                } else {
+                                    val errorText =
+                                        callback.getString(R.string.maximum_value_forty_five_days)
+                                    etDay.error = errorText
+                                }
                             }
                         }
                     }
@@ -303,7 +348,8 @@ open class FinenessPriceCalculate {
             override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
                 when (etGram.text.isNotEmpty() && etDay?.text!!.isNotEmpty() && etDay.text.toString()
                     .toInt() >= Constants.MIN_DAY && etDay.text.toString()
-                    .toInt() <= Constants.MAX_DAY) {
+                    .toInt() <= Constants.MAX_DAY && etGram.text.toString()
+                    .toDouble() <= Constants.ONE_THOUSAND) {
                     true -> {
                         val day = etDay?.text.toString().toInt()
                         val gram = etGram.text.toString().toFloat()
@@ -311,20 +357,40 @@ open class FinenessPriceCalculate {
                         tvAmountOnHand?.text = result.toLong().toString() + Constants.MONEY
                         when (result >= limit) {
                             true -> {
-                                val percent =
-                                    result + (result * (percent2.toFloat() / Constants.ONE_HUNDRED) * day)
-                                tvAmount?.text = percent.toLong().toString() + Constants.MONEY
+                                tvValidateDays?.text = callback.getString(R.string.term_)
+                                if (etDay?.text.toString()
+                                        .toInt() >= Constants.MIN_DAY && etDay?.text.toString()
+                                        .toInt() <= Constants.MAX_DAY_THIRTY
+                                ) {
+                                    val percent =
+                                        result + (result * (percent2.toFloat() / Constants.ONE_HUNDRED) * day)
+                                    tvAmount?.text = percent.toLong().toString() + Constants.MONEY
+                                } else {
+                                    val errorText =
+                                        callback.getString(R.string.maximum_value_thirty_days)
+                                    etDay?.error = errorText
+                                }
                             }
                             false -> {
-                                val percent =
-                                    result + (result * (percent1.toFloat() / Constants.ONE_HUNDRED) * day)
-                                tvAmount?.text = percent.toLong().toString() + Constants.MONEY
+                                tvValidateDays?.text = callback.getString(R.string.term)
+                                if (etDay?.text.toString()
+                                        .toInt() >= Constants.MIN_DAY && etDay?.text.toString()
+                                        .toInt() <= Constants.MAX_DAY
+                                ) {
+                                    val percent =
+                                        result + (result * (percent1.toFloat() / Constants.ONE_HUNDRED) * day)
+                                    tvAmount?.text = percent.toLong().toString() + Constants.MONEY
+                                } else {
+                                    val errorText =
+                                        callback.getString(R.string.maximum_value_forty_five_days)
+                                    etDay?.error = errorText
+                                }
                             }
                         }
                     }
                     false -> {
                         val errorText =
-                            callback.getString(R.string.the_day_you_entered_is_incorrect)
+                            callback.getString(R.string.validate_gram)
                         etGram.error = errorText
                     }
                 }

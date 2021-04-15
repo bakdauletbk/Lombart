@@ -53,9 +53,11 @@ object Constants {
 
     //Validate Days
     const val MIN_DAY = 5
-    const val MAX_DAY = 60
+    const val MAX_DAY = 45
+    const val MAX_DAY_THIRTY = 30
 
     const val ONE_HUNDRED = 100
+    const val ONE_THOUSAND = 1000
 
     const val KAZ = "kk"
     const val RUS = "ru"

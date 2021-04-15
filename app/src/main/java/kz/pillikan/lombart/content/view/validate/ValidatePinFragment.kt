@@ -4,7 +4,6 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.KeyguardManager
 import android.content.Context
-import android.content.DialogInterface
 import android.content.pm.PackageManager
 import android.hardware.biometrics.BiometricPrompt
 import android.os.Build
@@ -19,6 +18,7 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.hardware.fingerprint.FingerprintManagerCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.fragment_validate_pin.*
 import kotlinx.coroutines.CoroutineScope
@@ -67,9 +67,16 @@ class ValidatePinFragment : BaseFragment() {
     }
 
     private fun setupListeners() {
+        tv_reset_pin_code.onClick {
+            view?.let { it1 ->
+                Navigation.findNavController(it1)
+                    .navigate(R.id.pinCodeFragment2)
+            }
+        }
+
         if (isSdkVersionSupported() && isFingerprintAvailable() && isHardwareSupported() && isPermissionGranted()
         ) {
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                 initBiometric()
             }
         }
@@ -77,7 +84,7 @@ class ValidatePinFragment : BaseFragment() {
         iv_finger_print.onClick {
             if (isSdkVersionSupported() && isFingerprintAvailable() && isHardwareSupported() && isPermissionGranted()
             ) {
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                     initBiometric()
                 }
             }
@@ -99,7 +106,7 @@ class ValidatePinFragment : BaseFragment() {
             .setNegativeButton(
                 getString(R.string.cancel),
                 activity?.mainExecutor!!,
-                DialogInterface.OnClickListener { _, _ ->
+                { _, _ ->
                     Toast.makeText(
                         context,
                         getString(R.string.authentication_canceled),
@@ -160,7 +167,7 @@ class ValidatePinFragment : BaseFragment() {
 
         if (ActivityCompat.checkSelfPermission(
                 requireContext(),
-                android.Manifest.permission.USE_BIOMETRIC
+                Manifest.permission.USE_BIOMETRIC
             ) != PackageManager.PERMISSION_GRANTED
         ) {
             Toast.makeText(

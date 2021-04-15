@@ -70,7 +70,8 @@
     <string name="pay">Оплатить</string>
     <string name="gold_content">Проба золота</string>
     <string name="product_weight">Вес изделия (гр)</string>
-    <string name="term">Срок (5 – 60 дней)</string>
+    <string name="term">Срок (5 – 45 дней)</string>
+    <string name="term_">Срок (5 – 30 дней)</string>
     <string name="hand_amount">Сумма на руки</string>
     <string name="refundable_amount">Сумма к возврату</string>
     <string name="detail_text">*Для более точного определения пробы и веса изделия, а также стоимости займа, пожалуйста, посетите наш ближайший филиал.</string>
@@ -162,8 +163,12 @@
     <string name="select_a_period_of_days">Выбрать срок дней</string>
     <string name="cancellation">Отмена</string>
     <string name="the_day_you_entered_is_incorrect">Введенный вами день некорректный!</string>
+    <string name="maximum_value_thirty_days">Максимальный значение 30 дней!</string>
+    <string name="maximum_value_forty_five_days">Максимальный значение 45 дней!</string>
+
     <string name="calling">Позвонить</string>
     <string name="write_a_message">Написать</string>
     <string name="open_in">Открыть в</string>
+    <string name="reset_pincode">Сбросить пин код</string>
 
 </resources>

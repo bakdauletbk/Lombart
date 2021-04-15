@@ -70,7 +70,8 @@
     <string name="pay">Төлем жасау</string>
     <string name="gold_content">Алтынның сынамасы</string>
     <string name="product_weight">Өнімнің салмағы (гр)</string>
-    <string name="term">Мерзімі (5 – 60 күн)</string>
+    <string name="term">Мерзімі (5 – 45 күн)</string>
+    <string name="term_">Мерзімі (5 – 30 күн)</string>
     <string name="hand_amount">Қолға берілетін сома</string>
     <string name="refundable_amount">Қайтарылатын сома</string>
     <string name="detail_text">Өнімнің сынамасы мен салмағын, сондай-ақ несие құнын дәлірек анықтау үшін біздің филиалға келіңіз.</string>
@@ -162,5 +163,12 @@
     <string name="select_a_period_of_days">Күндер кезеңін таңдаңыз</string>
     <string name="cancellation">Бас тарту</string>
     <string name="the_day_you_entered_is_incorrect">Сіз енгізген күн дұрыс емес!</string>
+    <string name="maximum_value_thirty_days">Максималды мәні - 30 күн!</string>
+    <string name="maximum_value_forty_five_days">Максималды мәні - 45 күн!</string>
+
+    <string name="calling">Қоңырау шалу</string>
+    <string name="write_a_message">Хабарлама жазыңыз</string>
+    <string name="open_in">Ашу</string>
+    <string name="reset_pincode">Пин-кодты қалпына келтіріңіз</string>
 
 </resources>

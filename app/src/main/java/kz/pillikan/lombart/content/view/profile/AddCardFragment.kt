@@ -13,13 +13,6 @@ import kz.pillikan.lombart.common.views.BaseFragment
 
 class AddCardFragment : BaseFragment() {
 
-    companion object {
-        @JvmStatic
-        fun newInstance(): AddCardFragment {
-            return AddCardFragment()
-        }
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -33,9 +26,9 @@ class AddCardFragment : BaseFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
         toolbar_add_card.setNavigationIcon(R.drawable.ic_arrow_black)
         toolbar_add_card.setTitleTextColor(Color.BLACK)
+        toolbar_add_card.title = getString(R.string.add_cards)
         toolbar_add_card.setNavigationOnClickListener {
             view?.let { it1 -> Navigation.findNavController(it1).navigate(R.id.profileFragment) }
         }
@@ -51,5 +44,14 @@ class AddCardFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        lets()
+    }
+
+    private fun lets() {
+        initToolbar()
+    }
+
+    private fun initToolbar() {
+
     }
 }
