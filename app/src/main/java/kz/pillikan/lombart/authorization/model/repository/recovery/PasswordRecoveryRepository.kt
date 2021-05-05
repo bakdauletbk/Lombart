@@ -11,6 +11,8 @@ import kz.pillikan.lombart.authorization.model.response.CheckResponse
 import kz.pillikan.lombart.common.preference.SessionManager
 import kz.pillikan.lombart.common.remote.Constants
 import kz.pillikan.lombart.common.remote.Networking
+import okhttp3.ResponseBody
+import retrofit2.Response
 
 class PasswordRecoveryRepository(application: Application) {
 
@@ -21,37 +23,35 @@ class PasswordRecoveryRepository(application: Application) {
     private var sessionManager: SessionManager =
         SessionManager(sharedPreferences)
 
-    suspend fun checkUser(checkUserRequest: CheckUserRequest): CheckResponse? {
-        val response = networkService.checkUser(
+    suspend fun checkUser(checkUserRequest: CheckUserRequest): Response<CheckResponse> =
+        networkService.checkUser(
             appVer = BuildConfig.VERSION_NAME,
             checkUserRequest = checkUserRequest
         )
-        return if (response.code() == Constants.RESPONSE_SUCCESS_CODE) {
-            response.body()
-        } else {
-            sessionManager.clear()
-            null
-        }
-    }
 
-    suspend fun sendSms(sendSmsRequest: SendSmsRequest): Boolean {
-        val response = networkService.sendSms(appVer = BuildConfig.VERSION_NAME, sendSmsRequest)
-        return response.code() == Constants.RESPONSE_SUCCESS_CODE
-    }
+    suspend fun sendSms(sendSmsRequest: SendSmsRequest): Response<ResponseBody> =
+        networkService.sendSms(appVer = BuildConfig.VERSION_NAME, sendSmsRequest)
 
-    suspend fun verificationNumber(checkNumberRequest: CheckNumberRequest): Boolean {
-        val response = networkService.verificationNumber(
+    suspend fun verificationNumber(checkNumberRequest: CheckNumberRequest): Response<ResponseBody> =
+        networkService.verificationNumber(
             appVer = BuildConfig.VERSION_NAME,
             checkNumberRequest = checkNumberRequest
         )
-        return response.code() == Constants.RESPONSE_SUCCESS_CODE
-    }
 
-    suspend fun resetPassword(resetPasswordRequest: ResetPasswordRequest): Boolean {
-        val response = networkService.resetPassword(
+
+    suspend fun resetPassword(resetPasswordRequest: ResetPasswordRequest): Response<ResponseBody> =
+        networkService.resetPassword(
             appVer = BuildConfig.VERSION_NAME,
             resetPasswordRequest = resetPasswordRequest
         )
-        return response.code() == Constants.RESPONSE_SUCCESS_CODE
+
+    fun clearSharedPref(): Boolean {
+        return try {
+            sessionManager.clear()
+            true
+        } catch (e: Exception) {
+            false
+        }
     }
+
 }

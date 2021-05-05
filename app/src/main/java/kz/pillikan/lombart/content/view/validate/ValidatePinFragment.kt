@@ -25,12 +25,14 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kz.pillikan.lombart.R
+import kz.pillikan.lombart.authorization.view.AuthorizationActivity
 import kz.pillikan.lombart.common.helpers.Validators
 import kz.pillikan.lombart.common.helpers.base64encode
 import kz.pillikan.lombart.common.views.BaseFragment
 import kz.pillikan.lombart.content.model.request.home.ValidatePinRequest
 import kz.pillikan.lombart.content.viewmodel.validate.ValidatePinViewModel
 import org.jetbrains.anko.sdk27.coroutines.onClick
+import org.jetbrains.anko.support.v4.intentFor
 
 class ValidatePinFragment : BaseFragment() {
 
@@ -202,6 +204,29 @@ class ValidatePinFragment : BaseFragment() {
                 }
             }
         })
+        viewModel.isUpdateApp.observe(viewLifecycleOwner, {
+            when (it) {
+                true -> showAlertDialog(
+                    requireContext(),
+                    getString(R.string.our_application_has_been_updated_please_update)
+                )
+            }
+        })
+        viewModel.isUnAuthorized.observe(viewLifecycleOwner, {
+            when (it) {
+                true -> {
+                    setLoading(false)
+                    viewModel.clearSharedPref()
+                    Toast.makeText(
+                        requireContext(),
+                        getString(R.string.you_are_logged_in_under_your_account_on_another_device),
+                        Toast.LENGTH_LONG
+                    ).show()
+                    startActivity(intentFor<AuthorizationActivity>())
+                    activity?.finish()
+                }
+            }
+        })
     }
 
     private fun isSdkVersionSupported(): Boolean {
@@ -262,7 +287,7 @@ class ValidatePinFragment : BaseFragment() {
         try {
             loadingView.visibility = if (loading) View.VISIBLE else View.GONE
 
-        }catch (e:NullPointerException){
+        } catch (e: NullPointerException) {
 
         }
     }

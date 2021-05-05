@@ -6,6 +6,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import kz.pillikan.lombart.common.remote.Constants
 import kz.pillikan.lombart.content.model.repository.home.HomeRepository
 import kz.pillikan.lombart.content.model.response.home.*
 
@@ -14,6 +15,11 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
     companion object {
         const val TAG = "HomeViewModel"
     }
+
+    private val repository: HomeRepository = HomeRepository(application)
+
+    val isUpdateApp = MutableLiveData<Boolean>()
+    val isUnAuthorized = MutableLiveData<Boolean>()
 
     var loanList: MutableLiveData<ArrayList<Tickets>> = MutableLiveData()
     val isError: MutableLiveData<String> = MutableLiveData()
@@ -24,9 +30,14 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
     val finenessPrice: MutableLiveData<FinenessPriceResponse> = MutableLiveData()
     val headText: MutableLiveData<TitleResponse> = MutableLiveData()
     val getLanguage = MutableLiveData<String>()
-    val setLanguage= MutableLiveData<Boolean>()
+    val setLanguage = MutableLiveData<Boolean>()
 
-    private val repository: HomeRepository = HomeRepository(application)
+    fun clearSharedPref() {
+        try {
+            repository.clearSharedPref()
+        } catch (e: Exception) {
+        }
+    }
 
     fun getLanguage() {
         try {
@@ -36,10 +47,10 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun setLanguage(language:String){
+    fun setLanguage(language: String) {
         try {
             setLanguage.postValue(repository.setLanguage(language))
-        }catch (e:Exception){
+        } catch (e: Exception) {
             Log.e(TAG, "setLanguage: ${e.message} ")
         }
     }
@@ -48,7 +59,12 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch {
             try {
                 val response = repository.getLoans()
-                loanList.postValue(response)
+                when (response.code()) {
+                    Constants.RESPONSE_SUCCESS_CODE -> loanList.postValue(response.body()!!.tickets)
+                    Constants.RESPONSE_UPDATE_APP -> isUpdateApp.postValue(true)
+                    Constants.RESPONSE_UNAUTHORIZED -> isUnAuthorized.postValue(true)
+                    else -> isError.postValue(null)
+                }
             } catch (e: Exception) {
                 isError.postValue(null)
             }
@@ -59,7 +75,12 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch {
             try {
                 val response = repository.getCurrency()
-                currencyList.postValue(response)
+                when (response.code()) {
+                    Constants.RESPONSE_SUCCESS_CODE -> currencyList.postValue(response.body()!!.currency)
+                    Constants.RESPONSE_UPDATE_APP -> isUpdateApp.postValue(true)
+                    Constants.RESPONSE_UNAUTHORIZED -> isUnAuthorized.postValue(true)
+                    else -> isError.postValue(null)
+                }
             } catch (e: Exception) {
                 isError.postValue(null)
             }
@@ -70,7 +91,12 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch {
             try {
                 val response = repository.getWeather()
-                weatherData.postValue(response)
+                when (response.code()) {
+                    Constants.RESPONSE_SUCCESS_CODE -> weatherData.postValue(response.body()!!.data)
+                    Constants.RESPONSE_UPDATE_APP -> isUpdateApp.postValue(true)
+                    Constants.RESPONSE_UNAUTHORIZED -> isUnAuthorized.postValue(true)
+                    else -> isError.postValue(null)
+                }
             } catch (e: Exception) {
                 isError.postValue(null)
             }
@@ -81,7 +107,12 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch {
             try {
                 val response = repository.getProfile()
-                profileInfo.postValue(response)
+                when (response.code()) {
+                    Constants.RESPONSE_SUCCESS_CODE -> profileInfo.postValue(response.body()!!.profile)
+                    Constants.RESPONSE_UPDATE_APP -> isUpdateApp.postValue(true)
+                    Constants.RESPONSE_UNAUTHORIZED -> isUnAuthorized.postValue(true)
+                    else -> isError.postValue(null)
+                }
             } catch (e: Exception) {
                 isError.postValue(null)
             }
@@ -92,7 +123,12 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch {
             try {
                 val response = repository.getSliderList()
-                slidersList.postValue(response)
+                when (response.code()) {
+                    Constants.RESPONSE_SUCCESS_CODE -> slidersList.postValue(response.body()!!.sliders)
+                    Constants.RESPONSE_UPDATE_APP -> isUpdateApp.postValue(true)
+                    Constants.RESPONSE_UNAUTHORIZED -> isUnAuthorized.postValue(true)
+                    else -> isError.postValue(null)
+                }
             } catch (e: Exception) {
                 isError.postValue(null)
             }
@@ -103,7 +139,12 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch {
             try {
                 val response = repository.getFinenessPrice()
-                finenessPrice.postValue(response)
+                when (response.code()) {
+                    Constants.RESPONSE_SUCCESS_CODE -> finenessPrice.postValue(response.body())
+                    Constants.RESPONSE_UPDATE_APP -> isUpdateApp.postValue(true)
+                    Constants.RESPONSE_UNAUTHORIZED -> isUnAuthorized.postValue(true)
+                    else -> isError.postValue(null)
+                }
             } catch (e: Exception) {
                 isError.postValue(null)
             }
@@ -114,7 +155,12 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch {
             try {
                 val response = repository.getHeadText()
-                headText.postValue(response)
+                when (response.code()) {
+                    Constants.RESPONSE_SUCCESS_CODE -> headText.postValue(response.body())
+                    Constants.RESPONSE_UPDATE_APP -> isUpdateApp.postValue(true)
+                    Constants.RESPONSE_UNAUTHORIZED -> isUnAuthorized.postValue(true)
+                    else -> isError.postValue(null)
+                }
             } catch (e: Exception) {
                 isError.postValue(null)
             }

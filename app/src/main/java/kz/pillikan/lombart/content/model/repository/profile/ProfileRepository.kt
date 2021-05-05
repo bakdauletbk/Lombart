@@ -7,7 +7,9 @@ import kz.pillikan.lombart.common.preference.SessionManager
 import kz.pillikan.lombart.common.remote.Constants
 import kz.pillikan.lombart.common.remote.Networking
 import kz.pillikan.lombart.content.model.response.home.ProfileInfo
+import kz.pillikan.lombart.content.model.response.home.ProfileResponse
 import kz.pillikan.lombart.content.model.response.profile.CardModel
+import retrofit2.Response
 
 class ProfileRepository(application: Application) {
 
@@ -17,7 +19,6 @@ class ProfileRepository(application: Application) {
         application.getSharedPreferences("sessionManager", Context.MODE_PRIVATE)
     private var sessionManager: SessionManager =
         SessionManager(sharedPreferences)
-
 
     suspend fun getCard(): List<CardModel?> {
         return try {
@@ -32,16 +33,11 @@ class ProfileRepository(application: Application) {
         }
     }
 
-    suspend fun getProfile(): ProfileInfo? {
-        val response = networkService.profileInfo(
+    suspend fun getProfile(): Response<ProfileResponse> {
+        return networkService.profileInfo(
             Constants.AUTH_TOKEN_PREFIX + sessionManager.getToken(),
             BuildConfig.VERSION_NAME
         )
-        return if (response.code() == Constants.RESPONSE_SUCCESS_CODE) {
-            response.body()?.profile
-        } else {
-            null
-        }
     }
 
     fun logout(): Boolean {
@@ -53,4 +49,12 @@ class ProfileRepository(application: Application) {
         }
     }
 
+    fun clearSharedPref(): Boolean {
+        return try {
+            sessionManager.clear()
+            true
+        } catch (e: Exception) {
+            false
+        }
+    }
 }

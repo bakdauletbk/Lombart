@@ -1,13 +1,13 @@
 package kz.pillikan.lombart.content.view.home
 
 import android.annotation.SuppressLint
-import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
@@ -19,6 +19,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kz.pillikan.lombart.R
+import kz.pillikan.lombart.authorization.view.AuthorizationActivity
 import kz.pillikan.lombart.common.helpers.convertDpToPixel
 import kz.pillikan.lombart.common.remote.Constants
 import kz.pillikan.lombart.common.views.BaseFragment
@@ -28,10 +29,19 @@ import kz.pillikan.lombart.content.view.FoundationActivity
 import kz.pillikan.lombart.content.viewmodel.home.HomeViewModel
 import org.jetbrains.anko.alert
 import org.jetbrains.anko.sdk27.coroutines.onClick
+import org.jetbrains.anko.support.v4.intentFor
 import java.text.SimpleDateFormat
 import java.util.*
 
 class HomeFragment : BaseFragment() {
+
+    companion object {
+        const val TAG = "HomeFragment"
+    }
+
+    private var isOtherAuthShowOnce = false
+    private var isUpdateAppShowOnce = false
+    private var isErrorShowOnce = false
 
     private val adapters: LoansAdapter = LoansAdapter(this)
     private val currencyPrice: FinenessPriceCalculate = FinenessPriceCalculate(this)
@@ -39,10 +49,6 @@ class HomeFragment : BaseFragment() {
     private val bannersAdapter by lazy { PagerAdapter(context) }
     private var isDialogVisibility = false
     private var foundationActivity: FoundationActivity? = null
-
-    companion object {
-        const val TAG = "HomeFragment"
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -158,7 +164,10 @@ class HomeFragment : BaseFragment() {
 
     private fun initObservers() {
         viewModel.isError.observe(viewLifecycleOwner, {
-            errorAlertDialog(getString(R.string.error_unknown_body))
+            if (!isErrorShowOnce) {
+                errorAlertDialog(getString(R.string.error_unknown_body))
+                isErrorShowOnce = true
+            }
         })
         viewModel.loanList.observe(viewLifecycleOwner, {
             when (it != null) {
@@ -167,10 +176,7 @@ class HomeFragment : BaseFragment() {
                     showIsNotEmpty()
                     addLoans(it)
                 }
-                false -> {
-                    showEmptyLoans()
-                    errorAlertDialog(getString(R.string.error_unknown_body))
-                }
+                false -> showEmptyLoans()
             }
         })
         viewModel.currencyList.observe(viewLifecycleOwner, {
@@ -235,15 +241,45 @@ class HomeFragment : BaseFragment() {
         })
         viewModel.getLanguage.observe(viewLifecycleOwner, {
             when (it) {
-                Constants.KAZ -> showLanguage(ll_kz,tv_kaz,Constants.KAZ)
-                Constants.RUS -> showLanguage(ll_rus,tv_rus,Constants.RUS)
+                Constants.KAZ -> showLanguage(ll_kz, tv_kaz, Constants.KAZ)
+                Constants.RUS -> showLanguage(ll_rus, tv_rus, Constants.RUS)
+            }
+        })
+        viewModel.isUpdateApp.observe(viewLifecycleOwner, {
+            when (it) {
+                true ->
+                    if (!isUpdateAppShowOnce) {
+                        showAlertDialog(
+                            requireContext(),
+                            getString(R.string.our_application_has_been_updated_please_update)
+                        )
+                        isUpdateAppShowOnce = true
+                    }
+            }
+        })
+        viewModel.isUnAuthorized.observe(viewLifecycleOwner, {
+            when (it) {
+                true -> {
+                    if (!isOtherAuthShowOnce) {
+                        setLoading(false)
+                        viewModel.clearSharedPref()
+                        Toast.makeText(
+                            requireContext(),
+                            getString(R.string.you_are_logged_in_under_your_account_on_another_device),
+                            Toast.LENGTH_LONG
+                        ).show()
+                        startActivity(intentFor<AuthorizationActivity>())
+                        isOtherAuthShowOnce = true
+                        activity?.finish()
+                    }
+                }
             }
         })
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
-    private fun showLanguage(ll: LinearLayout, textView: TextView, lang: String) {
-        ll.background = resources.getDrawable(R.drawable.shape_language)
+    private fun showLanguage(linearLayout: LinearLayout, textView: TextView, lang: String) {
+        linearLayout.background = resources.getDrawable(R.drawable.shape_language)
         textView.setTextColor(resources.getColor(R.color.white))
         foundationActivity?.setLocaleLanguage(lang)
         foundationActivity?.setTitleMenu()

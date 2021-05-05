@@ -7,6 +7,8 @@ import kz.pillikan.lombart.authorization.model.request.PinCodeRequest
 import kz.pillikan.lombart.common.preference.SessionManager
 import kz.pillikan.lombart.common.remote.Constants
 import kz.pillikan.lombart.common.remote.Networking
+import okhttp3.ResponseBody
+import retrofit2.Response
 
 
 class PinCodeRepository(application: Application) {
@@ -22,13 +24,21 @@ class PinCodeRepository(application: Application) {
     private var sessionManager: SessionManager =
         SessionManager(sharedPreferences)
 
-    suspend fun savePinCode(pinCodeRequest: PinCodeRequest): Boolean {
-        val response = networkService.pinCode(
+    suspend fun savePinCode(pinCodeRequest: PinCodeRequest): Response<ResponseBody> {
+        return networkService.pinCode(
             appVer = BuildConfig.VERSION_NAME,
             Authorization = Constants.AUTH_TOKEN_PREFIX + sessionManager.getToken(),
             pinCodeRequest = pinCodeRequest
         )
-        return response.code() == Constants.RESPONSE_SUCCESS_CODE
+    }
+
+    fun clearSharedPref(): Boolean {
+        return try {
+            sessionManager.clear()
+            true
+        } catch (e: Exception) {
+            false
+        }
     }
 
 }

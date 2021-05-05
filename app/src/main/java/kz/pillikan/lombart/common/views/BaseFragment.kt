@@ -2,7 +2,10 @@ package kz.pillikan.lombart.common.views
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.Dialog
+import android.content.ActivityNotFoundException
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
@@ -15,6 +18,8 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.afollestad.materialdialogs.DialogAction
+import com.afollestad.materialdialogs.MaterialDialog
 import com.google.android.material.button.MaterialButton
 import kz.pillikan.lombart.R
 import kz.pillikan.lombart.common.helpers.formatDate
@@ -38,6 +43,43 @@ open class BaseFragment : Fragment() {
                 dialog.dismiss()
             }
         }?.show()
+    }
+
+    fun showAlertDialog(
+        context: Context,
+        message: String
+    ) {
+        val builder = MaterialDialog.Builder(context)
+            .title(message)
+            .dividerColor(context.resources.getColor(R.color.green))
+            .positiveText("OK")
+            .positiveColorRes(R.color.green)
+            builder.cancelable(false)
+            builder.onAny { dialog: MaterialDialog?, which: DialogAction ->
+                if (which == DialogAction.POSITIVE) {
+                    val appPackageName =
+                        context.packageName
+                    try {
+                        context.startActivity(
+                            Intent(
+                                Intent.ACTION_VIEW,
+                                Uri.parse(Constants.URI_PLAY_MARKET + appPackageName)
+                            )
+                        )
+                        (context as Activity).finish()
+                    } catch (e: ActivityNotFoundException) {
+                        context.startActivity(
+                            Intent(
+                                Intent.ACTION_VIEW,
+                                Uri.parse(Constants.URI_APP + appPackageName)
+                            )
+                        )
+                        (context as Activity).finish()
+                    }
+                }
+            }
+
+        builder.show()
     }
 
     @SuppressLint("SetTextI18n")

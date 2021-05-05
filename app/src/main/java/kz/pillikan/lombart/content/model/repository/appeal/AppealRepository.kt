@@ -9,6 +9,8 @@ import kz.pillikan.lombart.common.remote.Constants
 import kz.pillikan.lombart.common.remote.Networking
 import kz.pillikan.lombart.content.model.request.appeal.FeedbackRequest
 import kz.pillikan.lombart.content.model.response.appeal.ResponseAdvancedData
+import okhttp3.ResponseBody
+import retrofit2.Response
 
 class AppealRepository(application: Application) {
 
@@ -19,7 +21,7 @@ class AppealRepository(application: Application) {
     private var sessionManager: SessionManager =
         SessionManager(sharedPreferences)
 
-    suspend fun sendFeedback(feedbackRequest: FeedbackRequest): Boolean {
+    suspend fun sendFeedback(feedbackRequest: FeedbackRequest): Response<ResponseBody> {
         val phone = sessionManager.getPhone()
         val name = feedbackRequest.name
         val description = feedbackRequest.description
@@ -32,25 +34,26 @@ class AppealRepository(application: Application) {
         val feedback =
             FeedbackRequest(name = nameBase64, phone = phoneBase64, description = descriptionBase64)
 
-        val response =
-            networkService.sendFeedback(
-                Authorization = Constants.AUTH_TOKEN_PREFIX + sessionManager.getToken(),
-                appVer = BuildConfig.VERSION_NAME,
-                feedbackRequest = feedback
-            )
-
-        return response.code() == Constants.RESPONSE_SUCCESS_CODE
+        return networkService.sendFeedback(
+            Authorization = Constants.AUTH_TOKEN_PREFIX + sessionManager.getToken(),
+            appVer = BuildConfig.VERSION_NAME,
+            feedbackRequest = feedback
+        )
     }
 
-    suspend fun getAdvancedData(): ResponseAdvancedData? {
-        val response = networkService.getAdvanceData(
+    suspend fun getAdvancedData(): Response<ResponseAdvancedData> {
+        return networkService.getAdvanceData(
             Constants.AUTH_TOKEN_PREFIX + sessionManager.getToken(),
             BuildConfig.VERSION_NAME
         )
-        return if (response.code() == Constants.RESPONSE_SUCCESS_CODE){
-            response.body()
-        }else{
-            null
+    }
+
+    fun clearSharedPref(): Boolean {
+        return try {
+            sessionManager.clear()
+            true
+        } catch (e: Exception) {
+            false
         }
     }
 

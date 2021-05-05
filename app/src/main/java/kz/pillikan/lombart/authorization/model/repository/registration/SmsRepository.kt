@@ -1,11 +1,15 @@
 package kz.pillikan.lombart.authorization.model.repository.registration
 
 import android.app.Application
+import android.content.Context
 import kz.pillikan.lombart.BuildConfig
 import kz.pillikan.lombart.authorization.model.request.CheckNumberRequest
 import kz.pillikan.lombart.authorization.model.request.SendSmsRequest
+import kz.pillikan.lombart.common.preference.SessionManager
 import kz.pillikan.lombart.common.remote.Constants
 import kz.pillikan.lombart.common.remote.Networking
+import okhttp3.ResponseBody
+import retrofit2.Response
 
 class SmsRepository(application: Application) {
 
@@ -15,22 +19,30 @@ class SmsRepository(application: Application) {
 
     private val networkService =
         Networking.create(Constants.BASE_URL)
+    private var sharedPreferences =
+        application.getSharedPreferences("sessionManager", Context.MODE_PRIVATE)
+    private var sessionManager: SessionManager =
+        SessionManager(sharedPreferences)
 
-    suspend fun verificationSms(checkNumberRequest: CheckNumberRequest): Boolean {
-        val response = networkService.verificationNumber(
+    suspend fun verificationSms(checkNumberRequest: CheckNumberRequest): Response<ResponseBody> =
+        networkService.verificationNumber(
             appVer = BuildConfig.VERSION_NAME,
             checkNumberRequest = checkNumberRequest
         )
-        return response.code() == Constants.RESPONSE_SUCCESS_CODE
-    }
 
-    suspend fun sendSms(sendSmsRequest: SendSmsRequest): Boolean {
-        val response = networkService.sendSms(
+    suspend fun sendSms(sendSmsRequest: SendSmsRequest): Response<ResponseBody> =
+        networkService.sendSms(
             appVer = BuildConfig.VERSION_NAME,
             sendSmsRequest = sendSmsRequest
         )
-        return response.code() == Constants.RESPONSE_SUCCESS_CODE
-    }
 
+    fun clearSharedPref(): Boolean {
+        return try {
+            sessionManager.clear()
+            true
+        } catch (e: Exception) {
+            false
+        }
+    }
 
 }

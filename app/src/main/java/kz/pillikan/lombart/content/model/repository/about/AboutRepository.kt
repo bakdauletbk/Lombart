@@ -7,6 +7,8 @@ import kz.pillikan.lombart.common.preference.SessionManager
 import kz.pillikan.lombart.common.remote.Constants
 import kz.pillikan.lombart.common.remote.Networking
 import kz.pillikan.lombart.content.model.response.about.AddressList
+import kz.pillikan.lombart.content.model.response.about.AddressResponse
+import retrofit2.Response
 
 class AboutRepository(application: Application) {
 
@@ -17,16 +19,19 @@ class AboutRepository(application: Application) {
     private var sessionManager: SessionManager =
         SessionManager(sharedPreferences)
 
-    suspend fun getAddress(): ArrayList<AddressList>? {
-        val response = networkService.getAddress(
+    suspend fun getAddress(): Response<AddressResponse> {
+        return networkService.getAddress(
             Constants.AUTH_TOKEN_PREFIX + sessionManager.getToken(),
             BuildConfig.VERSION_NAME
         )
-        return if (response.code() == Constants.RESPONSE_SUCCESS_CODE) {
-            response.body()?.data
-        } else {
-            null
-        }
     }
 
+    fun clearSharedPref(): Boolean {
+        return try {
+            sessionManager.clear()
+            true
+        } catch (e: Exception) {
+            false
+        }
+    }
 }

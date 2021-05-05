@@ -8,6 +8,7 @@ import kz.pillikan.lombart.authorization.model.response.CheckResponse
 import kz.pillikan.lombart.common.preference.SessionManager
 import kz.pillikan.lombart.common.remote.Constants
 import kz.pillikan.lombart.common.remote.Networking
+import retrofit2.Response
 
 class RegistrationRepository(application: Application) {
 
@@ -22,16 +23,18 @@ class RegistrationRepository(application: Application) {
     private var sessionManager: SessionManager =
         SessionManager(sharedPreferences)
 
-    suspend fun checkUser(checkUserRequest: CheckUserRequest): CheckResponse? {
-        val response = networkService.checkUser(
+    suspend fun checkUser(checkUserRequest: CheckUserRequest): Response<CheckResponse> =
+        networkService.checkUser(
             appVer = BuildConfig.VERSION_NAME,
             checkUserRequest = checkUserRequest
         )
-        return if (response.code() == Constants.RESPONSE_SUCCESS_CODE) {
-            response.body()
-        } else {
+
+    fun clearSharedPref(): Boolean {
+        return try {
             sessionManager.clear()
-            null
+            true
+        } catch (e: Exception) {
+            false
         }
     }
 

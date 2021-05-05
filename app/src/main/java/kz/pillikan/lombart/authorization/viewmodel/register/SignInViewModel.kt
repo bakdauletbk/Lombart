@@ -10,6 +10,7 @@ import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.launch
 import kz.pillikan.lombart.authorization.model.repository.registration.SignInRepository
 import kz.pillikan.lombart.authorization.model.request.SignInRequest
+import kz.pillikan.lombart.common.remote.Constants
 import java.lang.Exception
 
 class SignInViewModel(application: Application) : AndroidViewModel(application) {
@@ -24,10 +25,17 @@ class SignInViewModel(application: Application) : AndroidViewModel(application) 
     val isError: MutableLiveData<String> = MutableLiveData()
     val firebaseToken: MutableLiveData<String> = MutableLiveData()
 
-    fun createFMToken(){
+    val isUpdateApp = MutableLiveData<Boolean>()
+    val isUnAuthorized = MutableLiveData<Boolean>()
+
+    fun createFMToken() {
         FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
             if (!task.isSuccessful) {
-                Log.e(CreatePasswordViewModel.TAG, "Fetching FCM registration token failed", task.exception)
+                Log.e(
+                    CreatePasswordViewModel.TAG,
+                    "Fetching FCM registration token failed",
+                    task.exception
+                )
                 return@OnCompleteListener
             }
 
@@ -35,21 +43,36 @@ class SignInViewModel(application: Application) : AndroidViewModel(application) 
             val token = task.result
 
             // Log and toast
-            val msg =  token.toString()
+            val msg = token.toString()
             Log.d(CreatePasswordViewModel.TAG, msg)
             firebaseToken.postValue(msg)
         })
     }
 
-
     suspend fun signIn(signInRequest: SignInRequest) {
         viewModelScope.launch {
             try {
-                isSuccess.postValue(repository.signIn(signInRequest))
+                val response = repository.signIn(signInRequest)
+                when (response.code()) {
+                    Constants.RESPONSE_SUCCESS_CODE -> {
+                        repository.saveUser(response.body()!!.user)
+                        isSuccess.postValue(true)
+                    }
+                    Constants.RESPONSE_UPDATE_APP -> isUpdateApp.postValue(true)
+                    Constants.RESPONSE_UNAUTHORIZED -> isUnAuthorized.postValue(true)
+                    else -> isSuccess.postValue(false)
+                }
             } catch (e: Exception) {
                 Log.d(TAG, e.message.toString())
                 isError.postValue(e.toString())
             }
+        }
+    }
+
+    fun clearSharedPref() {
+        try {
+            repository.clearSharedPref()
+        } catch (e: Exception) {
         }
     }
 

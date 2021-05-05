@@ -7,6 +7,7 @@ import kz.pillikan.lombart.common.preference.SessionManager
 import kz.pillikan.lombart.common.remote.Constants
 import kz.pillikan.lombart.common.remote.Networking
 import kz.pillikan.lombart.content.model.response.home.*
+import retrofit2.Response
 
 class HomeRepository(application: Application) {
 
@@ -16,6 +17,15 @@ class HomeRepository(application: Application) {
         application.getSharedPreferences("sessionManager", Context.MODE_PRIVATE)
     private var sessionManager: SessionManager =
         SessionManager(sharedPreferences)
+
+    fun clearSharedPref(): Boolean {
+        return try {
+            sessionManager.clear()
+            true
+        } catch (e: Exception) {
+            false
+        }
+    }
 
     fun getLanguage(): String = sessionManager.getLanguage().toString()
 
@@ -28,89 +38,53 @@ class HomeRepository(application: Application) {
         }
     }
 
-    suspend fun getLoans(): ArrayList<Tickets>? {
-        val response = networkService.ticketsList(
+    suspend fun getLoans(): Response<TicketsResponse> {
+        return networkService.ticketsList(
             Constants.AUTH_TOKEN_PREFIX + sessionManager.getToken(),
             BuildConfig.VERSION_NAME
         )
-        return if (response.code() == Constants.RESPONSE_SUCCESS_CODE) {
-            response.body()?.tickets
-        } else {
-            null
-        }
     }
 
-    suspend fun getCurrency(): ArrayList<CurrencyList>? {
-        val response =
-            networkService.serviceCurrency(
-                Constants.AUTH_TOKEN_PREFIX + sessionManager.getToken(),
-                BuildConfig.VERSION_NAME
-            )
-        return if (response.code() == Constants.RESPONSE_SUCCESS_CODE) {
-            response.body()?.currency
-        } else {
-            null
-        }
-    }
-
-    suspend fun getWeather(): WeatherData? {
-        val response = networkService.getWeather(
+    suspend fun getCurrency(): Response<CurrencyResponse> {
+        return networkService.serviceCurrency(
             Constants.AUTH_TOKEN_PREFIX + sessionManager.getToken(),
             BuildConfig.VERSION_NAME
         )
-        return if (response.code() == Constants.RESPONSE_SUCCESS_CODE) {
-            response.body()?.data
-        } else {
-            null
-        }
     }
 
-    suspend fun getProfile(): ProfileInfo? {
-        val response = networkService.profileInfo(
+    suspend fun getWeather(): Response<WeatherResponse> {
+        return networkService.getWeather(
             Constants.AUTH_TOKEN_PREFIX + sessionManager.getToken(),
             BuildConfig.VERSION_NAME
         )
-        return if (response.code() == Constants.RESPONSE_SUCCESS_CODE) {
-            response.body()?.profile
-        } else {
-            null
-        }
     }
 
-    suspend fun getSliderList(): ArrayList<SlidersList>? {
-        val response = networkService.sliderList(
+    suspend fun getProfile(): Response<ProfileResponse> {
+        return networkService.profileInfo(
             Constants.AUTH_TOKEN_PREFIX + sessionManager.getToken(),
             BuildConfig.VERSION_NAME
         )
-        return if (response.code() == Constants.RESPONSE_SUCCESS_CODE) {
-            response.body()!!.sliders
-        } else {
-            null
-        }
     }
 
-    suspend fun getFinenessPrice(): FinenessPriceResponse? {
-        val response = networkService.finenessPrice(
+    suspend fun getSliderList(): Response<SlidersResponse> {
+        return networkService.sliderList(
             Constants.AUTH_TOKEN_PREFIX + sessionManager.getToken(),
             BuildConfig.VERSION_NAME
         )
-        return if (response.code() == Constants.RESPONSE_SUCCESS_CODE) {
-            response.body()
-        } else {
-            null
-        }
     }
 
-    suspend fun getHeadText(): TitleResponse? {
-        val response = networkService.getHeadText(
+    suspend fun getFinenessPrice(): Response<FinenessPriceResponse> {
+        return networkService.finenessPrice(
             Constants.AUTH_TOKEN_PREFIX + sessionManager.getToken(),
             BuildConfig.VERSION_NAME
         )
-        return if (response.code() == Constants.RESPONSE_SUCCESS_CODE) {
-            response.body()
-        } else {
-            null
-        }
+    }
+
+    suspend fun getHeadText(): Response<TitleResponse> {
+        return networkService.getHeadText(
+            Constants.AUTH_TOKEN_PREFIX + sessionManager.getToken(),
+            BuildConfig.VERSION_NAME
+        )
     }
 
 }

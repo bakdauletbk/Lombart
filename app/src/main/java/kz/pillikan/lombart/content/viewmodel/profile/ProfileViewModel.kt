@@ -5,6 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import kz.pillikan.lombart.common.remote.Constants
 import kz.pillikan.lombart.content.model.repository.profile.ProfileRepository
 import kz.pillikan.lombart.content.model.response.home.ProfileInfo
 import kz.pillikan.lombart.content.model.response.profile.CardModel
@@ -15,6 +16,9 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
     var profileInfo: MutableLiveData<ProfileInfo> = MutableLiveData()
     val isError: MutableLiveData<String> = MutableLiveData()
     val isLogout: MutableLiveData<Boolean> = MutableLiveData()
+
+    val isUpdateApp = MutableLiveData<Boolean>()
+    val isUnAuthorized = MutableLiveData<Boolean>()
 
     private val repository: ProfileRepository = ProfileRepository(application)
 
@@ -33,14 +37,22 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
         viewModelScope.launch {
             try {
                 val response = repository.getProfile()
-                if (response != null) {
-                    profileInfo.postValue(response)
-                } else {
-                    profileInfo.postValue(null)
+                when (response.code()) {
+                    Constants.RESPONSE_SUCCESS_CODE -> profileInfo.postValue(response.body()!!.profile)
+                    Constants.RESPONSE_UPDATE_APP -> isUpdateApp.postValue(true)
+                    Constants.RESPONSE_UNAUTHORIZED -> isUnAuthorized.postValue(true)
+                    else -> isError.postValue(null)
                 }
             } catch (e: Exception) {
                 isError.postValue(null)
             }
+        }
+    }
+
+    fun clearSharedPref() {
+        try {
+            repository.clearSharedPref()
+        } catch (e: Exception) {
         }
     }
 

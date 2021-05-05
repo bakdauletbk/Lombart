@@ -9,6 +9,8 @@ import kz.pillikan.lombart.common.preference.SessionManager
 import kz.pillikan.lombart.common.remote.Constants
 import kz.pillikan.lombart.common.remote.Networking
 import kz.pillikan.lombart.content.model.request.home.ValidatePinRequest
+import okhttp3.ResponseBody
+import retrofit2.Response
 
 class ValidatePinRepository(application: Application) {
 
@@ -23,17 +25,24 @@ class ValidatePinRepository(application: Application) {
     private var sessionManager: SessionManager =
         SessionManager(sharedPreferences)
 
-    suspend fun validatePin(validatePinRequest: ValidatePinRequest): Boolean {
-        val response = networkService.validatePin(
+    suspend fun validatePin(validatePinRequest: ValidatePinRequest): Response<ResponseBody> {
+        return networkService.validatePin(
             validatePinRequest = validatePinRequest,
             appVer = BuildConfig.VERSION_NAME,
             Authorization = Constants.AUTH_TOKEN_PREFIX + sessionManager.getToken()
         )
-        return response.code() == Constants.RESPONSE_SUCCESS_CODE
     }
 
     suspend fun checkNetwork(context: Context): Boolean {
         return NetworkHelpers.isNetworkConection(context)
     }
 
+    fun clearSharedPref(): Boolean {
+        return try {
+            sessionManager.clear()
+            true
+        } catch (e: Exception) {
+            false
+        }
+    }
 }

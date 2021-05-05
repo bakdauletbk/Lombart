@@ -13,20 +13,26 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kz.pillikan.lombart.R
+import kz.pillikan.lombart.authorization.view.AuthorizationActivity
 import kz.pillikan.lombart.common.helpers.Validators
 import kz.pillikan.lombart.common.views.BaseFragment
 import kz.pillikan.lombart.content.model.request.appeal.FeedbackRequest
 import kz.pillikan.lombart.content.model.response.appeal.ResponseAdvancedData
 import kz.pillikan.lombart.content.viewmodel.appeal.AppealViewModel
 import org.jetbrains.anko.sdk27.coroutines.onClick
+import org.jetbrains.anko.support.v4.intentFor
 
 class AppealFragment : BaseFragment() {
-
-    private lateinit var viewModel: AppealViewModel
 
     companion object {
         const val TAG = "AppealFragment"
     }
+
+    private lateinit var viewModel: AppealViewModel
+
+    private var isOtherAuthShowOnce = false
+    private var isUpdateAppShowOnce = false
+    private var isErrorShowOnce = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -98,7 +104,10 @@ class AppealFragment : BaseFragment() {
     private fun initObservers() {
         viewModel.isError.observe(viewLifecycleOwner, {
             setLoading(false)
-            errorDialog(getString(R.string.error_unknown_body))
+            if (!isErrorShowOnce) {
+                errorDialog(getString(R.string.error_unknown_body))
+                isErrorShowOnce = true
+            }
         })
         viewModel.isSuccess.observe(viewLifecycleOwner, {
             when (it) {
@@ -129,6 +138,37 @@ class AppealFragment : BaseFragment() {
                 }
             }
         })
+        viewModel.isUpdateApp.observe(viewLifecycleOwner, {
+            when (it) {
+                true ->
+                    if (!isUpdateAppShowOnce) {
+                        showAlertDialog(
+                            requireContext(),
+                            getString(R.string.our_application_has_been_updated_please_update)
+                        )
+                        isUpdateAppShowOnce = true
+                    }
+            }
+        })
+        viewModel.isUnAuthorized.observe(viewLifecycleOwner, {
+            when (it) {
+                true -> {
+                    if (!isOtherAuthShowOnce) {
+                        setLoading(false)
+                        viewModel.clearSharedPref()
+                        Toast.makeText(
+                            requireContext(),
+                            getString(R.string.you_are_logged_in_under_your_account_on_another_device),
+                            Toast.LENGTH_LONG
+                        ).show()
+                        startActivity(intentFor<AuthorizationActivity>())
+                        isOtherAuthShowOnce = true
+                        activity?.finish()
+                    }
+                }
+            }
+        })
+
     }
 
     @SuppressLint("SetTextI18n")

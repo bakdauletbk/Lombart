@@ -171,4 +171,7 @@
     <string name="open_in">Ашу</string>
     <string name="reset_pincode">Пин-кодты қалпына келтіріңіз</string>
 
+    <string name="you_are_logged_in_under_your_account_on_another_device">Сіздің есептік жазбаңызға басқа құрылғыдан кіру жүзеге асырылды.</string>
+    <string name="our_application_has_been_updated_please_update">Қосымшамның жаңа нұсқасы шықты. Өтінеміз, қосымшаны жаңартыңыз!</string>
+
 </resources>

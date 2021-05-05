@@ -9,23 +9,39 @@ import kz.pillikan.lombart.authorization.model.repository.registration.Registrat
 import kz.pillikan.lombart.authorization.model.request.CheckUserRequest
 import kz.pillikan.lombart.authorization.model.request.SendSmsRequest
 import kz.pillikan.lombart.authorization.model.response.CheckResponse
+import kz.pillikan.lombart.common.remote.Constants
 
 class RegistrationViewModel(application: Application) : AndroidViewModel(application) {
 
     private var repository: RegistrationRepository = RegistrationRepository(application)
 
+    val isUpdateApp = MutableLiveData<Boolean>()
+    val isUnAuthorized = MutableLiveData<Boolean>()
+
     val isError: MutableLiveData<String> = MutableLiveData()
     val isCheckUser: MutableLiveData<CheckResponse> = MutableLiveData()
-    val isSendSms: MutableLiveData<Boolean> = MutableLiveData()
 
     suspend fun checkUser(checkUserRequest: CheckUserRequest) {
         viewModelScope.launch {
             try {
                 val response = repository.checkUser(checkUserRequest)
-                isCheckUser.postValue(response)
+                when (response.code()) {
+                    Constants.RESPONSE_SUCCESS_CODE -> isCheckUser.postValue(response.body())
+                    Constants.RESPONSE_UPDATE_APP -> isUpdateApp.postValue(true)
+                    Constants.RESPONSE_UNAUTHORIZED -> isUnAuthorized.postValue(true)
+                    else -> isError.postValue(null)
+                }
             } catch (e: Exception) {
-                isError.postValue(e.toString())
+                isError.postValue(null)
             }
         }
     }
+
+    fun clearSharedPref() {
+        try {
+            repository.clearSharedPref()
+        } catch (e: Exception) {
+        }
+    }
+
 }

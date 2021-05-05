@@ -10,6 +10,7 @@ import kz.pillikan.lombart.authorization.model.response.SignInResponse
 import kz.pillikan.lombart.common.preference.SessionManager
 import kz.pillikan.lombart.common.remote.Constants
 import kz.pillikan.lombart.common.remote.Networking
+import retrofit2.Response
 
 class CreatePasswordRepository(application: Application) {
 
@@ -25,26 +26,26 @@ class CreatePasswordRepository(application: Application) {
         SessionManager(sharedPreferences)
 
 
-
-    suspend fun createUser(signUpRequest: SignUpRequest): Boolean {
-        val response = networkService.createUser(
+    suspend fun createUser(signUpRequest: SignUpRequest): Response<SignInResponse> =
+        networkService.createUser(
             appVer = BuildConfig.VERSION_NAME,
             signUpRequest = signUpRequest
         )
-        return if (response.code() == Constants.RESPONSE_SUCCESS_CODE) {
-            saveUser(response.body()!!)
-            true
-        } else {
-            sessionManager.clear()
-            false
-        }
-    }
 
-    private fun saveUser(signInResponse: SignInResponse) {
+    fun saveUser(signInResponse: SignInResponse) {
         signInResponse.user.access_token?.let { sessionManager.setToken(it) }
         signInResponse.user.iin?.let { sessionManager.setInn(it) }
         signInResponse.user.phone?.let { sessionManager.setPhone(it) }
         sessionManager.setIsAuthorize(true)
+    }
+
+    fun clearSharedPref(): Boolean {
+        return try {
+            sessionManager.clear()
+            true
+        } catch (e: Exception) {
+            false
+        }
     }
 
 }

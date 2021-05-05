@@ -11,6 +11,7 @@ import kz.pillikan.lombart.authorization.model.request.CheckUserRequest
 import kz.pillikan.lombart.authorization.model.request.ResetPasswordRequest
 import kz.pillikan.lombart.authorization.model.request.SendSmsRequest
 import kz.pillikan.lombart.authorization.model.response.CheckResponse
+import kz.pillikan.lombart.common.remote.Constants
 
 class PasswordRecoveryViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -22,14 +23,18 @@ class PasswordRecoveryViewModel(application: Application) : AndroidViewModel(app
     val isVerificationNumber: MutableLiveData<Boolean> = MutableLiveData()
     val isResetPassword: MutableLiveData<Boolean> = MutableLiveData()
 
+    val isUpdateApp = MutableLiveData<Boolean>()
+    val isUnAuthorized = MutableLiveData<Boolean>()
+
     suspend fun checkUser(checkUserRequest: CheckUserRequest) {
         viewModelScope.launch {
             try {
                 val response = repository.checkUser(checkUserRequest = checkUserRequest)
-                if (response != null) {
-                    isCheckUser.postValue(response)
-                } else {
-                    isCheckUser.postValue(null)
+                when (response.code()) {
+                    Constants.RESPONSE_SUCCESS_CODE -> isCheckUser.postValue(response.body())
+                    Constants.RESPONSE_UPDATE_APP -> isUpdateApp.postValue(true)
+                    Constants.RESPONSE_UNAUTHORIZED -> isUnAuthorized.postValue(true)
+                    else -> isError.postValue(null)
                 }
             } catch (e: Exception) {
                 isError.postValue(null)
@@ -40,9 +45,12 @@ class PasswordRecoveryViewModel(application: Application) : AndroidViewModel(app
     suspend fun sendSms(sendSmsRequest: SendSmsRequest) {
         viewModelScope.launch {
             try {
-                when (repository.sendSms(sendSmsRequest)) {
-                    true -> isSendSms.postValue(true)
-                    false -> isSendSms.postValue(false)
+                val response = repository.sendSms(sendSmsRequest)
+                when (response.code()) {
+                    Constants.RESPONSE_SUCCESS_CODE -> isSendSms.postValue(true)
+                    Constants.RESPONSE_UPDATE_APP -> isUpdateApp.postValue(true)
+                    Constants.RESPONSE_UNAUTHORIZED -> isUnAuthorized.postValue(true)
+                    else -> isSendSms.postValue(false)
                 }
             } catch (e: Exception) {
                 isError.postValue(null)
@@ -53,9 +61,12 @@ class PasswordRecoveryViewModel(application: Application) : AndroidViewModel(app
     suspend fun verificationNumber(checkNumberRequest: CheckNumberRequest) {
         viewModelScope.launch {
             try {
-                when (val isSend = repository.verificationNumber(checkNumberRequest)) {
-                    true -> isVerificationNumber.postValue(true)
-                    false -> isVerificationNumber.postValue(false)
+                val response = repository.verificationNumber(checkNumberRequest)
+                when (response.code()) {
+                    Constants.RESPONSE_SUCCESS_CODE -> isVerificationNumber.postValue(true)
+                    Constants.RESPONSE_UPDATE_APP -> isUpdateApp.postValue(true)
+                    Constants.RESPONSE_UNAUTHORIZED -> isUnAuthorized.postValue(true)
+                    else -> isVerificationNumber.postValue(false)
                 }
             } catch (e: Exception) {
                 isError.postValue(null)
@@ -66,13 +77,24 @@ class PasswordRecoveryViewModel(application: Application) : AndroidViewModel(app
     suspend fun resetPassword(resetPasswordRequest: ResetPasswordRequest) {
         viewModelScope.launch {
             try {
-                when (val isReset = repository.resetPassword(resetPasswordRequest)) {
-                    true -> isResetPassword.postValue(true)
-                    false -> isResetPassword.postValue(false)
+                val response = repository.resetPassword(resetPasswordRequest)
+                when (response.code()) {
+                    Constants.RESPONSE_SUCCESS_CODE -> isResetPassword.postValue(true)
+                    Constants.RESPONSE_UPDATE_APP -> isUpdateApp.postValue(true)
+                    Constants.RESPONSE_UNAUTHORIZED -> isUnAuthorized.postValue(true)
+                    else -> isResetPassword.postValue(false)
                 }
             } catch (e: Exception) {
                 isError.postValue(null)
             }
         }
     }
+
+    fun clearSharedPref() {
+        try {
+            repository.clearSharedPref()
+        } catch (e: Exception) {
+        }
+    }
+
 }

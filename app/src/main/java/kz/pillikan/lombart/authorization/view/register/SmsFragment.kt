@@ -21,12 +21,14 @@ import kz.pillikan.lombart.R
 import kz.pillikan.lombart.authorization.model.request.CheckNumberRequest
 import kz.pillikan.lombart.authorization.model.request.SendSmsRequest
 import kz.pillikan.lombart.authorization.model.request.SignUpRequest
+import kz.pillikan.lombart.authorization.view.AuthorizationActivity
 import kz.pillikan.lombart.authorization.viewmodel.register.SmsViewModel
 import kz.pillikan.lombart.common.helpers.base64encode
 import kz.pillikan.lombart.common.helpers.convertSms
 import kz.pillikan.lombart.common.views.BaseFragment
 import org.jetbrains.anko.sdk27.coroutines.onClick
 import org.jetbrains.anko.support.v4.alert
+import org.jetbrains.anko.support.v4.intentFor
 
 class SmsFragment : BaseFragment() {
 
@@ -36,14 +38,18 @@ class SmsFragment : BaseFragment() {
         const val SMS_CONSENT_REQUEST = 2
     }
 
+    private var isOtherAuthShowOnce = false
+    private var isUpdateAppShowOnce = false
+    private var isErrorShowOnce = false
+
     private lateinit var viewModel: SmsViewModel
     private var checkNumberRequest: CheckNumberRequest? = null
     private var bundle = Bundle()
 
     private val smsVerificationReceiver: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
-            when(SmsRetriever.SMS_RETRIEVED_ACTION == intent.action){
-                true ->{
+            when (SmsRetriever.SMS_RETRIEVED_ACTION == intent.action) {
+                true -> {
                     val extras = intent.extras
                     val smsRetrieverStatus = extras!![SmsRetriever.EXTRA_STATUS] as Status?
                     when (smsRetrieverStatus!!.statusCode) {
@@ -57,7 +63,8 @@ class SmsFragment : BaseFragment() {
                             }
                         }
                         CommonStatusCodes.TIMEOUT -> {
-                            Toast.makeText(context, getString(R.string.delay), Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, getString(R.string.delay), Toast.LENGTH_SHORT)
+                                .show()
                         }
                     }
                 }
@@ -118,7 +125,8 @@ class SmsFragment : BaseFragment() {
         }
         iv_back.onClick {
             view?.let { it1 ->
-                Navigation.findNavController(it1).navigate(R.id.action_smsFragment_to_signInFragment)
+                Navigation.findNavController(it1)
+                    .navigate(R.id.action_smsFragment_to_signInFragment)
             }
         }
     }
@@ -176,7 +184,10 @@ class SmsFragment : BaseFragment() {
 
     private fun initObservers() {
         viewModel.isError.observe(viewLifecycleOwner, {
-            errorAlertDialog()
+            if (!isErrorShowOnce) {
+                errorAlertDialog()
+                isErrorShowOnce = true
+            }
         })
         viewModel.isVerificationNumber.observe(viewLifecycleOwner, {
             when (it) {
@@ -198,9 +209,40 @@ class SmsFragment : BaseFragment() {
                 false -> errorAlertDialog()
             }
         })
+        viewModel.isUpdateApp.observe(viewLifecycleOwner, {
+            when (it) {
+                true ->
+                    if (!isUpdateAppShowOnce) {
+                        showAlertDialog(
+                            requireContext(),
+                            getString(R.string.our_application_has_been_updated_please_update)
+                        )
+                        isUpdateAppShowOnce = true
+                    }
+            }
+        })
+        viewModel.isUnAuthorized.observe(viewLifecycleOwner, {
+            when (it) {
+                true -> {
+                    if (!isOtherAuthShowOnce) {
+                        setLoading(false)
+                        viewModel.clearSharedPref()
+                        Toast.makeText(
+                            requireContext(),
+                            getString(R.string.you_are_logged_in_under_your_account_on_another_device),
+                            Toast.LENGTH_LONG
+                        ).show()
+                        startActivity(intentFor<AuthorizationActivity>())
+                        isOtherAuthShowOnce = true
+                        activity?.finish()
+                    }
+                }
+            }
+        })
+
     }
 
-    private fun errorAlertDialog(){
+    private fun errorAlertDialog() {
         setLoading(false)
         errorDialog(getString(R.string.the_sms_you_entered_incorrectly))
     }

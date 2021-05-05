@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.lifecycle.ViewModelProvider
 import com.yandex.mapkit.MapKit
@@ -19,12 +20,14 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kz.pillikan.lombart.R
+import kz.pillikan.lombart.authorization.view.AuthorizationActivity
 import kz.pillikan.lombart.common.remote.Constants
 import kz.pillikan.lombart.common.views.BaseFragment
 import kz.pillikan.lombart.content.model.response.about.AddressList
 import kz.pillikan.lombart.content.viewmodel.about.AboutViewModel
 import org.jetbrains.anko.alert
 import org.jetbrains.anko.sdk27.coroutines.onClick
+import org.jetbrains.anko.support.v4.intentFor
 import java.util.*
 
 
@@ -90,9 +93,33 @@ class AboutFragment : BaseFragment(), MapObjectTapListener {
                     setLoading(false)
                     setAddress(it)
                 }
-                false -> showAlertDialog(getString(R.string.error_failed_connection_to_server))
+                false -> setLoading(false)
             }
         })
+        viewModel.isUpdateApp.observe(viewLifecycleOwner, {
+            when (it) {
+                true -> showAlertDialog(
+                    requireContext(),
+                    getString(R.string.our_application_has_been_updated_please_update)
+                )
+            }
+        })
+        viewModel.isUnAuthorized.observe(viewLifecycleOwner, {
+            when (it) {
+                true -> {
+                    setLoading(false)
+                    viewModel.clearSharedPref()
+                    Toast.makeText(
+                        requireContext(),
+                        getString(R.string.you_are_logged_in_under_your_account_on_another_device),
+                        Toast.LENGTH_LONG
+                    ).show()
+                    startActivity(intentFor<AuthorizationActivity>())
+                    activity?.finish()
+                }
+            }
+        })
+
     }
 
     private fun errorDialog() {

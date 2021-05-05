@@ -27,6 +27,10 @@ class ProfileFragment : BaseFragment() {
 
     private lateinit var viewModel: ProfileViewModel
 
+    private var isOtherAuthShowOnce = false
+    private var isUpdateAppShowOnce = false
+    private var isErrorShowOnce = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -110,7 +114,10 @@ class ProfileFragment : BaseFragment() {
 
     private fun initObservers() {
         viewModel.isError.observe(viewLifecycleOwner, {
-            errorDialogAlert()
+            if (!isErrorShowOnce) {
+                errorDialogAlert()
+                isErrorShowOnce = true
+            }
         })
         viewModel.cardList.observe(viewLifecycleOwner, {
             when (it != null) {
@@ -140,6 +147,37 @@ class ProfileFragment : BaseFragment() {
                 }
             }
         })
+        viewModel.isUpdateApp.observe(viewLifecycleOwner, {
+            when (it) {
+                true ->
+                    if (!isUpdateAppShowOnce) {
+                        showAlertDialog(
+                            requireContext(),
+                            getString(R.string.our_application_has_been_updated_please_update)
+                        )
+                        isUpdateAppShowOnce = true
+                    }
+            }
+        })
+        viewModel.isUnAuthorized.observe(viewLifecycleOwner, {
+            when (it) {
+                true -> {
+                    if (!isOtherAuthShowOnce) {
+                        setLoading(false)
+                        viewModel.clearSharedPref()
+                        Toast.makeText(
+                            requireContext(),
+                            getString(R.string.you_are_logged_in_under_your_account_on_another_device),
+                            Toast.LENGTH_LONG
+                        ).show()
+                        startActivity(intentFor<AuthorizationActivity>())
+                        isOtherAuthShowOnce = true
+                        activity?.finish()
+                    }
+                }
+            }
+        })
+
     }
 
     private fun errorDialogAlert() {

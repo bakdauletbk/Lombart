@@ -4,11 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import kotlinx.android.synthetic.main.fragment_successfully.*
 import kz.pillikan.lombart.R
-import kz.pillikan.lombart.authorization.view.pin.PinCodeFragment
 import kz.pillikan.lombart.common.views.BaseFragment
 import org.jetbrains.anko.sdk27.coroutines.onClick
 
@@ -32,7 +30,12 @@ class SuccessfullyFragment : BaseFragment() {
     }
 
     private fun navigationListener() {
-        btn_proceed.onClick { view?.let { it1 -> Navigation.findNavController(it1).navigate(R.id.action_successfullyFragment_to_pinCodeFragment) }}
+        btn_proceed.onClick {
+            view?.let { it1 ->
+                Navigation.findNavController(it1)
+                    .navigate(R.id.action_successfullyFragment_to_pinCodeFragment)
+            }
+        }
     }
 
 }

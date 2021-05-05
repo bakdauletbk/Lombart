@@ -13,6 +13,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kz.pillikan.lombart.R
 import kz.pillikan.lombart.authorization.model.request.PinCodeRequest
+import kz.pillikan.lombart.authorization.view.AuthorizationActivity
 import kz.pillikan.lombart.authorization.viewmodel.pin.PinCodeViewModel
 import kz.pillikan.lombart.common.helpers.Validators
 import kz.pillikan.lombart.common.helpers.base64encode
@@ -64,7 +65,11 @@ class PinCodeFragment : BaseFragment() {
 
         when (Validators.validatePinCode(pinCode) && Validators.validatePinCode(pinCode2) && pinCode == pinCode2) {
             true -> savePinCode(pinCodeRequest)
-            false -> Toast.makeText(context, getString(R.string.enter_your_pin_code), Toast.LENGTH_SHORT).show()
+            false -> Toast.makeText(
+                context,
+                getString(R.string.enter_your_pin_code),
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 
@@ -90,10 +95,37 @@ class PinCodeFragment : BaseFragment() {
                 false -> {
                     et_access_pin.text?.clear()
                     et_access_pin_repeat.text?.clear()
-                    Toast.makeText(context, getString(R.string.save_error), Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, getString(R.string.save_error), Toast.LENGTH_LONG)
+                        .show()
                 }
             }
         })
+        viewModel.isUpdateApp.observe(viewLifecycleOwner, {
+            when (it) {
+                true -> showAlertDialog(
+                        requireContext(),
+                        getString(R.string.our_application_has_been_updated_please_update)
+                    )
+            }
+        })
+        viewModel.isUnAuthorized.observe(viewLifecycleOwner, {
+            when (it) {
+                true -> {
+                    setLoading(false)
+                    viewModel.clearSharedPref()
+                    Toast.makeText(
+                        requireContext(),
+                        getString(R.string.you_are_logged_in_under_your_account_on_another_device),
+                        Toast.LENGTH_LONG
+                    ).show()
+                    startActivity(intentFor<AuthorizationActivity>())
+                    activity?.finish()
+
+                }
+            }
+        })
+
+
     }
 
     private fun setLoading(loading: Boolean) {

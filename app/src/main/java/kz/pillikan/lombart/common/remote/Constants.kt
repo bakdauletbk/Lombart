@@ -5,7 +5,16 @@ object Constants {
     const val IMG_BASE_URL = "https://st-cert.smartideagroup.kz"
     const val IMG_SLIDER_URL = "/images/slider/"
     const val IMG_URL_ABOUT = "/images/material/"
+    const val URI_PLAY_MARKET = "market://details?id="
+    const val URI_APP = "https://play.google.com/store/apps/details?id="
+
+    //Rest status
     const val RESPONSE_SUCCESS_CODE = 200
+    const val RESPONSE_NOT_FOUND = 404
+    const val RESPONSE_ERROR = 409
+    const val RESPONSE_UNAUTHORIZED = 401
+    const val RESPONSE_UPDATE_APP = 406
+
     const val AUTH_TOKEN_PREFIX = "Bearer "
     const val YANDEX_API_KEY = "704ca01a-a014-47f8-9d6c-a926b47b6d2b"
 
@@ -42,7 +51,7 @@ object Constants {
     const val EMPTY = ""
     const val CELSIUS = " ºC"
     const val ONE = 1
-    const val TIME_MILLIS: Long = 4000
+    const val TIME_MILLIS = 4000L
     const val NUMBER_TRANSACTION = "Номер транзакции: "
     const val PRICE = " , Сумма: "
     const val DATE_TRANSACTION = " , Дата транзакции: "

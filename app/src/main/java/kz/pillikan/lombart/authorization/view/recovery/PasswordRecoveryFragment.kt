@@ -2,8 +2,6 @@ package kz.pillikan.lombart.authorization.view.recovery
 
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Base64
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +13,6 @@ import androidx.navigation.Navigation
 import kotlinx.android.synthetic.main.fragment_password_recovery.*
 import kotlinx.android.synthetic.main.fragment_password_recovery.et_iin
 import kotlinx.android.synthetic.main.fragment_password_recovery.loadingView
-import kotlinx.android.synthetic.main.fragment_sms.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -25,12 +22,14 @@ import kz.pillikan.lombart.authorization.model.request.CheckUserRequest
 import kz.pillikan.lombart.authorization.model.request.ResetPasswordRequest
 import kz.pillikan.lombart.authorization.model.request.SendSmsRequest
 import kz.pillikan.lombart.authorization.model.response.CheckResponse
+import kz.pillikan.lombart.authorization.view.AuthorizationActivity
 import kz.pillikan.lombart.authorization.viewmodel.recovery.PasswordRecoveryViewModel
 import kz.pillikan.lombart.common.helpers.Validators
 import kz.pillikan.lombart.common.helpers.base64encode
 import kz.pillikan.lombart.common.views.BaseFragment
 import org.jetbrains.anko.sdk27.coroutines.onClick
 import org.jetbrains.anko.support.v4.alert
+import org.jetbrains.anko.support.v4.intentFor
 
 class PasswordRecoveryFragment : BaseFragment() {
 
@@ -43,6 +42,10 @@ class PasswordRecoveryFragment : BaseFragment() {
         const val REESTABLISH = "Восстановить"
         const val VERIFICATION_NUMBER = "VERIFICATION_NUMBER"
     }
+
+    private var isOtherAuthShowOnce = false
+    private var isUpdateAppShowOnce = false
+    private var isErrorShowOnce = false
 
     private var sendSmsRequest: SendSmsRequest? = null
     private var checkUserRequest: CheckUserRequest? = null
@@ -81,7 +84,10 @@ class PasswordRecoveryFragment : BaseFragment() {
 
     private fun initObservers() {
         viewModel.isError.observe(viewLifecycleOwner, {
-            errorDialogAlert()
+            if (!isErrorShowOnce) {
+                errorDialogAlert()
+                isErrorShowOnce = true
+            }
         })
         viewModel.isCheckUser.observe(viewLifecycleOwner, {
             if (it != null) {
@@ -136,6 +142,36 @@ class PasswordRecoveryFragment : BaseFragment() {
                     }
                 }
                 false -> errorDialogAlert()
+            }
+        })
+        viewModel.isUpdateApp.observe(viewLifecycleOwner, {
+            when (it) {
+                true ->
+                    if (!isUpdateAppShowOnce) {
+                        showAlertDialog(
+                            requireContext(),
+                            getString(R.string.our_application_has_been_updated_please_update)
+                        )
+                        isUpdateAppShowOnce = true
+                    }
+            }
+        })
+        viewModel.isUnAuthorized.observe(viewLifecycleOwner, {
+            when (it) {
+                true -> {
+                    if (!isOtherAuthShowOnce) {
+                        setLoading(false)
+                        viewModel.clearSharedPref()
+                        Toast.makeText(
+                            requireContext(),
+                            getString(R.string.you_are_logged_in_under_your_account_on_another_device),
+                            Toast.LENGTH_LONG
+                        ).show()
+                        startActivity(intentFor<AuthorizationActivity>())
+                        isOtherAuthShowOnce = true
+                        activity?.finish()
+                    }
+                }
             }
         })
     }

@@ -13,6 +13,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kz.pillikan.lombart.R
 import kz.pillikan.lombart.authorization.model.request.SignInRequest
+import kz.pillikan.lombart.authorization.view.AuthorizationActivity
 import kz.pillikan.lombart.authorization.viewmodel.register.SignInViewModel
 import kz.pillikan.lombart.common.helpers.Validators
 import kz.pillikan.lombart.common.helpers.base64encode
@@ -65,6 +66,30 @@ class SignInFragment : BaseFragment() {
         })
         viewModel.firebaseToken.observe(viewLifecycleOwner, {
             prepareLogin(it)
+        })
+        viewModel.isUpdateApp.observe(viewLifecycleOwner, {
+            when (it) {
+                true -> showAlertDialog(
+                    requireContext(),
+                    getString(R.string.our_application_has_been_updated_please_update)
+                )
+            }
+        })
+        viewModel.isUnAuthorized.observe(viewLifecycleOwner, {
+            when (it) {
+                true -> {
+                    setLoading(false)
+                    viewModel.clearSharedPref()
+                    Toast.makeText(
+                        requireContext(),
+                        getString(R.string.you_are_logged_in_under_your_account_on_another_device),
+                        Toast.LENGTH_LONG
+                    ).show()
+                    startActivity(intentFor<AuthorizationActivity>())
+                    activity?.finish()
+
+                }
+            }
         })
     }
 
