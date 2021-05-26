@@ -3,6 +3,7 @@ package kz.pillikan.lombart.common.views.utils
 import android.annotation.SuppressLint
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.widget.*
 import com.google.android.material.snackbar.Snackbar
@@ -12,6 +13,7 @@ import kz.pillikan.lombart.content.model.response.home.CurrencyList
 import kz.pillikan.lombart.content.model.response.home.FinenessPriceResponse
 import kz.pillikan.lombart.content.view.home.HomeFragment
 import org.jetbrains.anko.sdk27.coroutines.onClick
+import java.lang.NullPointerException
 import java.util.ArrayList
 
 open class FinenessPriceCalculate {
@@ -86,25 +88,30 @@ open class FinenessPriceCalculate {
 
     fun setLoanAmount(finenessPrice: FinenessPriceResponse) {
 
-        val llFineness = callback.view?.findViewById<LinearLayout>(R.id.ll_fineness1)
-        val llFineness2 = callback.view?.findViewById<LinearLayout>(R.id.ll_fineness2)
-        val llFineness3 = callback.view?.findViewById<LinearLayout>(R.id.ll_fineness3)
+            val llFineness = callback.view?.findViewById<LinearLayout>(R.id.ll_fineness1)
+            val llFineness2 = callback.view?.findViewById<LinearLayout>(R.id.ll_fineness2)
+            val llFineness3 = callback.view?.findViewById<LinearLayout>(R.id.ll_fineness3)
 
-        setPrice(
-            finenessPrice.prices[Constants.FINENESS_FIRST].value!!.toLong(),
-            percent1 = finenessPrice.percent1!!,
-            percent2 = finenessPrice.percent2!!,
-            limit = finenessPrice.amount_limit
-        )
-        llFineness?.onClick {
-            setEnable(Constants.FINENESS_FIRST, finenessPrice)
+        finenessPrice.percent1?.let {
+            finenessPrice.percent2?.let { it1 ->
+                setPrice(
+                    finenessPrice.prices[Constants.FINENESS_FIRST].value!!.toLong(),
+                    percent1 = it,
+                    percent2 = it1,
+                    limit = finenessPrice.amount_limit
+                )
+            }
         }
-        llFineness2?.onClick {
-            setEnable(Constants.FINENESS_SECOND, finenessPrice)
-        }
-        llFineness3?.onClick {
-            setEnable(Constants.FINENESS_THIRD, finenessPrice)
-        }
+            llFineness?.onClick {
+                setEnable(Constants.FINENESS_FIRST, finenessPrice)
+            }
+            llFineness2?.onClick {
+                setEnable(Constants.FINENESS_SECOND, finenessPrice)
+            }
+            llFineness3?.onClick {
+                setEnable(Constants.FINENESS_THIRD, finenessPrice)
+            }
+
     }
 
     private fun setEnable(position: Int, finenessPrice: FinenessPriceResponse) {
@@ -122,12 +129,16 @@ open class FinenessPriceCalculate {
         val tvFinenessPrice2 = callback.view?.findViewById<TextView>(R.id.tv_fineness_price2)
         val tvFinenessPrice3 = callback.view?.findViewById<TextView>(R.id.tv_fineness_price3)
 
-        setPrice(
-            finenessPrice.prices[position].value!!.toLong(),
-            percent1 = finenessPrice.percent1!!,
-            percent2 = finenessPrice.percent2!!,
-            limit = finenessPrice.amount_limit
-        )
+        finenessPrice.percent1?.let {
+            finenessPrice.percent2?.let { it1 ->
+                setPrice(
+                    finenessPrice.prices[position].value!!.toLong(),
+                    percent1 = it,
+                    percent2 = it1,
+                    limit = finenessPrice.amount_limit
+                )
+            }
+        }
 
         spinner?.setSelection(position)
         when (position) {
@@ -168,40 +179,44 @@ open class FinenessPriceCalculate {
     }
 
     fun setSpinner(finenessPrice: FinenessPriceResponse) {
-        val finenessList = mutableListOf<String>()
-        val spinner = callback.view?.findViewById<Spinner>(R.id.spinner_fineness)
+            val finenessList = mutableListOf<String>()
+            val spinner = callback.view?.findViewById<Spinner>(R.id.spinner_fineness)
 
-        for (i in Constants.ZERO until finenessPrice.prices.size) {
-            finenessList.add(finenessPrice.prices[i].title!!)
-        }
-
-        callback.context?.let {
-            ArrayAdapter(
-                it,
-                R.layout.item_fineness_spinner,
-                finenessList
-            ).also { adapter ->
-                spinner?.adapter = adapter
+            for (i in Constants.ZERO until finenessPrice.prices.size) {
+                finenessList.add(finenessPrice.prices[i].title!!)
             }
-        }
 
-        spinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(parent: AdapterView<*>?) {}
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                setPrice(
-                    finenessPrice.prices[position].value!!.toLong(),
-                    percent1 = finenessPrice.percent1!!,
-                    percent2 = finenessPrice.percent2!!,
-                    limit = finenessPrice.amount_limit
-                )
-                setEnable(position, finenessPrice)
+            callback.context?.let {
+                ArrayAdapter(
+                    it,
+                    R.layout.item_fineness_spinner,
+                    finenessList
+                ).also { adapter ->
+                    spinner?.adapter = adapter
+                }
             }
-        }
+
+            spinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onNothingSelected(parent: AdapterView<*>?) {}
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    finenessPrice.percent1?.let {
+                        finenessPrice.percent2?.let { it1 ->
+                            setPrice(
+                                finenessPrice.prices[position].value!!.toLong(),
+                                percent1 = it,
+                                percent2 = it1,
+                                limit = finenessPrice.amount_limit
+                            )
+                        }
+                    }
+                    setEnable(position, finenessPrice)
+                }
+            }
     }
 
     @SuppressLint("SetTextI18n")

@@ -26,4 +26,6 @@ object EndPoints {
     const val POST_GET_HEAD = "/v1/service/get-head"
     const val POST_ABOUT = "/v1/service/get-about"
     const val POST_ADVANCED_DATA = "/v1/service/get-advanced-data"
+    const val POST_ADD_CARD = "/v1/pay/add-card"
+    const val POST_GET_CARD = "v1/pay/card-list"
 }

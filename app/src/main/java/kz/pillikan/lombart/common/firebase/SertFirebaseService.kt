@@ -11,7 +11,6 @@ import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import kz.pillikan.lombart.R
-import kz.pillikan.lombart.content.view.FoundationActivity
 import kz.pillikan.lombart.splash.SplashActivity
 import java.util.*
 
@@ -32,11 +31,12 @@ class SertFirebaseService : FirebaseMessagingService() {
                 }
         }
     }
+
     private fun showNotification(params: Map<String, String>, title: String, body: String) {
         val temp = params.toString()
         var resultPendingIntent: PendingIntent? = null
 
-            val resultIntent = Intent(this, SplashActivity::class.java)
+        val resultIntent = Intent(this, SplashActivity::class.java)
 
         if (!params["notificationId"].isNullOrEmpty()) {
             resultIntent.putExtra(

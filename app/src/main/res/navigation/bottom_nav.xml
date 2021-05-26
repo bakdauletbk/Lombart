@@ -65,7 +65,11 @@
         android:id="@+id/addCardFragment"
         android:name="kz.pillikan.lombart.content.view.profile.AddCardFragment"
         android:label="AddCardFragment"
-        tools:layout="@layout/fragment_add_cards" />
+        tools:layout="@layout/fragment_add_cards" >
+        <action
+            android:id="@+id/action_addCardFragment_to_epayFragment"
+            app:destination="@id/epayFragment" />
+    </fragment>
     <fragment
         android:id="@+id/validatePinFragment"
         android:name="kz.pillikan.lombart.content.view.validate.ValidatePinFragment"
@@ -89,5 +93,10 @@
             app:enterAnim="@anim/slide_in_left"
             app:exitAnim="@anim/slide_out_right" />
     </fragment>
+    <fragment
+        android:id="@+id/epayFragment"
+        android:name="kz.pillikan.lombart.content.view.epay.EpayFragment"
+        android:label="EpayFragment"
+        tools:layout="@layout/fragment_epay"/>
 
 </navigation>

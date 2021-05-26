@@ -6,6 +6,7 @@ import kz.pillikan.lombart.authorization.model.response.SignInResponse
 import kz.pillikan.lombart.content.model.request.appeal.FeedbackRequest
 import kz.pillikan.lombart.content.model.request.home.ValidatePinRequest
 import kz.pillikan.lombart.content.model.request.notifications.PageRequest
+import kz.pillikan.lombart.content.model.request.profile.CardRequest
 import kz.pillikan.lombart.content.model.request.profile.ChangePassword
 import kz.pillikan.lombart.content.model.request.profile.CheckPassword
 import kz.pillikan.lombart.content.model.response.about.AboutResponse
@@ -13,6 +14,7 @@ import kz.pillikan.lombart.content.model.response.about.AddressResponse
 import kz.pillikan.lombart.content.model.response.appeal.ResponseAdvancedData
 import kz.pillikan.lombart.content.model.response.home.*
 import kz.pillikan.lombart.content.model.response.notifications.NotificationsResponse
+import kz.pillikan.lombart.content.model.response.profile.CardResponse
 import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.Body
@@ -158,5 +160,12 @@ interface NetworkService {
         @Header("Authorization") Authorization: String,
         @Header("appVer") appVer: String
     ): Response<ResponseAdvancedData>
+
+    @POST(EndPoints.POST_ADD_CARD)
+    suspend fun addCard(
+        @Header("Authorization") Authorization: String,
+        @Header("appVer") appVer: String,
+        @Body cardRequest: CardRequest
+    ): Response<CardResponse>
 
 }

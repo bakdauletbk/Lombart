@@ -35,179 +35,34 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dimens_18dp"
-                android:layout_marginTop="@dimen/dimens_28dp"
-                android:layout_marginBottom="@dimen/dimens_100dp"
-                android:elevation="@dimen/dimens_2dp"
-                android:layout_marginEnd="@dimen/dimens_18dp"
-                android:background="@drawable/shape_item_loans"
-                android:orientation="vertical"
-                tools:ignore="UnusedAttribute">
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="15dp"
+                android:background="@drawable/shape_stroke_yellow"
+                android:padding="5dp">
 
-                <LinearLayout
+                <EditText
+                    android:id="@+id/et_card_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/shape_item_loans"
-                    android:elevation="2dp"
-                    android:orientation="vertical"
-                    tools:ignore="UnusedAttribute">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="15dp"
-                        android:layout_marginTop="15dp"
-                        android:layout_marginEnd="15dp"
-                        android:padding="5dp"
-                        android:background="@drawable/shape_stroke_yellow">
-
-                        <com.santalu.maskedittext.MaskEditText
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:padding="10dp"
-                            android:inputType="number"
-                            android:hint="@string/mask_card_number"
-                            app:met_mask="#### #### #### ####"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginEnd="10dp"
-                            android:textColor="@color/black"
-                            android:background="@color/white"
-                            android:textColorHint="@color/text_color_edit"
-                            android:textSize="14sp"
-                            android:textStyle="bold"
-                            tools:ignore="Autofill,TextFields" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="15dp"
-                        android:layout_marginTop="15dp"
-                        android:layout_marginEnd="15dp"
-                        android:padding="5dp"
-                        android:background="@drawable/shape_stroke_yellow">
-
-                        <EditText
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:padding="10dp"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginEnd="10dp"
-                            android:hint="IMYA FAMILYA"
-                            android:textColor="@color/black"
-                            android:background="@color/white"
-                            android:textColorHint="@color/text_color_edit"
-                            android:textSize="14sp"
-                            android:textStyle="bold"
-                            tools:ignore="Autofill,HardcodedText,TextFields" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="120dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="15dp"
-                        android:layout_marginBottom="17dp"
-                        android:layout_marginTop="15dp"
-                        android:layout_marginEnd="15dp"
-                        android:padding="5dp"
-                        android:background="@drawable/shape_stroke_yellow">
-
-                        <com.santalu.maskedittext.MaskEditText
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:padding="10dp"
-                            android:hint="00/00"
-                            app:met_mask="##/##"
-                            android:inputType="number"
-                            android:maxLines="1"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginEnd="10dp"
-                            android:textColor="@color/black"
-                            android:background="@color/white"
-                            android:textColorHint="@color/text_color_edit"
-                            android:textSize="14sp"
-                            android:textStyle="bold"
-                            tools:ignore="Autofill,HardcodedText,TextFields" />
-
-                    </LinearLayout>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="29dp"
                     android:layout_marginStart="10dp"
-                    android:layout_marginBottom="20dp"
+                    android:layout_marginEnd="10dp"
                     android:background="@color/white"
-                    android:orientation="horizontal"
-                    android:weightSum="5">
-
-                    <ImageView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical|center_horizontal"
-                        android:layout_marginStart="5dp"
-                        android:layout_weight="1"
-                        android:src="@drawable/ic_icon_visa"
-                        tools:ignore="ContentDescription" />
-
-                    <ImageView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical|center_horizontal"
-                        android:layout_weight="1"
-                        android:layout_marginStart="5dp"
-                        android:src="@drawable/ic_icon_master"
-                        tools:ignore="ContentDescription" />
-
-                    <ImageView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical|center_horizontal"
-                        android:layout_weight="1"
-                        android:layout_marginStart="5dp"
-                        android:src="@drawable/ic_icon_master_cards"
-                        tools:ignore="ContentDescription" />
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_weight="2"
-                        android:layout_marginEnd="19dp"
-                        android:layout_height="wrap_content"
-                        android:padding="5dp"
-                        android:layout_marginStart="5dp"
-                        android:background="@drawable/shape_stroke_yellow">
-
-                        <com.santalu.maskedittext.MaskEditText
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:padding="10dp"
-                            android:hint="@string/mask_cvv"
-                            android:maxLines="1"
-                            android:inputType="number"
-                            app:met_mask="###"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginEnd="10dp"
-                            android:textColor="@color/black"
-                            android:background="@color/white"
-                            android:textColorHint="@color/text_color_edit"
-                            android:textSize="14sp"
-                            android:textStyle="bold"
-                            tools:ignore="Autofill,TextFields" />
-
-                    </LinearLayout>
-
-                </LinearLayout>
+                    android:hint="Введите имя карты"
+                    android:padding="10dp"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/gray"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    tools:ignore="Autofill,HardcodedText,TextFields" />
 
             </LinearLayout>
 
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_add_card"
                 android:layout_width="match_parent"
-                android:layout_height="65dp"
+                android:layout_height="@dimen/dimens_65dp"
                 android:layout_alignParentBottom="true"
                 android:layout_marginStart="25dp"
                 android:layout_marginEnd="25dp"
@@ -222,5 +77,28 @@
         </RelativeLayout>
 
     </androidx.core.widget.NestedScrollView>
+
+    <RelativeLayout
+        android:id="@+id/loadingView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#54000000"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            tools:ignore="UselessParent">
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/round_white_foreground" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
