@@ -6,6 +6,7 @@ import kz.pillikan.lombart.BuildConfig
 import kz.pillikan.lombart.common.preference.SessionManager
 import kz.pillikan.lombart.common.remote.Constants
 import kz.pillikan.lombart.common.remote.Networking
+import kz.pillikan.lombart.content.model.response.home.CardListResponse
 import kz.pillikan.lombart.content.model.response.home.ProfileInfo
 import kz.pillikan.lombart.content.model.response.home.ProfileResponse
 import kz.pillikan.lombart.content.model.response.profile.CardModel
@@ -20,18 +21,10 @@ class ProfileRepository(application: Application) {
     private var sessionManager: SessionManager =
         SessionManager(sharedPreferences)
 
-    suspend fun getCard(): List<CardModel?> {
-        return try {
-            val cards: ArrayList<CardModel> = ArrayList()
-            cards.add(CardModel("Kaspi Bank", 8484515115151))
-            cards.add(CardModel("Master Card", 8484515115151))
-            return cards
-        } catch (e: Exception) {
-            val cards: ArrayList<CardModel> = ArrayList()
-            cards.clear()
-            return cards
-        }
-    }
+    suspend fun getCard(): Response<CardListResponse> = networkService.getCardList(
+        Constants.AUTH_TOKEN_PREFIX + sessionManager.getToken(),
+        BuildConfig.VERSION_NAME
+    )
 
     suspend fun getProfile(): Response<ProfileResponse> {
         return networkService.profileInfo(

@@ -14,9 +14,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kz.pillikan.lombart.R
 import kz.pillikan.lombart.authorization.view.AuthorizationActivity
+import kz.pillikan.lombart.common.remote.Constants
 import kz.pillikan.lombart.common.views.BaseFragment
+import kz.pillikan.lombart.content.model.response.home.CardList
 import kz.pillikan.lombart.content.model.response.home.ProfileInfo
-import kz.pillikan.lombart.content.model.response.profile.CardModel
 import kz.pillikan.lombart.content.viewmodel.profile.ProfileViewModel
 import org.jetbrains.anko.sdk27.coroutines.onClick
 import org.jetbrains.anko.support.v4.intentFor
@@ -61,7 +62,7 @@ class ProfileFragment : BaseFragment() {
         initRecyclerView()
         initNavigation()
         initToolbar()
-        initUpdateFeed()
+        updateFeed()
         initObservers()
     }
 
@@ -102,7 +103,7 @@ class ProfileFragment : BaseFragment() {
         }
     }
 
-    private fun initUpdateFeed() {
+    private fun updateFeed() {
         setLoading(true)
         CoroutineScope(Dispatchers.IO).launch {
             viewModel.getCard()
@@ -122,7 +123,7 @@ class ProfileFragment : BaseFragment() {
         viewModel.cardList.observe(viewLifecycleOwner, {
             when (it != null) {
                 true -> addCard(it)
-                false -> errorDialogAlert()
+                false -> showEmptyCard()
             }
         })
         viewModel.profileInfo.observe(viewLifecycleOwner, {
@@ -180,6 +181,12 @@ class ProfileFragment : BaseFragment() {
 
     }
 
+    private fun showEmptyCard() {
+        setLoading(false)
+        tv_empty_card.visibility = View.VISIBLE
+        rv_cards.visibility = View.GONE
+    }
+
     private fun errorDialogAlert() {
         setLoading(false)
         errorDialog(getString(R.string.error_unknown_body))
@@ -192,7 +199,11 @@ class ProfileFragment : BaseFragment() {
         tv_iin.text = profileInfo.iin
     }
 
-    private fun addCard(cardList: List<CardModel>) {
+    private fun addCard(cardList: List<CardList>) {
+        setLoading(false)
+        when(cardList.size >= Constants.ONE){
+            false->showEmptyCard()
+        }
         adapter.addCard(cardList)
     }
 

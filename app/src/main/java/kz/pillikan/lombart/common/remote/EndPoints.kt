@@ -1,6 +1,7 @@
 package kz.pillikan.lombart.common.remote
 
 object EndPoints {
+
     //Авторизация
     const val POST_SIGN_IN = "/v1/auth/sign-in"
     const val POST_SIGN_UP = "/v1/auth/sign-up"
@@ -27,5 +28,6 @@ object EndPoints {
     const val POST_ABOUT = "/v1/service/get-about"
     const val POST_ADVANCED_DATA = "/v1/service/get-advanced-data"
     const val POST_ADD_CARD = "/v1/pay/add-card"
-    const val POST_GET_CARD = "v1/pay/card-list"
+    const val GET_CARD = "v1/pay/card-list"
+    const val POST_PAY = "/v1/pay/pay"
 }

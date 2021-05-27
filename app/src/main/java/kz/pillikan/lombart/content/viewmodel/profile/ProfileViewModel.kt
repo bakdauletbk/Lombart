@@ -7,12 +7,14 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import kz.pillikan.lombart.common.remote.Constants
 import kz.pillikan.lombart.content.model.repository.profile.ProfileRepository
+import kz.pillikan.lombart.content.model.response.home.CardList
+import kz.pillikan.lombart.content.model.response.home.CardListResponse
 import kz.pillikan.lombart.content.model.response.home.ProfileInfo
 import kz.pillikan.lombart.content.model.response.profile.CardModel
 
 class ProfileViewModel(application: Application) : AndroidViewModel(application) {
 
-    var cardList: MutableLiveData<List<CardModel>> = MutableLiveData()
+    var cardList: MutableLiveData<List<CardList>> = MutableLiveData()
     var profileInfo: MutableLiveData<ProfileInfo> = MutableLiveData()
     val isError: MutableLiveData<String> = MutableLiveData()
     val isLogout: MutableLiveData<Boolean> = MutableLiveData()
@@ -26,7 +28,12 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
         viewModelScope.launch {
             try {
                 val response = repository.getCard()
-                cardList.postValue(response as List<CardModel>?)
+                when (response.code()) {
+                    Constants.RESPONSE_SUCCESS_CODE -> cardList.postValue(response.body()!!.cards)
+                    Constants.RESPONSE_UPDATE_APP -> isUpdateApp.postValue(true)
+                    Constants.RESPONSE_UNAUTHORIZED -> isUnAuthorized.postValue(true)
+                    else -> isError.postValue(null)
+                }
             } catch (e: Exception) {
                 isError.postValue(null)
             }

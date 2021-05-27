@@ -4,6 +4,7 @@ import kz.pillikan.lombart.authorization.model.request.*
 import kz.pillikan.lombart.authorization.model.response.CheckResponse
 import kz.pillikan.lombart.authorization.model.response.SignInResponse
 import kz.pillikan.lombart.content.model.request.appeal.FeedbackRequest
+import kz.pillikan.lombart.content.model.request.home.PayRequest
 import kz.pillikan.lombart.content.model.request.home.ValidatePinRequest
 import kz.pillikan.lombart.content.model.request.notifications.PageRequest
 import kz.pillikan.lombart.content.model.request.profile.CardRequest
@@ -18,6 +19,7 @@ import kz.pillikan.lombart.content.model.response.profile.CardResponse
 import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
 
@@ -167,5 +169,18 @@ interface NetworkService {
         @Header("appVer") appVer: String,
         @Body cardRequest: CardRequest
     ): Response<CardResponse>
+
+    @GET(EndPoints.GET_CARD)
+    suspend fun getCardList(
+        @Header("Authorization") Authorization: String,
+        @Header("appVer") appVer: String
+    ): Response<CardListResponse>
+
+    @POST(EndPoints.POST_PAY)
+    suspend fun pay(
+        @Header("Authorization") Authorization: String,
+        @Header("appVer") appVer: String,
+        @Body payRequest: PayRequest
+    ): Response<ResponseBody>
 
 }

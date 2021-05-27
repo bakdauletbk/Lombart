@@ -104,7 +104,6 @@ class EpayFragment : BaseFragment() {
             "email", "UTF-8"
         ) + "=" + URLEncoder.encode(cardResponse.email, "UTF-8"))
 
-
         return postData
 
     }
