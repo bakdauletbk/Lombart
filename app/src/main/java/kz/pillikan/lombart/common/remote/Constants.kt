@@ -86,4 +86,18 @@ object Constants {
     //Extra
     const val PUT_EXTRA_CARD_RESPONSE = "PUT_EXTRA_CARD_RESPONSE"
 
+    //Epay
+    const val Signed_Order_B64 = "Signed_Order_B64"
+    const val UTF_8 = "UTF-8"
+    const val template = "template"
+    const val Language = "Language"
+    const val BackLink = "BackLink"
+    const val FailureBackLink = "FailureBackLink"
+    const val FailurePostLink = "FailurePostLink"
+    const val PostLink = "PostLink"
+    const val email = "email"
+    const val equally = "="
+    const val end = "&"
+
+
 }
