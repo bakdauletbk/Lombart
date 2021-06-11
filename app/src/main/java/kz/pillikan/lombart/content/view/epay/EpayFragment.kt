@@ -20,7 +20,6 @@ import kz.pillikan.lombart.common.views.BaseFragment
 import kz.pillikan.lombart.content.model.response.profile.CardResponse
 import java.net.URLEncoder
 
-
 class EpayFragment : BaseFragment() {
 
     private var successCallback: EpayCallback? = null
@@ -55,21 +54,41 @@ class EpayFragment : BaseFragment() {
         webView.webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
                 Log.e(EpayConstants.LOG_TAG, "URL loading = $url")
-                return if (EpayConstants.EXTRA_POST_LINK_VALUE.equals(url)) {
-                    successCallback!!.process(url)
-                    Toast.makeText(requireContext(), "Success", Toast.LENGTH_SHORT).show()
-                    true
-                } else if (EpayConstants.EPAY_FAILURE_BACK_LINK.equals(url)) {
-                    failureCallback!!.process(url)
-                    Toast.makeText(requireContext(), "Failure", Toast.LENGTH_SHORT).show()
-                    true
-                } else {
-                    false
+
+                return when (url) {
+                    EpayConstants.EXTRA_POST_LINK_VALUE -> {
+//                        successCallback!!.process(url)
+                        Toast.makeText(
+                            requireContext(),
+                            getString(R.string.map_added_successfully),
+                            Toast.LENGTH_LONG
+                        )
+                            .show()
+
+                        view.let { it1 ->
+                            Navigation.findNavController(it1)
+                                .navigate(R.id.addCardFragment)
+                        }
+                        true
+                    }
+                    EpayConstants.EPAY_FAILURE_BACK_LINK -> {
+//                        failureCallback!!.process(url)
+                        Toast.makeText(
+                            requireContext(),
+                            getString(R.string.an_error_occurred_while_adding_a_card),
+                            Toast.LENGTH_LONG
+                        ).show()
+                        true
+                    }
+                    else -> false
                 }
             }
         }
 
-        Log.d("Ermahan", buildPostData()?.toByteArray().toString())   // Не Уберать изза этого не откроется сайт  <---------->
+        Log.d(
+            "Ermahan",
+            buildPostData()?.toByteArray().toString()
+        ) // Не Уберать изза этого не откроется сайт  <---------->
         postUrl?.let { view.web_view.postUrl(it, buildPostData()!!.toByteArray()) }
 
         return view

@@ -62,6 +62,7 @@ class CardAdapter : RecyclerView.Adapter<CardAdapter.CardAdapterViewHolder> {
                 popup.setOnMenuItemClickListener { item ->
                     when (item.itemId) {
                         R.id.menu_delete -> {
+                            cardList.id?.let { it1 -> callback.setDeleteCard(it1) }
                         }
                     }
                     false

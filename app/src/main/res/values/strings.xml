@@ -174,5 +174,7 @@
     <string name="our_application_has_been_updated_please_update">Вышло обновление нашего приложения. Пожалуйста обновите!</string>
     <string name="edit_card_name">Введите имя карты</string>
     <string name="delete">Удалить карту</string>
+    <string name="map_added_successfully">Карта успешно добавлена!</string>
+    <string name="an_error_occurred_while_adding_a_card">При добавлении карты возникла ошибка.</string>
 
 </resources>

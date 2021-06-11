@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import kz.pillikan.lombart.common.remote.Constants
 import kz.pillikan.lombart.content.model.repository.profile.ProfileRepository
+import kz.pillikan.lombart.content.model.request.profile.DeleteCardRequest
 import kz.pillikan.lombart.content.model.response.home.CardList
 import kz.pillikan.lombart.content.model.response.home.CardListResponse
 import kz.pillikan.lombart.content.model.response.home.ProfileInfo
@@ -18,6 +19,7 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
     var profileInfo: MutableLiveData<ProfileInfo> = MutableLiveData()
     val isError: MutableLiveData<String> = MutableLiveData()
     val isLogout: MutableLiveData<Boolean> = MutableLiveData()
+    val isDeleteCard: MutableLiveData<Boolean> = MutableLiveData()
 
     val isUpdateApp = MutableLiveData<Boolean>()
     val isUnAuthorized = MutableLiveData<Boolean>()
@@ -46,6 +48,22 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
                 val response = repository.getProfile()
                 when (response.code()) {
                     Constants.RESPONSE_SUCCESS_CODE -> profileInfo.postValue(response.body()!!.profile)
+                    Constants.RESPONSE_UPDATE_APP -> isUpdateApp.postValue(true)
+                    Constants.RESPONSE_UNAUTHORIZED -> isUnAuthorized.postValue(true)
+                    else -> isError.postValue(null)
+                }
+            } catch (e: Exception) {
+                isError.postValue(null)
+            }
+        }
+    }
+
+    suspend fun deleteCard(deleteCardRequest: DeleteCardRequest) {
+        viewModelScope.launch {
+            try {
+                val response = repository.getProfile()
+                when (response.code()) {
+                    Constants.RESPONSE_SUCCESS_CODE -> isDeleteCard.postValue(true)
                     Constants.RESPONSE_UPDATE_APP -> isUpdateApp.postValue(true)
                     Constants.RESPONSE_UNAUTHORIZED -> isUnAuthorized.postValue(true)
                     else -> isError.postValue(null)

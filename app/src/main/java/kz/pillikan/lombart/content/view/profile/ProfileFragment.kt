@@ -16,6 +16,7 @@ import kz.pillikan.lombart.R
 import kz.pillikan.lombart.authorization.view.AuthorizationActivity
 import kz.pillikan.lombart.common.remote.Constants
 import kz.pillikan.lombart.common.views.BaseFragment
+import kz.pillikan.lombart.content.model.request.profile.DeleteCardRequest
 import kz.pillikan.lombart.content.model.response.home.CardList
 import kz.pillikan.lombart.content.model.response.home.ProfileInfo
 import kz.pillikan.lombart.content.viewmodel.profile.ProfileViewModel
@@ -103,6 +104,14 @@ class ProfileFragment : BaseFragment() {
         }
     }
 
+    fun setDeleteCard(cardId: String) {
+        val deleteCardRequest = DeleteCardRequest(cardId)
+        setLoading(true)
+        CoroutineScope(Dispatchers.IO).launch {
+            viewModel.deleteCard(deleteCardRequest)
+        }
+    }
+
     private fun updateFeed() {
         setLoading(true)
         CoroutineScope(Dispatchers.IO).launch {
@@ -179,6 +188,17 @@ class ProfileFragment : BaseFragment() {
             }
         })
 
+        viewModel.isDeleteCard.observe(viewLifecycleOwner, {
+            when (it) {
+                true -> {
+                    view?.let { it1 ->
+                        Navigation.findNavController(it1)
+                            .navigate(R.id.profileFragment)
+                    }
+                }
+            }
+        })
+
     }
 
     private fun showEmptyCard() {
@@ -201,8 +221,8 @@ class ProfileFragment : BaseFragment() {
 
     private fun addCard(cardList: List<CardList>) {
         setLoading(false)
-        when(cardList.size >= Constants.ONE){
-            false->showEmptyCard()
+        when (cardList.size >= Constants.ONE) {
+            false -> showEmptyCard()
         }
         adapter.addCard(cardList)
     }

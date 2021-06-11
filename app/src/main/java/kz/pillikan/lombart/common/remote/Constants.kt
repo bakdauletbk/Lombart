@@ -99,5 +99,4 @@ object Constants {
     const val equally = "="
     const val end = "&"
 
-
 }

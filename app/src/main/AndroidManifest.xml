@@ -28,7 +28,6 @@
         <activity
             android:name=".content.view.FoundationActivity"
             android:configChanges="orientation|screenSize">
-
         </activity>
 
         <service android:name=".common.firebase.SertFirebaseService">

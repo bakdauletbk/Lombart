@@ -20,6 +20,7 @@ import kz.pillikan.lombart.common.remote.Constants
 import kz.pillikan.lombart.common.views.BaseFragment
 import kz.pillikan.lombart.content.model.request.profile.CardRequest
 import kz.pillikan.lombart.content.model.response.profile.CardResponse
+import kz.pillikan.lombart.content.view.epay.EpayFragment
 import kz.pillikan.lombart.content.viewmodel.profile.AddCardViewModel
 import org.jetbrains.anko.sdk27.coroutines.onClick
 import org.jetbrains.anko.support.v4.intentFor
@@ -28,6 +29,7 @@ class AddCardFragment : BaseFragment() {
 
     private lateinit var viewModel: AddCardViewModel
     private val bundle = Bundle()
+    private var epayFragment: EpayFragment? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

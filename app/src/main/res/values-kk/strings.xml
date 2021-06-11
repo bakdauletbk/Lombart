@@ -175,4 +175,7 @@
     <string name="our_application_has_been_updated_please_update">Қосымшамның жаңа нұсқасы шықты. Өтінеміз, қосымшаны жаңартыңыз!</string>
     <string name="edit_card_name">Картаның атауын енгізіңіз</string>
     <string name="delete">Картаны жою</string>
+    <string name="map_added_successfully">Картаңыз сәтті қосылды!</string>
+    <string name="an_error_occurred_while_adding_a_card">Картаны қосу кезінде қате пайда болды.</string>
+
 </resources>
