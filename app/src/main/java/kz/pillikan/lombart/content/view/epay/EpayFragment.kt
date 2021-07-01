@@ -46,8 +46,9 @@ class EpayFragment : BaseFragment() {
         val view: View = inflater.inflate(R.layout.fragment_epay, container, false)
         val webView = view.findViewById<View>(R.id.web_view) as WebView
 
-        val webSettings: WebSettings = webView.getSettings()
+        val webSettings: WebSettings = webView.settings
         webSettings.javaScriptEnabled = true
+        webSettings.domStorageEnabled = true
 
         webView.webViewClient = WebViewClient()
 
@@ -57,14 +58,12 @@ class EpayFragment : BaseFragment() {
 
                 return when (url) {
                     EpayConstants.EXTRA_POST_LINK_VALUE -> {
-//                        successCallback!!.process(url)
+                        successCallback!!.process(url)
                         Toast.makeText(
                             requireContext(),
                             getString(R.string.map_added_successfully),
                             Toast.LENGTH_LONG
-                        )
-                            .show()
-
+                        ).show()
                         view.let { it1 ->
                             Navigation.findNavController(it1)
                                 .navigate(R.id.addCardFragment)
@@ -72,7 +71,7 @@ class EpayFragment : BaseFragment() {
                         true
                     }
                     EpayConstants.EPAY_FAILURE_BACK_LINK -> {
-//                        failureCallback!!.process(url)
+                        failureCallback!!.process(url)
                         Toast.makeText(
                             requireContext(),
                             getString(R.string.an_error_occurred_while_adding_a_card),
@@ -90,7 +89,6 @@ class EpayFragment : BaseFragment() {
             buildPostData()?.toByteArray().toString()
         ) // Не Уберать изза этого не откроется сайт  <---------->
         postUrl?.let { view.web_view.postUrl(it, buildPostData()!!.toByteArray()) }
-
         return view
     }
 

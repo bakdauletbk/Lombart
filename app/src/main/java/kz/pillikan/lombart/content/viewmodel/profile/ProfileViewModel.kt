@@ -61,7 +61,7 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
     suspend fun deleteCard(deleteCardRequest: DeleteCardRequest) {
         viewModelScope.launch {
             try {
-                val response = repository.getProfile()
+                val response = repository.removeCard(deleteCardRequest)
                 when (response.code()) {
                     Constants.RESPONSE_SUCCESS_CODE -> isDeleteCard.postValue(true)
                     Constants.RESPONSE_UPDATE_APP -> isUpdateApp.postValue(true)

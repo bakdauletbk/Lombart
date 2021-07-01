@@ -1,10 +1,11 @@
-package kz.pillikan.lombart.common.remote
+ package kz.pillikan.lombart.common.remote
 
 object Constants {
-//    const val BASE_URL = "http://api-cert.smartideagroup.kz:8080"
-    const val BASE_URL = "https://api-cert.smartideagroup.kz"
-//    const val IMG_BASE_URL = "http://st-cert.smartideagroup.kz:8080"
-    const val IMG_BASE_URL = "https://st-cert.smartideagroup.kz"
+//        const val BASE_URL = "https://api-cert.smartideagroup.kz"
+    const val BASE_URL = "https://api.sert-finance.kz/"
+
+//        const val IMG_BASE_URL = "https://st-cert.smartideagroup.kz"
+    const val IMG_BASE_URL = "https://st.sert-finance.kz/"
     const val IMG_SLIDER_URL = "/images/slider/"
     const val IMG_URL_ABOUT = "/images/material/"
     const val URI_PLAY_MARKET = "market://details?id="

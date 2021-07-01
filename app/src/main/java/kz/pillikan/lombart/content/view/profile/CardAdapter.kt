@@ -53,7 +53,7 @@ class CardAdapter : RecyclerView.Adapter<CardAdapter.CardAdapterViewHolder> {
         private val ivMenu = root.findViewById(R.id.iv_menu) as ImageView
         fun bind(cardList: CardList, callback: ProfileFragment) {
             tvCardName.text = cardList.name
-            tvCardNumber.text = cardList.id
+            tvCardNumber.text = cardList.card_hash
 
             ivMenu.onClick {
                 val popup = PopupMenu(callback.context, ivMenu)

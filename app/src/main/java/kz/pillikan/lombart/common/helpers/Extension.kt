@@ -23,6 +23,6 @@ fun formatDateTime(date: String): String {
     return charArray[8] + "" + charArray[9] + "." + charArray[5] + charArray[6] + "." + date.take(4)
 }
 
-fun convertSms(sms : String):String{
+fun convertSms(sms: String): String {
     return sms.split(":".toRegex()).toTypedArray()[1].trim { it <= ' ' }
 }

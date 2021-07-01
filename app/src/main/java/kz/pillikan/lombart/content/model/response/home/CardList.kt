@@ -6,5 +6,7 @@ data class CardList(
     @SerializedName("id")
     val id: String? = null,
     @SerializedName("name")
-    val name: String? = null
+    val name: String? = null,
+    @SerializedName("card_hash")
+    val card_hash: String? = null
 )

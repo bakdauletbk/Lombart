@@ -105,8 +105,8 @@ class ProfileFragment : BaseFragment() {
     }
 
     fun setDeleteCard(cardId: String) {
-        val deleteCardRequest = DeleteCardRequest(cardId)
         setLoading(true)
+        val deleteCardRequest = DeleteCardRequest(cardId)
         CoroutineScope(Dispatchers.IO).launch {
             viewModel.deleteCard(deleteCardRequest)
         }
