@@ -9,7 +9,7 @@ object Constants {
     const val IMG_SLIDER_URL = "/images/slider/"
     const val IMG_URL_ABOUT = "/images/material/"
     const val URI_PLAY_MARKET = "market://details?id="
-    const val URI_APP = "https://play.google.com/store/apps/details?id="
+    const val URI_APP = "https://play.google.com/store/apps/details?id=kz.pillikan.lombart"
 
     //Rest status
     const val RESPONSE_SUCCESS_CODE = 200
