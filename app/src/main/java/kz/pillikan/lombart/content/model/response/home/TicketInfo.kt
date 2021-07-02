@@ -20,7 +20,7 @@ data class TicketInfo(
     @SerializedName("EndDate")
     val EndDate: String? = null,
     @SerializedName("WaitDate")
-    val WaitDate: String? = null ,
+    val WaitDate: String? = null,
     @SerializedName("totalDebt")
     val totalDebt: String? = null
 )

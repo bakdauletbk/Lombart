@@ -1,10 +1,16 @@
 package kz.pillikan.lombart.content.view.home
 
 import android.annotation.SuppressLint
+import android.app.Dialog
+import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -13,6 +19,8 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.button.MaterialButton
+import kotlinx.android.synthetic.main.alert_dialog_successfully.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -21,17 +29,21 @@ import kotlinx.coroutines.launch
 import kz.pillikan.lombart.R
 import kz.pillikan.lombart.authorization.view.AuthorizationActivity
 import kz.pillikan.lombart.common.helpers.convertDpToPixel
+import kz.pillikan.lombart.common.helpers.formatDate
 import kz.pillikan.lombart.common.remote.Constants
 import kz.pillikan.lombart.common.views.BaseFragment
 import kz.pillikan.lombart.common.views.utils.FinenessPriceCalculate
+import kz.pillikan.lombart.content.model.request.home.PayRequest
 import kz.pillikan.lombart.content.model.response.home.*
 import kz.pillikan.lombart.content.view.FoundationActivity
+import kz.pillikan.lombart.content.view.notifications.NotificationsFragment
 import kz.pillikan.lombart.content.viewmodel.home.HomeViewModel
 import org.jetbrains.anko.alert
 import org.jetbrains.anko.sdk27.coroutines.onClick
 import org.jetbrains.anko.support.v4.intentFor
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 class HomeFragment : BaseFragment() {
 
@@ -49,6 +61,9 @@ class HomeFragment : BaseFragment() {
     private val bannersAdapter by lazy { PagerAdapter(context) }
     private var isDialogVisibility = false
     private var foundationActivity: FoundationActivity? = null
+    private var cardListResponse: CardListResponse? = null
+    private var loansList: Tickets? = null
+    private var alertDialog: Dialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -134,6 +149,9 @@ class HomeFragment : BaseFragment() {
         setLoading(true)
         viewModel.getLanguage()
         CoroutineScope(Dispatchers.IO).launch {
+            viewModel.getCards()
+        }
+        CoroutineScope(Dispatchers.IO).launch {
             viewModel.getLoans()
         }
         CoroutineScope(Dispatchers.IO).launch {
@@ -167,6 +185,13 @@ class HomeFragment : BaseFragment() {
             if (!isErrorShowOnce) {
                 errorAlertDialog(getString(R.string.error_unknown_body))
                 isErrorShowOnce = true
+            }
+        })
+        viewModel.cardList.observe(viewLifecycleOwner, {
+            when (it != null) {
+                true -> cardListResponse = it
+                false -> {
+                }
             }
         })
         viewModel.loanList.observe(viewLifecycleOwner, {
@@ -275,6 +300,13 @@ class HomeFragment : BaseFragment() {
                 }
             }
         })
+
+        viewModel.isPayLoans.observe(viewLifecycleOwner, {
+            when (it) {
+                true -> showAlertSuccess(true)
+                false -> showAlertSuccess(false)
+            }
+        })
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
@@ -358,7 +390,15 @@ class HomeFragment : BaseFragment() {
 
     @SuppressLint("SetTextI18n")
     fun onPayAlertDialog(loansList: Tickets) {
-        showCustomAlert(Constants.ALERT_TYPE_LOAN_DETAILS, loansList)
+        this.loansList = loansList
+        cardListResponse?.let {
+            showCustomAlert(
+                Constants.ALERT_TYPE_LOAN_DETAILS,
+                loansList,
+                it,
+                this
+            )
+        }
     }
 
     @SuppressLint("SetTextI18n", "SimpleDateFormat")
@@ -392,7 +432,51 @@ class HomeFragment : BaseFragment() {
         }
     }
 
+    fun payLoans(payRequest: PayRequest) {
+        setLoading(true)
+        CoroutineScope(Dispatchers.IO).launch {
+            viewModel.payLoans(payRequest)
+        }
+    }
+
     private fun setLoading(loading: Boolean) {
         loadingView.visibility = if (loading) View.VISIBLE else View.GONE
     }
+
+    private fun showAlertSuccess(isSuccessPay: Boolean) {
+        setLoading(false)
+        alertDialog = Dialog(requireContext())
+        alertDialog!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        alertDialog!!.setContentView(R.layout.alert_dialog_successfully)
+        val ivClose: ImageView = alertDialog!!.findViewById(R.id.iv_close)
+        val ivStatusSuccess: ImageView = alertDialog!!.findViewById(R.id.iv_status_success)
+        val ivStatusError: ImageView = alertDialog!!.findViewById(R.id.iv_status_un_success)
+        val btnClose: MaterialButton = alertDialog!!.findViewById(R.id.btn_close)
+        val tvStatus: TextView = alertDialog!!.findViewById(R.id.tv_id)
+
+        btnClose.onClick {
+            alertDialog!!.dismiss()
+        }
+
+        ivClose.onClick {
+            alert!!.dismiss()
+        }
+
+        when (isSuccessPay) {
+            true -> {
+                ivStatusSuccess.visibility = View.VISIBLE
+                ivStatusError.visibility = View.GONE
+                tvStatus.text = getString(R.string.pay_successfully)
+            }
+            false -> {
+                ivStatusError.visibility = View.VISIBLE
+                ivStatusSuccess.visibility = View.GONE
+                tvStatus.text = getString(R.string.pay_successfully)
+            }
+        }
+
+        alertDialog!!.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        alertDialog!!.show()
+    }
+
 }

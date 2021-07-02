@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import kz.pillikan.lombart.common.remote.Constants
 import kz.pillikan.lombart.content.model.repository.home.HomeRepository
+import kz.pillikan.lombart.content.model.request.home.PayRequest
 import kz.pillikan.lombart.content.model.response.home.*
 
 class HomeViewModel(application: Application) : AndroidViewModel(application) {
@@ -31,6 +32,8 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
     val headText: MutableLiveData<TitleResponse> = MutableLiveData()
     val getLanguage = MutableLiveData<String>()
     val setLanguage = MutableLiveData<Boolean>()
+    var cardList: MutableLiveData<CardListResponse> = MutableLiveData()
+    val isPayLoans = MutableLiveData<Boolean>()
 
     fun clearSharedPref() {
         try {
@@ -160,6 +163,38 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
                     Constants.RESPONSE_UPDATE_APP -> isUpdateApp.postValue(true)
                     Constants.RESPONSE_UNAUTHORIZED -> isUnAuthorized.postValue(true)
                     else -> isError.postValue(null)
+                }
+            } catch (e: Exception) {
+                isError.postValue(null)
+            }
+        }
+    }
+
+    suspend fun getCards() {
+        viewModelScope.launch {
+            try {
+                val response = repository.getCards()
+                when (response.code()) {
+                    Constants.RESPONSE_SUCCESS_CODE -> cardList.postValue(response.body()!!)
+                    Constants.RESPONSE_UPDATE_APP -> isUpdateApp.postValue(true)
+                    Constants.RESPONSE_UNAUTHORIZED -> isUnAuthorized.postValue(true)
+                    else -> isError.postValue(null)
+                }
+            } catch (e: Exception) {
+                isError.postValue(null)
+            }
+        }
+    }
+
+    suspend fun payLoans(payRequest: PayRequest) {
+        viewModelScope.launch {
+            try {
+                val response = repository.payLoans(payRequest)
+                when (response.code()) {
+                    Constants.RESPONSE_SUCCESS_CODE -> isPayLoans.postValue(true)
+                    Constants.RESPONSE_UPDATE_APP -> isUpdateApp.postValue(true)
+                    Constants.RESPONSE_UNAUTHORIZED -> isUnAuthorized.postValue(true)
+                    else -> isPayLoans.postValue(false)
                 }
             } catch (e: Exception) {
                 isError.postValue(null)

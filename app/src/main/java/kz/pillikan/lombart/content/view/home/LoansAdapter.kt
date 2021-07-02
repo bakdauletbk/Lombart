@@ -54,7 +54,7 @@ class LoansAdapter : RecyclerView.Adapter<LoansAdapter.LoansHolder> {
             tvLoans.text = loansList.items[0].Specification
 
             tvId.text = "№ " + loansList.ticketInfo.Number.toString()
-            tvPrice.text = loansList.ticketInfo.totalDebt.toString() + " тг"
+            tvPrice.text = loansList.ticketInfo.TotalPayment.toString() + " тг"
             tvDate.text =
                 formatDate(loansList.ticketInfo.StartDate!!) + " - " + formatDate(loansList.ticketInfo.EndDate!!)
 

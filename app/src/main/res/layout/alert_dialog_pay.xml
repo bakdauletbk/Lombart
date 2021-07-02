@@ -153,6 +153,7 @@
                 android:padding="@dimen/dimens_5dp">
 
                 <Spinner
+                    android:id="@+id/sp_cards"
                     android:layout_width="match_parent"
                     android:layout_gravity="center_vertical"
                     android:layout_height="wrap_content"/>

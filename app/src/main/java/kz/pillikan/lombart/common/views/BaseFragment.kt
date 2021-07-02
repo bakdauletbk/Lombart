@@ -11,10 +11,9 @@ import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
+import android.view.View
 import android.view.Window
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -22,17 +21,23 @@ import com.afollestad.materialdialogs.DialogAction
 import com.afollestad.materialdialogs.MaterialDialog
 import com.google.android.material.button.MaterialButton
 import kz.pillikan.lombart.R
+import kz.pillikan.lombart.common.helpers.base64encode
 import kz.pillikan.lombart.common.helpers.formatDate
 import kz.pillikan.lombart.common.remote.Constants
+import kz.pillikan.lombart.content.model.request.home.PayRequest
+import kz.pillikan.lombart.content.model.response.home.CardListResponse
 import kz.pillikan.lombart.content.model.response.home.Tickets
+import kz.pillikan.lombart.content.view.home.HomeFragment
 import kz.pillikan.lombart.content.view.notifications.NotificationsFragment
 import org.jetbrains.anko.alert
 import org.jetbrains.anko.sdk27.coroutines.onClick
-import java.util.*
+
 
 open class BaseFragment : Fragment() {
 
-    private var alert: Dialog? = null
+    var alert: Dialog? = null
+
+    private var cardId: String? = null
 
     fun errorDialog(errorMsg: String) {
         activity?.alert {
@@ -54,121 +59,96 @@ open class BaseFragment : Fragment() {
             .dividerColor(context.resources.getColor(R.color.green))
             .positiveText("OK")
             .positiveColorRes(R.color.green)
-            builder.cancelable(false)
-            builder.onAny { dialog: MaterialDialog?, which: DialogAction ->
-                if (which == DialogAction.POSITIVE) {
-                    val appPackageName =
-                        context.packageName
-                    try {
-                        context.startActivity(
-                            Intent(
-                                Intent.ACTION_VIEW,
-                                Uri.parse(Constants.URI_PLAY_MARKET + appPackageName)
-                            )
+        builder.cancelable(false)
+        builder.onAny { dialog: MaterialDialog?, which: DialogAction ->
+            if (which == DialogAction.POSITIVE) {
+                val appPackageName =
+                    context.packageName
+                try {
+                    context.startActivity(
+                        Intent(
+                            Intent.ACTION_VIEW,
+                            Uri.parse(Constants.URI_PLAY_MARKET + appPackageName)
                         )
-                        (context as Activity).finish()
-                    } catch (e: ActivityNotFoundException) {
-                        context.startActivity(
-                            Intent(
-                                Intent.ACTION_VIEW,
-                                Uri.parse(Constants.URI_APP + appPackageName)
-                            )
+                    )
+                    (context as Activity).finish()
+                } catch (e: ActivityNotFoundException) {
+                    context.startActivity(
+                        Intent(
+                            Intent.ACTION_VIEW,
+                            Uri.parse(Constants.URI_APP + appPackageName)
                         )
-                        (context as Activity).finish()
-                    }
+                    )
+                    (context as Activity).finish()
                 }
             }
+        }
 
         builder.show()
     }
 
     @SuppressLint("SetTextI18n")
-    fun showCustomAlert(type: Int, loansList: Tickets) {
-
-        val intent = Intent()
+    fun showCustomAlert(
+        type: Int,
+        loansList: Tickets,
+        cardListResponse: CardListResponse,
+        callback: HomeFragment
+    ) {
         var isPay = false
         alert = Dialog(requireContext())
         alert!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
 
-        when (type) {
-            Constants.ALERT_TYPE_LOAN_DETAILS -> {
-                alert!!.setContentView(R.layout.alert_dialog_pay)
-                val tvId: TextView = alert!!.findViewById(R.id.tv_id)
-                val tvLoans: TextView = alert!!.findViewById(R.id.tv_loans)
-                val tvAmount: TextView = alert!!.findViewById(R.id.tv_renewal_amount)
-                val tvDate: TextView = alert!!.findViewById(R.id.tv_date)
-                val tvTotalPrice: TextView = alert!!.findViewById(R.id.tv_loan_amount)
-                val btnPay: MaterialButton = alert!!.findViewById(R.id.btn_pay_loan)
-                val ivClose: ImageView = alert!!.findViewById(R.id.iv_close)
+        alert!!.setContentView(R.layout.alert_dialog_pay)
+        val tvId: TextView = alert!!.findViewById(R.id.tv_id)
+        val tvLoans: TextView = alert!!.findViewById(R.id.tv_loans)
+        val tvAmount: TextView = alert!!.findViewById(R.id.tv_renewal_amount)
+        val tvDate: TextView = alert!!.findViewById(R.id.tv_date)
+        val tvTotalPrice: TextView = alert!!.findViewById(R.id.tv_loan_amount)
+        val btnPay: MaterialButton = alert!!.findViewById(R.id.btn_pay_loan)
+        val ivClose: ImageView = alert!!.findViewById(R.id.iv_close)
 
-                var specification: String = Constants.EMPTY
-                for (i in 0 until loansList.items.size) {
-                    specification += "\n${loansList.items[i].Specification}\n"
-                }
+        val spCards: Spinner = alert!!.findViewById(R.id.sp_cards)
 
-                val price = loansList.ticketInfo.TotalPayment
-                val date = formatDate(loansList.ticketInfo.WaitDate!!)
-                val transaction = loansList.ticketInfo.Number
+        initSpinner(cardListResponse, spCards, callback)
 
-                tvLoans.text = specification
-                tvId.text = Constants.NUMBERING + transaction
-                tvAmount.text = price + Constants.MONEY
-                tvDate.text = date + Constants.YEARS
-                tvTotalPrice.text = loansList.ticketInfo.totalDebt + Constants.MONEY
+        var specification: String = Constants.EMPTY
+        for (i in 0 until loansList.items.size) {
+            specification += "\n${loansList.items[i].Specification}\n"
+        }
 
-                ivClose.onClick {
-                    alert!!.dismiss()
-                }
+        val price = loansList.ticketInfo.TotalPayment
+        val date = formatDate(loansList.ticketInfo.WaitDate!!)
+        val transaction = loansList.ticketInfo.Number
 
-                btnPay.onClick {
-                    when (isPay) {
-                        true -> {
-                            isPay = false
-                            alert!!.dismiss()
-                            showCustomAlert(Constants.ALERT_TYPE_SUCCESS, loansList)
-                        }
-                        false -> {
-                            isPay = true
-                            btnPay.setBackgroundColor(
-                                ContextCompat.getColor(
-                                    requireContext(),
-                                    R.color.orange
-                                )
-                            )
-                        }
-                    }
-                }
-            }
+        tvLoans.text = specification
+        tvId.text = Constants.NUMBERING + transaction
+        tvAmount.text = price + Constants.MONEY
+        tvDate.text = date + Constants.YEARS
+        tvTotalPrice.text = loansList.ticketInfo.totalDebt + Constants.MONEY
 
-            Constants.ALERT_TYPE_SUCCESS -> {
-                alert!!.setContentView(R.layout.alert_dialog_successfully)
-                val tvSum: TextView = alert!!.findViewById(R.id.tv_sum)
-                val tvDate: TextView = alert!!.findViewById(R.id.tv_date)
-                val tvTransaction: TextView = alert!!.findViewById(R.id.tv_number_transaction)
-                val btnShare: MaterialButton = alert!!.findViewById(R.id.btn_to_share)
-                val ivClose: ImageView = alert!!.findViewById(R.id.iv_close)
+        ivClose.onClick {
+            alert!!.dismiss()
+        }
 
-                tvSum.text = loansList.ticketInfo.TotalPayment + Constants.MONEY
-                tvDate.text = formatDate(loansList.ticketInfo.WaitDate!!) + Constants.YEARS
-                tvTransaction.text = loansList.ticketInfo.Number
-
-                val textShare =
-                    Constants.NUMBER_TRANSACTION + loansList.ticketInfo.Number + Constants.PRICE + loansList.ticketInfo.TotalPayment + Constants.MONEY + Constants.DATE_TRANSACTION + formatDate(
-                        loansList.ticketInfo.WaitDate
-                    ) + Constants.YEARS + Constants.STATUS_PAY
-
-                btnShare.onClick {
-                    intent.action = Intent.ACTION_SEND
-                    intent.type = NotificationsFragment.TEXT_TYPE
-                    intent.putExtra(
-                        Intent.EXTRA_TEXT,
-                        textShare
+        btnPay.onClick {
+            when (isPay) {
+                true -> {
+                    val payRequest = PayRequest(
+                        ticket = base64encode(transaction.toString()),
+                        amount = base64encode(price.toString()),
+                        card_id = cardId?.let { it1 -> base64encode(it1) }
                     )
-                    startActivity(Intent.createChooser(intent, NotificationsFragment.SHARE))
-                }
-
-                ivClose.onClick {
+                    callback.payLoans(payRequest)
                     alert!!.dismiss()
+                }
+                false -> {
+                    isPay = true
+                    btnPay.setBackgroundColor(
+                        ContextCompat.getColor(
+                            requireContext(),
+                            R.color.orange
+                        )
+                    )
                 }
             }
         }
@@ -239,5 +219,33 @@ open class BaseFragment : Fragment() {
         }
     }
 
+    private fun initSpinner(
+        cardListResponse: CardListResponse,
+        spinner: Spinner,
+        callback: HomeFragment
+    ) {
+        val cardList = mutableListOf<String>()
+
+        for (i in 0 until cardListResponse.cards.size) {
+            cardList.add(cardListResponse.cards[i].card_hash.toString())
+        }
+
+        ArrayAdapter(requireContext(), R.layout.item_card_spinner, cardList).also { adapter ->
+            spinner.adapter = adapter
+        }
+
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                cardId = cardListResponse.cards[position].id
+            }
+        }
+    }
 
 }

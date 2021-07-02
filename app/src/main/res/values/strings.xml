@@ -127,6 +127,7 @@
     <string name="mask_card_number">0000 0000 0000 0000</string>
     <string name="mask_cvv">000</string>
     <string name="pay_successfully">Оплата прошла успешно!</string>
+    <string name="pay_unsuccessfully">При обработке платежа произшла ошибка.Пожалуйста повторите платеж или измените способ оплаты.</string>
     <string name="close">Закрыть</string>
     <string name="error_occurred">При обработке платежа произшла ошибка.</string>
     <string name="error_occurred_text">Пожалуйста повторите платеж или измените способ оплаты.</string>
@@ -176,5 +177,6 @@
     <string name="delete">Удалить карту</string>
     <string name="map_added_successfully">Карта успешно добавлена!</string>
     <string name="an_error_occurred_while_adding_a_card">При добавлении карты возникла ошибка.</string>
+
 
 </resources>

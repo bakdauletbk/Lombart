@@ -6,7 +6,9 @@ import kz.pillikan.lombart.BuildConfig
 import kz.pillikan.lombart.common.preference.SessionManager
 import kz.pillikan.lombart.common.remote.Constants
 import kz.pillikan.lombart.common.remote.Networking
+import kz.pillikan.lombart.content.model.request.home.PayRequest
 import kz.pillikan.lombart.content.model.response.home.*
+import okhttp3.ResponseBody
 import retrofit2.Response
 
 class HomeRepository(application: Application) {
@@ -86,5 +88,16 @@ class HomeRepository(application: Application) {
             BuildConfig.VERSION_NAME
         )
     }
+
+    suspend fun getCards(): Response<CardListResponse> = networkService.getCardList(
+        Constants.AUTH_TOKEN_PREFIX + sessionManager.getToken(),
+        BuildConfig.VERSION_NAME
+    )
+
+    suspend fun payLoans(payRequest: PayRequest): Response<ResponseBody> = networkService.pay(
+        Constants.AUTH_TOKEN_PREFIX + sessionManager.getToken(),
+        BuildConfig.VERSION_NAME,
+        payRequest
+    )
 
 }
