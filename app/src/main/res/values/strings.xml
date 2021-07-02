@@ -58,6 +58,7 @@
     <string name="error_auth_wrong_data_title">Авторизация не пройдена</string>
     <string name="error_auth_wrong_data_msg">Вы ввели неверный логин или пароль. Пожалуйста, проверьте ваши данные и попробуйте ещё раз</string>
     <string name="an_error_occurred_while_logging_out">Произошла ошибка при выходе из аккаунта!</string>
+    <string name="failed_to_delete_card">Не удалось удалить карту.</string>
 
 
     //Rus - Kaz

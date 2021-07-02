@@ -30,7 +30,7 @@
         android:layout_marginStart="@dimen/dimens_16dp"
         android:layout_marginTop="@dimen/dimens_27dp"
         android:layout_marginEnd="@dimen/dimens_10dp"
-        android:layout_toStartOf="@+id/iv_menu"
+        android:layout_toStartOf="@+id/iv_menu_icon"
         android:layout_toEndOf="@+id/iv_card"
         android:orientation="vertical"
         app:layout_constraintStart_toEndOf="@+id/iv_card"
@@ -60,7 +60,7 @@
     </LinearLayout>
 
     <ImageView
-        android:id="@+id/iv_menu"
+        android:id="@+id/iv_menu_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"

@@ -104,14 +104,6 @@ class ProfileFragment : BaseFragment() {
         }
     }
 
-    fun setDeleteCard(cardId: String) {
-        setLoading(true)
-        val deleteCardRequest = DeleteCardRequest(cardId)
-        CoroutineScope(Dispatchers.IO).launch {
-            viewModel.deleteCard(deleteCardRequest)
-        }
-    }
-
     private fun updateFeed() {
         setLoading(true)
         CoroutineScope(Dispatchers.IO).launch {
@@ -187,18 +179,33 @@ class ProfileFragment : BaseFragment() {
                 }
             }
         })
-
-        viewModel.isDeleteCard.observe(viewLifecycleOwner, {
+        viewModel.isDeletedCard.observe(viewLifecycleOwner, {
             when (it) {
                 true -> {
+                    setLoading(false)
                     view?.let { it1 ->
                         Navigation.findNavController(it1)
                             .navigate(R.id.profileFragment)
                     }
                 }
+                false -> {
+                    setLoading(false)
+                    Toast.makeText(
+                        requireContext(),
+                        getString(R.string.failed_to_delete_card),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
         })
+    }
 
+    fun deleteCard(cardId: String) {
+        setLoading(true)
+        val deleteCardRequest = DeleteCardRequest(id = cardId)
+        CoroutineScope(Dispatchers.IO).launch {
+            viewModel.deleteCard(deleteCardRequest)
+        }
     }
 
     private fun showEmptyCard() {

@@ -178,5 +178,6 @@
     <string name="map_added_successfully">Картаңыз сәтті қосылды!</string>
     <string name="an_error_occurred_while_adding_a_card">Картаны қосу кезінде қате пайда болды.</string>
     <string name="pay_unsuccessfully">Төлемді өңдеу кезінде қате пайда болды. Әрекетті қайталаңыз немесе төлем әдісін өзгертіңіз.</string>
+    <string name="failed_to_delete_card">Картаны жою кезінде ақаулар шығып қалды.</string>
 
 </resources>

@@ -2,15 +2,14 @@ package kz.pillikan.lombart.content.model.repository.profile
 
 import android.app.Application
 import android.content.Context
+import android.util.Log
 import kz.pillikan.lombart.BuildConfig
 import kz.pillikan.lombart.common.preference.SessionManager
 import kz.pillikan.lombart.common.remote.Constants
 import kz.pillikan.lombart.common.remote.Networking
 import kz.pillikan.lombart.content.model.request.profile.DeleteCardRequest
 import kz.pillikan.lombart.content.model.response.home.CardListResponse
-import kz.pillikan.lombart.content.model.response.home.ProfileInfo
 import kz.pillikan.lombart.content.model.response.home.ProfileResponse
-import kz.pillikan.lombart.content.model.response.profile.CardModel
 import okhttp3.ResponseBody
 import retrofit2.Response
 
@@ -23,6 +22,14 @@ class ProfileRepository(application: Application) {
     private var sessionManager: SessionManager =
         SessionManager(sharedPreferences)
 
+    suspend fun deleteCard(deleteCardRequest: DeleteCardRequest): Response<Any>{
+        return networkService.deleteCard(
+            Constants.AUTH_TOKEN_PREFIX + sessionManager.getToken(),
+            BuildConfig.VERSION_NAME,
+            deleteCardRequest
+        )
+    }
+
     suspend fun getCard(): Response<CardListResponse> = networkService.getCardList(
         Constants.AUTH_TOKEN_PREFIX + sessionManager.getToken(),
         BuildConfig.VERSION_NAME
@@ -32,14 +39,6 @@ class ProfileRepository(application: Application) {
         return networkService.profileInfo(
             Constants.AUTH_TOKEN_PREFIX + sessionManager.getToken(),
             BuildConfig.VERSION_NAME
-        )
-    }
-
-    suspend fun removeCard(deleteCardRequest: DeleteCardRequest): Response<ResponseBody> {
-        return networkService.deleteCard(
-            Constants.AUTH_TOKEN_PREFIX + sessionManager.getToken(),
-            BuildConfig.VERSION_NAME,
-            deleteCardRequest
         )
     }
 

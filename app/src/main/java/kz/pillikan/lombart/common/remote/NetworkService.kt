@@ -7,10 +7,7 @@ import kz.pillikan.lombart.content.model.request.appeal.FeedbackRequest
 import kz.pillikan.lombart.content.model.request.home.PayRequest
 import kz.pillikan.lombart.content.model.request.home.ValidatePinRequest
 import kz.pillikan.lombart.content.model.request.notifications.PageRequest
-import kz.pillikan.lombart.content.model.request.profile.CardRequest
-import kz.pillikan.lombart.content.model.request.profile.ChangePassword
-import kz.pillikan.lombart.content.model.request.profile.CheckPassword
-import kz.pillikan.lombart.content.model.request.profile.DeleteCardRequest
+import kz.pillikan.lombart.content.model.request.profile.*
 import kz.pillikan.lombart.content.model.response.about.AboutResponse
 import kz.pillikan.lombart.content.model.response.about.AddressResponse
 import kz.pillikan.lombart.content.model.response.appeal.ResponseAdvancedData
@@ -177,12 +174,12 @@ interface NetworkService {
         @Header("appVer") appVer: String
     ): Response<CardListResponse>
 
-    @GET(EndPoints.POST_DELETE_CARD)
+    @POST(EndPoints.POST_DELETE_CARD)
     suspend fun deleteCard(
         @Header("Authorization") Authorization: String,
         @Header("appVer") appVer: String,
         @Body deleteCardRequest: DeleteCardRequest
-    ): Response<ResponseBody>
+    ): Response<Any>
 
     @POST(EndPoints.POST_PAY)
     suspend fun pay(

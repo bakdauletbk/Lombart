@@ -29,6 +29,6 @@ object EndPoints {
     const val POST_ADVANCED_DATA = "/v1/service/get-advanced-data"
     const val POST_ADD_CARD = "/v1/pay/add-card"
     const val GET_CARD = "v1/pay/card-list"
-    const val POST_DELETE_CARD = "/v1/pay/delete-card"
+    const val POST_DELETE_CARD = "v1/pay/delete-card"
     const val POST_PAY = "/v1/pay/pay"
 }

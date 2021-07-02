@@ -47,26 +47,28 @@ class CardAdapter : RecyclerView.Adapter<CardAdapter.CardAdapterViewHolder> {
         return cardList.size
     }
 
-    class CardAdapterViewHolder(private val root: View) : RecyclerView.ViewHolder(root) {
+    class CardAdapterViewHolder(root: View) : RecyclerView.ViewHolder(root) {
         private val tvCardName = root.findViewById(R.id.tv_card_name) as TextView
         private val tvCardNumber = root.findViewById(R.id.tv_card_number) as TextView
-        private val ivMenu = root.findViewById(R.id.iv_menu) as ImageView
+        private val ivMenu = root.findViewById<ImageView>(R.id.iv_menu_icon)
+
         fun bind(cardList: CardList, callback: ProfileFragment) {
             tvCardName.text = cardList.name
             tvCardNumber.text = cardList.card_hash
 
-            ivMenu.onClick {
-                val popup = PopupMenu(callback.context, ivMenu)
-                popup.inflate(R.menu.custom_menu)
+            val popup = PopupMenu(callback.context, ivMenu)
+            popup.inflate(R.menu.custom_menu)
 
-                popup.setOnMenuItemClickListener { item ->
-                    when (item.itemId) {
-                        R.id.menu_delete -> {
-                            cardList.id?.let { it1 -> callback.setDeleteCard(it1) }
-                        }
+            popup.setOnMenuItemClickListener { item ->
+                when (item.itemId) {
+                    R.id.menu_delete -> {
+                        callback.deleteCard(cardId = cardList.id.toString())
                     }
-                    false
                 }
+                false
+            }
+
+            ivMenu.onClick {
                 popup.show()
             }
 
